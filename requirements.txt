@@ -1,9 +1,1 @@
-| Requirement | Test No. | Test Name | Purpose | Input | Input Files | Output | Output Files |
-|-------------|-----|-----------------|------------|------------|--------------|--------------|-------------------|
-| Money is deposited into account| R1T1 | TestAtmValidateDeposit | Checks if money was deposited properly in ATM mode| Login
-Atm 
-Deposit
-(valid account)
-(valid deposit amount)
-logout| ValidAccountListFile.txt and TransactionSummaryFile.txt | Error message if money was deposited in ATM mode | ValidAccountListFile.txt and TransactionSummaryFile.txt |
 
