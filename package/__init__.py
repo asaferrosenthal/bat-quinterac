@@ -1,5 +1,6 @@
 import sys
-import frontend
+from frontend import app
+
 
 
 
@@ -10,6 +11,5 @@ if __name__ == '__main__':
         trans_sum_file = sys.argv[2]
     except IndexError:
         print("must have valid arguments")
-    
-    a = app.App(str(valid_acct_file), str(trans_sum_file))
 
+    a = app.App(str(valid_acct_file), str(trans_sum_file))

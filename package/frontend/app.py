@@ -16,7 +16,7 @@ class App:
         self.agent_mode = False
         self.login()
         self.display()
-       
+
 
     def agent_mode_menu(self):
         frontend_menu = OrderedDict([
@@ -38,23 +38,23 @@ class App:
         ])
         self.menu = frontend_menu
 
-    
+
     def first_check(self):
         f = open(self.curr_session, "r")
         lines = f.readlines()
         return lines == []
-    
+
 
     def display(self):
         choice = None
-        while choice != 'l':
+        while choice != 'end':
             for key, value in self.menu.items():
                 print(f"{key}, {value.__doc__}")
             choice = input("> ").lower().strip()
 
             if choice in self.menu:
                 self.menu[choice]()
-    
+
     def session_write(self, line_content):
         f = open(self.curr_session, "a+")
         f.write(line_content + "\n")
@@ -67,18 +67,18 @@ class App:
             self.agent_mode = True
             self.session_write("Agent")
             self.agent_mode_menu()
-        else:   
-            self.session_write("ATM")   
-            self.atm_mode_menu() 
+        else:
+            self.session_write("ATM")
+            self.atm_mode_menu()
 
-        
+
     def logout(self):
         """Logout"""
         self.session_write("Logout")
         #update the transaction summary file
         #empty the session file
 
-           
+
     def create_acct(self):
         """Create Account"""
         acct_number = input("Please provide an account number for the new account.\n> ") # Assume that the number is within the constraints
@@ -88,7 +88,7 @@ class App:
         self.session_write("createacct")
         self.session_write(acct_number)
         self.session_write(name)
-        
+
 
     def delete_acct(self):
         """Delete Account"""
@@ -98,7 +98,7 @@ class App:
         self.session_write("deleteacct")
         self.session_write(acct_number)
         self.session_write(name)
-        
+
 
     def deposit(self):
         """Deposit"""
@@ -107,7 +107,7 @@ class App:
         self.session_write("deposit")
         self.session_write(acct_number)
         self.session_write(amount)
-        
+
 
     def withdraw(self):
         """Withdraw"""
@@ -118,6 +118,12 @@ class App:
         self.session_write(amount)
 
 
+    """
+    Purpose:
+        To transfer actions.
+    Args:
+        Class instance.
+    """
     def transfer(self):
         """Transfer"""
         from_acct_number = input("Please provide the account number you wish to transfer from.\n> ")
@@ -127,7 +133,3 @@ class App:
         self.session_write(from_acct_number)
         self.session_write(to_acct_number)
         self.session_write(amount)
-'''
-if __name__ == '__main__':
-    a = App("valid_acct_file.txt", "trans_sum_file.txt")
-'''
