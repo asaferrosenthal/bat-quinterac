@@ -2,9 +2,6 @@ import sys
 from frontend import app
 
 
-
-
-
 if __name__ == '__main__':
     try:
         valid_acct_file = sys.argv[1]
