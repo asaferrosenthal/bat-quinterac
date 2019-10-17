@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python3 __init__.py $1 $2
+python3 __main__.py $1 $2
