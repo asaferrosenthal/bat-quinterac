@@ -9,4 +9,3 @@ if __name__ == '__main__':
         print("Front-end must have to arguments")
 
     a = app.App(str(validAccountsListFile), str(transactionSummaryFile))
-
