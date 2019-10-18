@@ -9,7 +9,11 @@ is assumed to be true. This we be implemented when we create test code for our f
 functionality of the front-end.
 """
 from collections import OrderedDict
+from package.app.formats import Transaction
+from package.app.formats import SessionMode
 from package.app.formats import Formatter
+from package.app.formats import TransactionCode
+from enum import Enum
 
 
 class App:
@@ -24,15 +28,22 @@ class App:
     """
     def __init__(self, validAccountsListFile, transactionSummaryFile):
         """ Default Constructor """
+
+        # Set up environment
         sessionFile = open("session.txt", "w+")   # Creates the session file.
         self.currentSession = sessionFile.name      # Saves session file name as a class attribute for later writes
-
         self.validAccountListFile = str(validAccountsListFile)
         self.transactionSummaryFile = str(transactionSummaryFile)
+
+        # Initialize mode handlers
         self.agentMode = False  # False in atm mode, true in agent mode
+        self.accountNumber = None
+
+        # Begin program
         displayMenu = self.login()
         self.menu = displayMenu
         self.display()                  # Displays transaction options based on mode
+
     """
     Purpose:
         Sets the menu with the available transactions for the respective mode.
@@ -83,62 +94,31 @@ class App:
         Class instance.
         The line being written to the session file.
     """
-    def sessionWrite(self, lineContent):
+    def sessionWrite(self, lineContent, isEOS):
         file = open(self.currentSession, "a+")
         file.write(lineContent + "\n")
+        if isEOS:
+            file.write(TransactionCode.EOS.name)
+            file.close()
+            Formatter.formatSession(self.currentSession, self.transactionSummaryFile)
+
+    # MARK: Agent Only Transactions
 
     """
-    Purpose:
-        User logs into the front-end. Session file is updated. Asks user for
-        which mode.
-    Args:
-        Class instance.
-    Returns:
-        Display menu according to chosen mode.
-    """
-    def login(self):
-        choice = input("Please choose a mode.\n '1' for agent\n '2' for atm.\n> ").lower().strip()
-        if choice == '1':
-            self.sessionWrite("Login")
-            self.agentMode = True
-            self.sessionWrite("Agent")
-            displayMenu = self.menuOptions()      # Sets agent mode to true, agent menu is displayed
-        elif choice == '2':
-            self.sessionWrite("Login")
-            self.sessionWrite("ATM")
-            displayMenu = self.menuOptions()        # self.agentMode remains false, atm menu is displayed
-        else:
-            print("That is an invalid option. Please try again.")
-            return self.login()
-        return displayMenu
+        Purpose:
+            Create account feature. Prompts user for an account number and a name for the new account.
+            Session file is updated with the new information. Function assumes the account number is valid.
+        Args:
+            Class instance.
+        """
 
-    """
-    Purpose:
-        Log out of the front-end. Updates the session file, the writes to the transaction summary file.
-    Args:
-        Class instance.
-    """
-    def logout(self):
-        """Logout"""
-        self.session_write("Logout")
-        Formatter.formatSession(self.curr_session, self.transactionSummaryFile)
-        #update the transaction summary file
-        #empty the session file
-
-    """
-    Purpose:
-        Create account feature. Prompts user for an account number and a name for the new account.
-        Session file is updated with the new information. Function assumes the account number is valid.
-    Args:
-        Class instance.
-    """
     def createAccount(self):
         """Create Account"""
         accountNumber = input("Please provide an account number for the new account.\n> ")
         accountName = input("Please enter a name for the account.\n> ")
-        self.sessionWrite("createacct")
-        self.sessionWrite(accountNumber)
-        self.sessionWrite(accountName)
+        self.sessionWrite(Transaction.createAccount.name, False)
+        self.sessionWrite(accountNumber, False)
+        self.sessionWrite(accountName, False)
 
     """
     Purpose:
@@ -147,13 +127,16 @@ class App:
     Args:
         Class instance.
     """
+
     def deleteAccount(self):
         """Delete Account"""
         accountNumber = input("Please provide an account number you wish to delete.\n> ")
         accountName = input("Please enter a name for the account.\n> ")
-        self.sessionWrite("deleteacct")
-        self.sessionWrite(accountNumber)
-        self.sessionWrite(accountName)
+        self.sessionWrite(Transaction.deleteAccount.name, False)
+        self.sessionWrite(accountNumber, False)
+        self.sessionWrite(accountName, False)
+
+    # MARK: ATM & Agent Transactions
 
     """
     Purpose:
@@ -164,11 +147,15 @@ class App:
     """
     def deposit(self):
         """Deposit"""
-        accountNumber = input("Please provide an account number you wish to deposit into.\n> ")
+        if self.accountNumber is None:
+            accountNumber = input("Please provide an account number you wish to deposit into.\n> ")
+        else:
+            accountNumber = self.accountNumber
+
         depositAmount = input("What is your deposit amount?: ")
-        self.sessionWrite("deposit")
-        self.sessionWrite(accountNumber)
-        self.sessionWrite(depositAmount)
+        self.sessionWrite(Transaction.deposit.name, False)
+        self.sessionWrite(accountNumber, False)
+        self.sessionWrite(depositAmount, False)
 
     """
     Purpose:
@@ -179,11 +166,15 @@ class App:
     """
     def withdraw(self):
         """Withdraw"""
-        accountNumber = input("Please provide an account number you wish to withdraw from.\n> ")
+        if self.accountNumber is None:
+            accountNumber = input("Please provide an account number you wish to withdraw from.\n> ")
+        else:
+            accountNumber = self.accountNumber
+
         withdrawalAmount = input("What is your withdrawal amount?: ")
-        self.sessionWrite("withdraw")
-        self.sessionWrite(accountNumber)
-        self.sessionWrite(withdrawalAmount)
+        self.sessionWrite(Transaction.withdraw.name, False)
+        self.sessionWrite(accountNumber, False)
+        self.sessionWrite(withdrawalAmount, False)
 
     """
     Purpose:
@@ -195,10 +186,63 @@ class App:
     """
     def transfer(self):
         """Transfer"""
-        fromAccountNumber = input("Please provide the account number you wish to transfer from.\n> ")
+        fromAccountNumber = None
+        sameAccount = None
+
+        if not self.agentMode:  # If the session is in ATM Mode
+            sameAccount = input("Would you like to transfer from the current account? (y/n)\n>")
+
+        if sameAccount is None or sameAccount == "n":  # Is in Agent mode, so ask for all three
+            fromAccountNumber = input("Please provide the account number you wish to transfer from.\n> ")
+        elif sameAccount == "y":
+            fromAccountNumber = self.accountNumber
+
         toAccountNumber = input("Please provide the account number you wish to transfer to.\n> ")
         transferAmount = input("What is your transfer amount?: ")
-        self.sessionWrite("transfer")
-        self.sessionWrite(fromAccountNumber)
-        self.sessionWrite(toAccountNumber)
-        self.sessionWrite(transferAmount)
+
+        self.sessionWrite(Transaction.transfer.name, False)
+        self.sessionWrite(fromAccountNumber, False)
+        self.sessionWrite(toAccountNumber, False)
+        self.sessionWrite(transferAmount, False)
+
+    # MARK: Admin Functions
+
+    """
+        Purpose:
+            User logs into the front-end. Session file is updated. Asks user for
+            which mode.
+        Args:
+            Class instance.
+        Returns:
+            Display menu according to chosen mode.
+        """
+
+    def login(self):
+        choice = input("Please choose a mode.\n '1' for agent\n '2' for atm.\n> ").lower().strip()
+        if choice == '1':
+            self.sessionWrite(Transaction.login.name, False)
+            self.agentMode = True
+            self.sessionWrite(SessionMode.agent.name, False)
+            displayMenu = self.menuOptions()  # Sets agent mode to true, agent menu is displayed
+        elif choice == '2':
+            self.sessionWrite(Transaction.login.name, False)
+            self.sessionWrite(SessionMode.atm.name, False)
+            self.accountNumber = input("Please login with your account number.\n> ")
+            displayMenu = self.menuOptions()  # self.agentMode remains false, atm menu is displayed
+        else:
+            print("That is an invalid option. Please try again.")
+            return self.login()
+        return displayMenu
+
+    """
+    Purpose:
+        Log out of the front-end. Updates the session file, the writes to the transaction summary file.
+    Args:
+        Class instance.
+    """
+
+    def logout(self):
+        """Logout"""
+        self.sessionWrite(Transaction.logout.name, True)
+        # update the transaction summary file
+        # empty the session file
