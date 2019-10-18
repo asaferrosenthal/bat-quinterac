@@ -8,4 +8,3 @@ if __name__ == '__main__':
         a = app.App(validAccountsListFile, transactionSummaryFile)
     except IndexError:
         print("Front-end must have to arguments")
-        exit(1)

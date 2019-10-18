@@ -14,28 +14,38 @@ from package.app.formats import Formatter
 
 class App:
 
-    def __init__(self, val_file, trans_act_sum):
-        """ Default Constructor """
-        print("here")
-        f = open("session.txt", "w+")   # Creates the session file.
-        self.curr_session = f.name      # Saves file name as a class attribute
-        self.agent_mode = False         # False in atm mode, true in agent mode
-        self.validAccountListFile = str(val_file)
-        self.transactionSummaryFile = str(trans_act_sum)
-        self.login()
-        self.display()                  # Displays transaction options based on mode
-
     """
     Purpose:
-        Set the menu with the availible transactions for the respective mode.
+        Default constructor. Sets class attributes.
     Args:
         Class instance.
+        Valid accounts list file.
+        Transaction summary file.
+    """
+    def __init__(self, validAccountsListFile, transactionSummaryFile):
+        """ Default Constructor """
+        sessionFile = open("session.txt", "w+")   # Creates the session file.
+        self.currentSession = sessionFile.name      # Saves session file name as a class attribute for later writes
+
+        self.validAccountListFile = str(validAccountsListFile)
+        self.transactionSummaryFile = str(transactionSummaryFile)
+        self.agentMode = False  # False in atm mode, true in agent mode
+        displayMenu = self.login()
+        self.menu = displayMenu
+        self.display()                  # Displays transaction options based on mode
+    """
+    Purpose:
+        Sets the menu with the available transactions for the respective mode.
+    Args:
+        Class instance.
+    Returns:
+        Menu as an ordered dictionary.
     """
     def menuOptions(self):
-        if self.agent_mode: # Menu options for agent mode.
+        if self.agentMode:  # Menu options for agent mode.
             menu = OrderedDict([
-                ('new', self.create_acct),
-                ('del', self.delete_acct),
+                ('new', self.createAccount),
+                ('del', self.deleteAccount),
                 ('wdr', self.withdraw),
                 ('dep', self.deposit),
                 ('xfr', self.transfer),
@@ -48,11 +58,11 @@ class App:
                 ('xfr', self.transfer),
                 ('end', self.logout)
             ])
-        self.menu = menu
+        return menu
 
     """
     Purpose:
-        Display the availible transactions the user has.
+        Display the available transactions the user has.
     Args:
         Class instance.
     """
@@ -63,53 +73,44 @@ class App:
                 print(f"Enter: '{key}' to {value.__doc__}")
             choice = input("> ").lower().strip()
 
-            if choice in self.menu:
-                self.menu[choice]()     # If the choice exists in the menu, call the value at the key, from the ordered dictionary as a function
+            if choice in self.menu:     # If the choice exists in the menu.
+                self.menu[choice]()     # Call the value at the key, from the ordered dictionary as a function.
 
     """
     Purpose:
-        Write a line to the session file.
+        Writes a line to the session file.
     Args:
         Class instance.
         The line being written to the session file.
     """
-    def session_write(self, line_content):
-        f = open(self.curr_session, "a+")
-        f.write(line_content + "\n")
+    def sessionWrite(self, lineContent):
+        file = open(self.currentSession, "a+")
+        file.write(lineContent + "\n")
 
-    def checkForExistingAccount(self):
-        f = open(self.validAccountListFile, "r")
-        allAccounts = f.readlines()
-        return allAccounts
-
-    def addNewValidAccount(self, account):
-        pass
-
-    def deleteValidAccount(self, account):
-        pass
-
-        
     """
     Purpose:
         User logs into the front-end. Session file is updated. Asks user for
         which mode.
     Args:
         Class instance.
+    Returns:
+        Display menu according to chosen mode.
     """
     def login(self):
-        self.session_write("Login")
-        print("Please choose a mode.\n '1' for agent\n '2' for atm.")
-        choice = input("> ").lower().strip()
+        choice = input("Please choose a mode.\n '1' for agent\n '2' for atm.\n> ").lower().strip()
         if choice == '1':
-            self.agent_mode = True
-            self.session_write("Agent")
-            self.menuOptions()      # Sets agent mode to true, agent menu is displayed
+            self.sessionWrite("Login")
+            self.agentMode = True
+            self.sessionWrite("Agent")
+            displayMenu = self.menuOptions()      # Sets agent mode to true, agent menu is displayed
         elif choice == '2':
-            self.session_write("ATM")
-            self.menuOptions()        # self.agentMode remains false, atm menu is displayed
+            self.sessionWrite("Login")
+            self.sessionWrite("ATM")
+            displayMenu = self.menuOptions()        # self.agentMode remains false, atm menu is displayed
         else:
-            print("that is an invalid option.")
-
+            print("That is an invalid option. Please try again.")
+            return self.login()
+        return displayMenu
 
     """
     Purpose:
@@ -127,72 +128,77 @@ class App:
     """
     Purpose:
         Create account feature. Prompts user for an account number and a name for the new account.
-        Session file is updated with the new information.
+        Session file is updated with the new information. Function assumes the account number is valid.
     Args:
         Class instance.
     """
-    def create_acct(self):
+    def createAccount(self):
         """Create Account"""
         accountNumber = input("Please provide an account number for the new account.\n> ")
-        allValidAccounts = self.checkForExistingAccount
-        if accountNumber not in allValidAccounts:
-            name = input("Please enter a name for the account.\n> ")
-
-            #adds new account number to the valid accounts file
-            self.session_write("createacct")
-            self.session_write(accountNumber)
-            self.session_write(name)
-        else:
-            print("That number already exists please try again.")
-            self.create_acct()
+        accountName = input("Please enter a name for the account.\n> ")
+        self.sessionWrite("createacct")
+        self.sessionWrite(accountNumber)
+        self.sessionWrite(accountName)
 
     """
     Purpose:
         Delete account feature. Prompts user for a number and name for the account they wish to delete.
-
+        Session file is updated with the new information. Function assumes the account number is valid.
     Args:
         Class instance.
     """
-    def delete_acct(self):
+    def deleteAccount(self):
         """Delete Account"""
-        acct_number = input("Please provide an account number you wish to delete.\n> ") # Assume that the number is within the constraints
-        name = input("Please enter a name for the account.\n> ")
-        #updates the valid accounts list after the format is valid?
-        self.session_write("deleteacct")
-        self.session_write(acct_number)
-        self.session_write(name)
-
-
-    def deposit(self):
-        """Deposit"""
-        acct_number = input("Please provide an account number you wish to deposit into.\n> ") # Assume that the number is within the constraints
-        amount = input("What is your deposit amount?: ")
-        self.session_write("deposit")
-        self.session_write(acct_number)
-        self.session_write(amount)
-
-
-    def withdraw(self):
-        """Withdraw"""
-        acct_number = input("Please provide an account number you wish to withdraw from.\n> ") # Assume that the number is within the constraints
-        amount = input("What is your withdrawal amount?: ")
-        self.session_write("withdraw")
-        self.session_write(acct_number)
-        self.session_write(amount)
-
+        accountNumber = input("Please provide an account number you wish to delete.\n> ")
+        accountName = input("Please enter a name for the account.\n> ")
+        self.sessionWrite("deleteacct")
+        self.sessionWrite(accountNumber)
+        self.sessionWrite(accountName)
 
     """
     Purpose:
-        To transfer actions.
+        Deposit feature. Prompts user for an account number to deposit into and the amount they wish to deposit.
+        Session file is updated with the new information. Function assumes the account number and amount is valid.
+    Args:
+        Class instance.
+    """
+    def deposit(self):
+        """Deposit"""
+        accountNumber = input("Please provide an account number you wish to deposit into.\n> ")
+        depositAmount = input("What is your deposit amount?: ")
+        self.sessionWrite("deposit")
+        self.sessionWrite(accountNumber)
+        self.sessionWrite(depositAmount)
+
+    """
+    Purpose:
+        Withdrawal feature. Prompts user for an account number to withdraw from and the amount they wish to withdraw.
+        Session file is updated with the new information. Function assumes the account number and amount is valid.
+    Args:
+        Class instance.
+    """
+    def withdraw(self):
+        """Withdraw"""
+        accountNumber = input("Please provide an account number you wish to withdraw from.\n> ")
+        withdrawalAmount = input("What is your withdrawal amount?: ")
+        self.sessionWrite("withdraw")
+        self.sessionWrite(accountNumber)
+        self.sessionWrite(withdrawalAmount)
+
+    """
+    Purpose:
+        Transfer feature. Prompts user for an account number to transfer from, an account number to transfer to, and the
+        amount they wish to transfer. Session file is updated with the new information. Function assumes the account 
+        numbers and amount is valid.
     Args:
         Class instance.
     """
     def transfer(self):
         """Transfer"""
-        from_acct_number = input("Please provide the account number you wish to transfer from.\n> ")
-        to_acct_number = input("Please provide the account number you wish to transfer to.\n> ")
-        amount = input("What is your transfer amount?: ")
-        self.session_write("transfer")
-        self.session_write(from_acct_number)
-        self.session_write(to_acct_number)
-        self.session_write(amount)
+        fromAccountNumber = input("Please provide the account number you wish to transfer from.\n> ")
+        toAccountNumber = input("Please provide the account number you wish to transfer to.\n> ")
+        transferAmount = input("What is your transfer amount?: ")
+        self.sessionWrite("transfer")
+        self.sessionWrite(fromAccountNumber)
+        self.sessionWrite(toAccountNumber)
+        self.sessionWrite(transferAmount)
