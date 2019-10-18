@@ -9,6 +9,7 @@ is assumed to be true. This we be implemented when we create test code for our f
 functionality of the front-end.
 """
 from collections import OrderedDict
+from package.app.formats import Formatter
 
 
 class App:
@@ -23,7 +24,6 @@ class App:
         self.transactionSummaryFile = str(trans_act_sum)
         self.login()
         self.display()                  # Displays transaction options based on mode
-
 
     """
     Purpose:
@@ -120,6 +120,7 @@ class App:
     def logout(self):
         """Logout"""
         self.session_write("Logout")
+        Formatter.formatSession(self.curr_session, self.transactionSummaryFile)
         #update the transaction summary file
         #empty the session file
 
