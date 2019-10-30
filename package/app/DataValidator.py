@@ -7,7 +7,7 @@ As well as writing completed transactions to the daily transactions file
 
 Input files: Daily transaction file (valid account list in completed version)
 Output files: Updated daily transaction file
-"""
+"""a
 
 
 # Used in place of a real account number validator
