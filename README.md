@@ -1,4 +1,4 @@
-# bat-quinterac
+# Quinterac BAT Enterprises
 CISC 327 Group Project
 
 [![](https://github.com/tamirarnesty/bat-quinterac/workflows/Python%20Application%20CI/badge.svg)](https://github.com/tamirarnesty/bat-quinterac/actions)
