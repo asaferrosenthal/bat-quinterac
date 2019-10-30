@@ -8,93 +8,54 @@ Please note that constraints to check for valid account numbers as well as forma
 is assumed to be true. This we be implemented when we create test code for our function. This just demonstrates the
 functionality of the front-end.
 """
-from collections import OrderedDict
-from package.app.formats import Transaction
-from package.app.formats import SessionMode
-from package.app.formats import Formatter
-from package.app.formats import TransactionCode
-from enum import Enum
 
+from collections import OrderedDict
+from package.app.formats import *
+from package.app.SessionHandler import SessionHandler
+from package.app.DailyLimits import *
+
+import os
 
 class App:
 
-    """
-    Purpose:
-        Default constructor. Sets class attributes.
-    Args:
-        Class instance.
-        Valid accounts list file.
-        Transaction summary file.
-    """
-    def __init__(self, validAccountsListFile, transactionSummaryFile):
-        """ Default Constructor """
-
-        # Set up environment
-        sessionFile = open("session.txt", "w+")   # Creates the session file.
+    def __init__(self, validAccountsFileName, transactionSummaryFileName):
+        sessionFile = open("package/resources/session.txt", "w+")   # Creates the session file.
+        sessionFile.close()
         self.currentSession = sessionFile.name      # Saves session file name as a class attribute for later writes
-        self.validAccountListFile = str(validAccountsListFile)
-        self.transactionSummaryFile = str(transactionSummaryFile)
 
-        # Initialize mode handlers
-        self.agentMode = False  # False in atm mode, true in agent mode
-        self.accountNumber = None
+        self.validAccountsListFile = str(validAccountsFileName)
+        self.transactionSummaryFile = str(transactionSummaryFileName)
+        self.isAgent = False
 
-        # Begin program
-        displayMenu = self.login()
-        self.menu = displayMenu
-        self.display()                  # Displays transaction options based on mode
+        self.setup()
 
-    """
-    Purpose:
-        Sets the menu with the available transactions for the respective mode.
-    Args:
-        Class instance.
-    Returns:
-        Menu as an ordered dictionary.
-    """
-    def menuOptions(self):
-        if self.agentMode:  # Menu options for agent mode.
-            menu = OrderedDict([
-                ('new', self.createAccount),
-                ('del', self.deleteAccount),
-                ('wdr', self.withdraw),
-                ('dep', self.deposit),
-                ('xfr', self.transfer),
-                ('end', self.logout)
-            ])
-        else:   # Menu options for atm mode.
-            menu = OrderedDict([
-                ('wdr', self.withdraw),
-                ('dep', self.deposit),
-                ('xfr', self.transfer),
-                ('end', self.logout)
-            ])
-        return menu
+    def setup(self):
+        """Start"""
+
+        isValid = False
+
+        while not isValid:
+            choice = input("Enter 'login' to begin.\n> ").lower().strip()
+            if choice == 'login':
+                isValid = True
+            else:
+                print("Invalid input. Try again.\n")
+
+        DailyLimits.loadAccounts(self.validAccountsListFile)
+        self.login()
+
+    def restartProgram(self):
+        """Exit"""
+        self.login()
 
     """
-    Purpose:
-        Display the available transactions the user has.
-    Args:
-        Class instance.
+        Purpose:
+            Writes a line to the session file.
+        Args:
+            Class instance.
+            The line being written to the session file.
     """
-    def display(self):
-        choice = None
-        while choice != 'end':                      # User logs out
-            for key, value in self.menu.items():    # Goes through every key and value in the ordered dictionary menu
-                print(f"Enter: '{key}' to {value.__doc__}")
-            choice = input("> ").lower().strip()
-
-            if choice in self.menu:     # If the choice exists in the menu.
-                self.menu[choice]()     # Call the value at the key, from the ordered dictionary as a function.
-
-    """
-    Purpose:
-        Writes a line to the session file.
-    Args:
-        Class instance.
-        The line being written to the session file.
-    """
-    def sessionWrite(self, lineContent, isEOS):
+    def sessionWrite(self, lineContent, isEOS=False):
         file = open(self.currentSession, "a+")
         file.write(lineContent + "\n")
         if isEOS:
@@ -111,14 +72,17 @@ class App:
         Args:
             Class instance.
         """
-
     def createAccount(self):
         """Create Account"""
         accountNumber = input("Please provide an account number for the new account.\n> ")
         accountName = input("Please enter a name for the account.\n> ")
-        self.sessionWrite(Transaction.createAccount.name, False)
-        self.sessionWrite(accountNumber, False)
-        self.sessionWrite(accountName, False)
+
+        if SessionHandler.validateNewAccount(accountNumber, accountName):
+            self.sessionWrite(Transaction.createAccount.name, False)
+            self.sessionWrite(accountNumber, False)
+            self.sessionWrite(accountName, False)
+        else:
+            print("An account already exists with that name and number.")
 
     """
     Purpose:
@@ -127,7 +91,6 @@ class App:
     Args:
         Class instance.
     """
-
     def deleteAccount(self):
         """Delete Account"""
         accountNumber = input("Please provide an account number you wish to delete.\n> ")
@@ -147,12 +110,10 @@ class App:
     """
     def deposit(self):
         """Deposit"""
-        if self.accountNumber is None:
-            accountNumber = input("Please provide an account number you wish to deposit into.\n> ")
-        else:
-            accountNumber = self.accountNumber
-
+        accountNumber = input("Please provide an account number you wish to deposit into.\n> ")
         depositAmount = input("What is your deposit amount?: ")
+
+        SessionHandler.deposit(accountNumber, depositAmount)
         self.sessionWrite(Transaction.deposit.name, False)
         self.sessionWrite(accountNumber, False)
         self.sessionWrite(depositAmount, False)
@@ -208,31 +169,38 @@ class App:
     # MARK: Admin Functions
 
     """
-        Purpose:
-            User logs into the front-end. Session file is updated. Asks user for
-            which mode.
-        Args:
-            Class instance.
-        Returns:
-            Display menu according to chosen mode.
-        """
-
+    Purpose:
+        User logs into the front-end. Session file is updated. Asks user for
+        which mode.
+    Args:
+        Class instance.
+    Returns:
+        Display menu according to chosen mode.
+    """
     def login(self):
-        choice = input("Please choose a mode.\n '1' for agent\n '2' for atm.\n> ").lower().strip()
-        if choice == '1':
-            self.sessionWrite(Transaction.login.name, False)
-            self.agentMode = True
+        isValid = False
+
+        while not isValid:
+            choice = input("Please choose a mode.\n '1' for agent\n '2' for machine.\n 'logout' to quit.\n> ").lower().strip()
+            if choice == 'logout':
+                isValid = True
+            elif choice == '1' or choice == '2':
+                self.setupEnvironment(choice == '1')
+            else:
+                print("Invalid input. Try again.\n")
+
+        self.logout()
+
+    def setupEnvironment(self, isAgent):
+        self.sessionWrite(Transaction.login.name, False)
+        self.isAgent = isAgent
+        SessionHandler.isAtm = not isAgent
+        if isAgent:
             self.sessionWrite(SessionMode.agent.name, False)
-            displayMenu = self.menuOptions()  # Sets agent mode to true, agent menu is displayed
-        elif choice == '2':
-            self.sessionWrite(Transaction.login.name, False)
-            self.sessionWrite(SessionMode.atm.name, False)
-            self.accountNumber = input("Please login with your account number.\n> ")
-            displayMenu = self.menuOptions()  # self.agentMode remains false, atm menu is displayed
         else:
-            print("That is an invalid option. Please try again.")
-            return self.login()
-        return displayMenu
+            self.sessionWrite(SessionMode.atm.name, False)
+
+        self.displayOptions()
 
     """
     Purpose:
@@ -240,9 +208,54 @@ class App:
     Args:
         Class instance.
     """
-
     def logout(self):
         """Logout"""
         self.sessionWrite(Transaction.logout.name, True)
         # update the transaction summary file
         # empty the session file
+
+    # MARK: Display Menus
+
+    """
+    Purpose:
+        Sets the menu with the available transactions for the respective mode.
+    Args:
+        Class instance.
+    Returns:
+        Menu as an ordered dictionary.
+    """
+    def getMenuOptions(self):
+        if self.isAgent:  # Menu options for agent mode.
+            menu = OrderedDict([
+                ('new', self.createAccount),
+                ('del', self.deleteAccount),
+                ('wdr', self.withdraw),
+                ('dep', self.deposit),
+                ('xfr', self.transfer),
+                ('exit', self.restartProgram)
+            ])
+        else:   # Menu options for atm mode.
+            menu = OrderedDict([
+                ('wdr', self.withdraw),
+                ('dep', self.deposit),
+                ('xfr', self.transfer),
+                ('exit', self.restartProgram)
+            ])
+        return menu
+
+    """
+    Purpose:
+        Display the available transactions the user has.
+    Args:
+        Class instance.
+    """
+    def displayOptions(self):
+        menuOptions = self.getMenuOptions()
+        choice = None
+        while choice != 'end':                      # User logs out
+            for key, value in menuOptions.items():    # Goes through every key and value in the ordered dictionary menu
+                print(f"Enter: '{key}' to {value.__doc__}")
+            choice = input("> ").lower().strip()
+
+            if choice in menuOptions:     # If the choice exists in the menu.
+                menuOptions[choice]()     # Call the value at the key, from the ordered dictionary as a function.

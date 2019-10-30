@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class TransactionCode(Enum):
     WDR = "withdraw"
     DEP = "deposit"
@@ -68,6 +67,7 @@ class Formatter:
             transSumFile.write(curLine)
 
         transSumFile.close()
+        exit(0)
 
     @staticmethod
     def formatLine(transCode, toAcc, amount, fromAcc, accName):

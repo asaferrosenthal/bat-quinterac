@@ -1,7 +1,0 @@
-login
-agent
-withdraw
-34567
-444
-logout
-EOS
