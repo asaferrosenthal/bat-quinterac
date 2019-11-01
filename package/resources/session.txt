@@ -1,7 +1,7 @@
 login
-atm
-deposit
-1234567
-1000
+agent
+deleteAccount
+2222222
+ben
 logout
 EOS

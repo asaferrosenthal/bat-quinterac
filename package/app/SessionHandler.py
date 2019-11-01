@@ -16,6 +16,15 @@ class SessionHandler:
         return True
 
     @staticmethod
+    def validateOldAccount(accountNumber):
+        account = DailyLimits.getAccountFor(accountNumber)
+        if account:
+            DailyLimits.accounts.remove(account)
+            return True
+        
+        return False
+
+    @staticmethod
     def deposit(accountNumber, amount):
         account = DailyLimits.getAccountFor(accountNumber)
 

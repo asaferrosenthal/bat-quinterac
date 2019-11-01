@@ -7,7 +7,7 @@ summary file.
 Please note that constraints to check for valid account numbers as well as formatting for both numbers, and amounts
 is assumed to be true. This we be implemented when we create test code for our function. This just demonstrates the
 functionality of the front-end.
-"""
+""" 
 
 from collections import OrderedDict
 from package.app.formats import *
@@ -95,9 +95,19 @@ class App:
         """Delete Account"""
         accountNumber = input("Please provide an account number you wish to delete.\n> ")
         accountName = input("Please enter a name for the account.\n> ")
-        self.sessionWrite(Transaction.deleteAccount.name, False)
-        self.sessionWrite(accountNumber, False)
-        self.sessionWrite(accountName, False)
+
+        if SessionHandler.validateOldAccount(accountNumber):
+            tempFile = self.validAccountsListFile
+            with open(tempFile, "r") as inFile:
+                with open("package/resources/validAccountsListFile1.txt", "w+") as outFile:
+                    for line in inFile:
+                        if line.strip("\n") != accountNumber:
+                            outFile.write(line)
+
+            os.rename("package/resources/validAccountsListFile1.txt", "package/resources/validAccountsListFile.txt")
+            self.sessionWrite(Transaction.deleteAccount.name, False)
+            self.sessionWrite(accountNumber, False)
+            self.sessionWrite(accountName, False)
 
     # MARK: ATM & Agent Transactions
 

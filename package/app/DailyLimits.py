@@ -8,7 +8,7 @@ class DailyLimits:
     @staticmethod
     def loadAccounts(fileName):
         accountsFile = open(fileName, 'r')
-
+ 
         lines = accountsFile.readlines()
         for line in lines:
             line = line.strip()
