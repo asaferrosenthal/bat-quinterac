@@ -18,8 +18,8 @@ import os
 
 class App:
 
-    def __init__(self, validAccountsFileName, transactionSummaryFileName):
-        sessionFile = open("package/resources/session.txt", "w+")   # Creates the session file.
+    def __init__(self, validAccountsFileName, transactionSummaryFileName, pathToSessionFile):
+        sessionFile = open(pathToSessionFile, "w+")   # Creates the session file.
         sessionFile.close()
         self.currentSession = sessionFile.name      # Saves session file name as a class attribute for later writes
 
@@ -37,15 +37,15 @@ class App:
         while not isValid:
             choice = input("Enter 'login' to begin. Or 'exit' to exit program.\n> ").lower().strip()
             if choice == 'login':
-                isValid = True
+                DailyLimits.loadAccounts(self.validAccountsListFile)
+                self.login()
             if choice == 'exit':
                 print("Exiting program")
-                exit(0)
-            if choice != 'login':
+                isValid = True
+            else: 
                 print("Invalid input. Try again.")
 
-        DailyLimits.loadAccounts(self.validAccountsListFile)
-        self.login()
+       
 
     def restartProgram(self):
         """Exit"""

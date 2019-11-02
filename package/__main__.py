@@ -16,7 +16,7 @@ if __name__ == '__main__':
         '''
         validAccountsListFile = os.path.join("package/resources", "validAccountsListFile.txt")
         transactionSummaryFile = os.path.join("package/resources", "transactionSummaryFile.txt")
-        a = app.App(validAccountsListFile, transactionSummaryFile)
+        a = app.App(validAccountsListFile, transactionSummaryFile, 'package/resources/session.txt')
     except IndexError:
         print("Front-end must have two arguments")
 

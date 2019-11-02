@@ -1,8 +1,0 @@
-login
-atm
-transfer
-5555555
-3333333
-123
-logout
-EOS

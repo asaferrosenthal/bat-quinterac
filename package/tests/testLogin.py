@@ -3,34 +3,36 @@ from importlib import reload
 import os
 import io
 import sys
-import qa327.app as app
 import package
 from package.app import app
 path = os.path.dirname(os.path.abspath(__file__))
 
-
-def test_r2(capsys):
-    """Testing r2. Self-contained (i.e. everything in the code approach)
-    [my favorite - all in one place with the code]
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-    """
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            'login'
-        ],
-        intput_valid_accounts=[
-            '123456'
-        ],
-        expected_tail_of_terminal_output=[
-            'here is the content',
-            '123456',
-            'writing transactions...'],
-        expected_output_transactions=[
-            'hmm i am a transaction.'
-        ]
-    )
+class TestLoginR1:
+    def testIdleLogout(self, capsys):
+        """Testing r2. Self-contained (i.e. everything in the code approach)
+        [my favorite - all in one place with the code]
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'logout',
+                'exit'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Invalid input. Try again.",
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Exiting program"],
+            expected_output_transactions=[
+                None
+            ]
+        )
 
 
 def helper(
@@ -54,26 +56,28 @@ def helper(
 
     # create a temporary file in the system to store output transactions
     temp_fd, temp_file = tempfile.mkstemp()
-    transaction_summary_file = temp_file
+    transactionSummaryFile = temp_file
 
     # create a temporary file in the system to store the valid accounts:
     temp_fd2, temp_file2 = tempfile.mkstemp()
-    valid_account_list_file = temp_file2
-    with open(valid_account_list_file, 'w') as wf:
+    validAccountsListFile = temp_file2
+    sessionFile = temp_fd2
+    with open(validAccountsListFile, 'w') as wf:
         wf.write('\n'.join(intput_valid_accounts))
 
     # prepare program parameters
     sys.argv = [
         'package',
-        valid_account_list_file,
-        transaction_summary_file]
+        validAccountsListFile,
+        transactionSummaryFile,
+        sessionFile]
 
     # set terminal input
     sys.stdin = io.StringIO(
         '\n'.join(terminal_input))
 
     # run the program
-    app.main()
+    app.App(validAccountsListFile, transactionSummaryFile, sessionFile)
 
     # capture terminal output / errors
     # assuming that in this case we don't use stderr
@@ -96,7 +100,7 @@ def helper(
         assert expected_tail_of_terminal_output[index] == out_lines[index]
     
     # compare transactions:
-    with open(transaction_summary_file, 'r') as of:
+    with open(transactionSummaryFile, 'r') as of:
         content = of.read().splitlines()
         
         # print out the testing information for debugging
