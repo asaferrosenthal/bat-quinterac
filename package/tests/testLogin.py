@@ -9,8 +9,9 @@ path = os.path.dirname(os.path.abspath(__file__))
 
 class TestLoginR1:
     def testIdleLogout(self, capsys):
-        """Testing r2. Self-contained (i.e. everything in the code approach)
-        [my favorite - all in one place with the code]
+        """Testing R1T1. 
+        Purpose:
+            Can't logout before logging in.
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -18,6 +19,141 @@ class TestLoginR1:
             capsys=capsys,
             terminal_input=[
                 'logout',
+                'exit'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Invalid input. Try again.",
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Exiting program"],
+            expected_output_transactions=[
+                None
+            ]
+        )
+
+    def testIdleCreateAccount(self, capsys):
+        """Testing R1T2. 
+        Purpose:
+            Can't create account before logging in.
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'new',
+                'exit'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Invalid input. Try again.",
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Exiting program"],
+            expected_output_transactions=[
+                None
+            ]
+        )
+
+    def testIdleDeleteAccount(self, capsys):
+        """Testing R1T3. 
+        Purpose:
+            Can't delete account before logging in.
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'del',
+                'exit'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Invalid input. Try again.",
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Exiting program"],
+            expected_output_transactions=[
+                None
+            ]
+        )
+
+    def testIdleDeposit(self, capsys):
+        """Testing R1T4. 
+        Purpose:
+            Can't deposit before logging in.
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'dep',
+                'exit'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Invalid input. Try again.",
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Exiting program"],
+            expected_output_transactions=[
+                None
+            ]
+        )
+
+    def testIdleWithdraw(self, capsys):
+        """Testing R1T4. 
+        Purpose:
+            Can't withdraw before logging in.
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'wdr',
+                'exit'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Invalid input. Try again.",
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Exiting program"],
+            expected_output_transactions=[
+                None
+            ]
+        )
+
+    def testIdleTransfer(self, capsys):
+        """Testing R1T6. 
+        Purpose:
+            Can't transfer before logging in.
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'xfr',
                 'exit'
             ],
             intput_valid_accounts=[
