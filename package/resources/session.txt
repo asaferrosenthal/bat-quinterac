@@ -1,7 +1,8 @@
 login
-agent
-createAccount
+atm
+transfer
+5555555
 3333333
-ben
+123
 logout
 EOS

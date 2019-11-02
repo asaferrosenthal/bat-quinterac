@@ -157,11 +157,14 @@ class App:
         accountNumber = input("Please provide an account number you wish to deposit into.\n> ")
         depositAmount = input("What is your deposit amount?: ")
 
-        SessionHandler.deposit(accountNumber, depositAmount)
-        self.sessionWrite(Transaction.deposit.name, False)
-        self.sessionWrite(accountNumber, False)
-        self.sessionWrite(depositAmount, False)
-
+        errorMessage = SessionHandler.deposit(accountNumber, depositAmount)
+        if type(errorMessage) is bool:
+            self.sessionWrite(Transaction.deposit.name, False)
+            self.sessionWrite(accountNumber, False)
+            self.sessionWrite(depositAmount, False)
+        else:
+            print(errorMessage + " Please try again.")
+            self.deposit()
     """
     Purpose:
         Withdrawal feature. Prompts user for an account number to withdraw from and the amount they wish to withdraw.
@@ -171,15 +174,20 @@ class App:
     """
     def withdraw(self):
         """Withdraw"""
-        if self.accountNumber is None:
-            accountNumber = input("Please provide an account number you wish to withdraw from.\n> ")
-        else:
-            accountNumber = self.accountNumber
-
+        
+        accountNumber = input("Please provide an account number you wish to withdraw from.\n> ")
         withdrawalAmount = input("What is your withdrawal amount?: ")
-        self.sessionWrite(Transaction.withdraw.name, False)
-        self.sessionWrite(accountNumber, False)
-        self.sessionWrite(withdrawalAmount, False)
+        errorMessage = SessionHandler.withdraw(accountNumber, withdrawalAmount)
+
+        if type(errorMessage) is bool:
+            self.sessionWrite(Transaction.withdraw.name, False)
+            self.sessionWrite(accountNumber, False)
+            self.sessionWrite(withdrawalAmount, False)
+        else:
+            print(errorMessage + " Please try again.")
+            self.withdraw()
+
+        
 
     """
     Purpose:
@@ -191,24 +199,23 @@ class App:
     """
     def transfer(self):
         """Transfer"""
-        fromAccountNumber = None
-        sameAccount = None
-
-        if not self.agentMode:  # If the session is in ATM Mode
-            sameAccount = input("Would you like to transfer from the current account? (y/n)\n>")
-
-        if sameAccount is None or sameAccount == "n":  # Is in Agent mode, so ask for all three
-            fromAccountNumber = input("Please provide the account number you wish to transfer from.\n> ")
-        elif sameAccount == "y":
-            fromAccountNumber = self.accountNumber
 
         toAccountNumber = input("Please provide the account number you wish to transfer to.\n> ")
+        fromAccountNumber = input("Please provide the account number you wish to transfer from.\n> ")
         transferAmount = input("What is your transfer amount?: ")
 
-        self.sessionWrite(Transaction.transfer.name, False)
-        self.sessionWrite(fromAccountNumber, False)
-        self.sessionWrite(toAccountNumber, False)
-        self.sessionWrite(transferAmount, False)
+        errorMessage = SessionHandler.transfer(toAccountNumber, fromAccountNumber, transferAmount)
+
+        if type(errorMessage) is bool:
+            self.sessionWrite(Transaction.transfer.name, False)
+            self.sessionWrite(fromAccountNumber, False)
+            self.sessionWrite(toAccountNumber, False)
+            self.sessionWrite(transferAmount, False)
+        else:
+            print(errorMessage + " Please try again.")
+            self.transfer()
+
+        
 
     # MARK: Admin Functions
 

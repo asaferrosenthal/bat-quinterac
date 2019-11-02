@@ -45,22 +45,73 @@ class SessionHandler:
         
         return "That account does not exist."
 
+
+    @staticmethod
+    def validateAmount(amount):
+        if "." in amount:
+            return "Please enter the amount in cents."
+        try:
+            amount = int(amount)
+            return True
+        except ValueError:
+            return "Amount must be an integer."
+
+
     @staticmethod
     def deposit(accountNumber, amount):
         account = DailyLimits.getAccountFor(accountNumber)
-
-        if account:
-            if account.deposit(amount, SessionHandler.isAtm):
-                print("deposited", amount)
+        validAmount = SessionHandler.validateAmount(amount)
+        if type(validAmount) is bool:
+            if account:
+                if account.deposit(amount, SessionHandler.isAtm):
+                    print("deposited", amount)
+                    return validAmount
+                else:
+                    return "The new deposit amount will go over your daily limit.\nCurrent amount:" + str(account.totalDeposited)
             else:
-                print("The new deposit amount will go over your daily limit.\nCurrent amount:", account.totalDeposited)
+                return "No account found with number: " + str(accountNumber)
         else:
-            print("No account found with number:", accountNumber)
+            return validAmount
 
     @staticmethod
     def withdraw(accountNumber, amount):
-        print("withdrawing", amount)
+        account = DailyLimits.getAccountFor(accountNumber)
+        validAmount = SessionHandler.validateAmount(amount)
+        if type(validAmount) is bool:
+            if account:
+                if account.withdrawal(amount, SessionHandler.isAtm):
+                    print("withdrew", amount)
+                    return validAmount
+                else:
+                    return "The new withdrawl amount will go over your daily limit.\nCurrent amount:" + str(account.totalWithdrawn)
+            else:
+                return "No account found with number: " + str(accountNumber)
+        else:
+            return validAmount
 
     @staticmethod
     def transfer(toAccountNumber, fromAccountNumber, amount):
-        print("depositing", amount)
+        toAccount = DailyLimits.getAccountFor(toAccountNumber)
+        fromAccount = DailyLimits.getAccountFor(fromAccountNumber)
+        validAmount = SessionHandler.validateAmount(amount)
+        if type(validAmount) is bool:
+            if toAccount and fromAccount:
+                if toAccountNumber == fromAccountNumber:
+                    return "To account number and from account number cannot be the same."
+
+                if fromAccount.transfer(amount, SessionHandler.isAtm):
+                    print("Transferred: " + str(amount) + ", from: " + str(fromAccountNumber)+ ", to: " + str(toAccountNumber))
+                    return validAmount
+                else:
+                    return "The new transfer amount will go over your daily limit.\nCurrent amount:" + str(fromAccount.totalTransferred)
+
+            else:
+                if not toAccount and not fromAccount:
+                    return "Both of your account numbers provided do not exist."
+                if toAccount and not fromAccount:
+                    return "The from account provided does not exist."
+                if not toAccount and fromAccount:
+                    return "The to account provided does not exist."
+        else:
+            return validAmount
+

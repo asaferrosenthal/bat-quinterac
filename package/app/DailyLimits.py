@@ -18,7 +18,7 @@ class DailyLimits:
 
     @staticmethod
     def addAccount(account):
-        
+
         DailyLimits.accounts.append(account)
 
     @staticmethod
@@ -60,15 +60,15 @@ class Account:
         return False
 
     def withdrawal(self, amount, isAtm):
-        if self.totalWithdrawn + amount <= DailyLimits.getWithdrawalLimit(isAtm) and not self.isNewAccount:
-            self.totalWithdrawn += amount
+        if self.totalWithdrawn + int(amount) <= DailyLimits.getWithdrawalLimit(isAtm) and not self.isNewAccount:
+            self.totalWithdrawn += int(amount)
             return True
 
         return False
 
     def transfer(self, amount, isAtm):
-        if self.totalTransferred + amount <= DailyLimits.getTransferLimit(isAtm) and not self.isNewAccount:
-            self.totalTransferred += amount
+        if self.totalTransferred + int(amount) <= DailyLimits.getTransferLimit(isAtm) and not self.isNewAccount:
+            self.totalTransferred += int(amount)
             return True
 
         return False
