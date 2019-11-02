@@ -41,7 +41,6 @@ class Formatter:
 
         for line in sessionFile:
             line = line.strip()
-            print(line)
 
             curLine = ""
             if line == Transaction.logout.name:

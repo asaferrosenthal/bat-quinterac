@@ -1,7 +1,7 @@
 login
 agent
-deleteAccount
-2222222
+createAccount
+3333333
 ben
 logout
 EOS

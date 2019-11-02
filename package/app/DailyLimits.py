@@ -18,6 +18,7 @@ class DailyLimits:
 
     @staticmethod
     def addAccount(account):
+        
         DailyLimits.accounts.append(account)
 
     @staticmethod

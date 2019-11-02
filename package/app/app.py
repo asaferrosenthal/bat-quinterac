@@ -35,11 +35,14 @@ class App:
         isValid = False
 
         while not isValid:
-            choice = input("Enter 'login' to begin.\n> ").lower().strip()
+            choice = input("Enter 'login' to begin. Or 'exit' to exit program.\n> ").lower().strip()
             if choice == 'login':
                 isValid = True
-            else:
-                print("Invalid input. Try again.\n")
+            if choice == 'exit':
+                print("Exiting program")
+                exit(0)
+            if choice != 'login':
+                print("Invalid input. Try again.")
 
         DailyLimits.loadAccounts(self.validAccountsListFile)
         self.login()
@@ -75,14 +78,38 @@ class App:
     def createAccount(self):
         """Create Account"""
         accountNumber = input("Please provide an account number for the new account.\n> ")
+
+
         accountName = input("Please enter a name for the account.\n> ")
 
-        if SessionHandler.validateNewAccount(accountNumber, accountName):
+        accountNumberError = SessionHandler.validateNewAccount(accountNumber, accountName)
+        accountNameError = SessionHandler.validateAccountNameFormat(accountName)
+        if type(accountNumberError) is bool and type(accountNameError) is bool:
+            newAccount = Account(accountNumber, accountName, True)
+            DailyLimits.addAccount(newAccount)
             self.sessionWrite(Transaction.createAccount.name, False)
             self.sessionWrite(accountNumber, False)
             self.sessionWrite(accountName, False)
+            tempFile = self.validAccountsListFile
+            with open(tempFile, "r") as inFile:
+                with open("package/resources/validAccountsListFile1.txt", "w+") as outFile:
+                    for line in inFile:
+                        if line.strip("\n") != "0000000":
+                            outFile.write(line)
+
+                    outFile.write(accountNumber+"\n")
+                    outFile.write("0000000")
+            os.rename("package/resources/validAccountsListFile1.txt", "package/resources/validAccountsListFile.txt")
+
+
         else:
-            print("An account already exists with that name and number.")
+            if type(accountNumberError) is not bool:
+                print(accountNumberError + " Please try again.")
+            if type(accountNameError) is not bool:
+                print(accountNameError + " Please try again.")
+
+            self.createAccount()
+
 
     """
     Purpose:
@@ -95,8 +122,9 @@ class App:
         """Delete Account"""
         accountNumber = input("Please provide an account number you wish to delete.\n> ")
         accountName = input("Please enter a name for the account.\n> ")
-
-        if SessionHandler.validateOldAccount(accountNumber):
+        accountNumberError = SessionHandler.validateOldAccount(accountNumber)
+        accountNameError = SessionHandler.validateAccountNameFormat(accountName)
+        if type(accountNumberError) is bool and type(accountNameError) is bool:
             tempFile = self.validAccountsListFile
             with open(tempFile, "r") as inFile:
                 with open("package/resources/validAccountsListFile1.txt", "w+") as outFile:
@@ -108,6 +136,12 @@ class App:
             self.sessionWrite(Transaction.deleteAccount.name, False)
             self.sessionWrite(accountNumber, False)
             self.sessionWrite(accountName, False)
+        else:
+            if type(accountNumberError) is not bool:
+                print(accountNumberError + " Please try again.")
+            if type(accountNameError) is not bool:
+                print(accountNameError + " Please try again.")
+            self.deleteAccount()
 
     # MARK: ATM & Agent Transactions
 

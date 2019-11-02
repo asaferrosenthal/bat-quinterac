@@ -7,12 +7,33 @@ class SessionHandler:
     @staticmethod
     def validateNewAccount(accountNumber, accountName):
         if DailyLimits.getAccountFor(accountNumber):
-            return False
+            return "That account number already exits. Please Choose a different one."
 
-        # TODO: Validate Account Number
-        newAccount = Account(accountNumber, accountName, True)
-        DailyLimits.addAccount(newAccount)
+        valid = SessionHandler.validateAccountNumberFormat(accountNumber)
+        return valid
 
+    @staticmethod
+    def validateAccountNumberFormat(accountNumber):
+        if str(accountNumber)[:1] == '0':
+            return "Cant start with zero"
+        if len(accountNumber) != 7:
+            return "Must be exactly 7 digits"
+        try:
+            accountNumber = int(accountNumber)
+        except ValueError:
+            return "Must be digits."
+        return True
+
+        
+    @staticmethod
+    def validateAccountNameFormat(accountName):
+        if str(accountName)[:1] == " ":
+            return "Name cant start with space"
+        if len(accountName) < 3 or len(accountName) > 30:
+            return "Account name must be between 3 and 30 characters in length."
+        accountName = accountName.replace(" ", "")
+        if not accountName.isalnum():
+            return "Can only be alphanumber characters"
         return True
 
     @staticmethod
@@ -22,7 +43,7 @@ class SessionHandler:
             DailyLimits.accounts.remove(account)
             return True
         
-        return False
+        return "That account does not exist."
 
     @staticmethod
     def deposit(accountNumber, amount):
