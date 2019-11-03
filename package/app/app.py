@@ -56,9 +56,9 @@ class App:
         file = open("package/resources/session.txt", "a+")
         file.write(lineContent + "\n")
         if isEOS:
-            file.write(TransactionCode.EOS.name)
+            file.write(TransactionCode.EOS.name + "\n")
             file.close()
-            Formatter.formatSession(self.currentSession, self.transactionSummaryFile)
+            Formatter.formatSession("package/resources/session.txt", "package/resources/transactionSummaryFile.txt")
 
     # MARK: Agent Only Transactions
 
@@ -257,9 +257,9 @@ class App:
     """
     def logout(self):
         """Logout"""
-        self.sessionWrite(Transaction.logout.name, False)
-        # update the transaction summary file
-        # empty the session file
+        self.sessionWrite(Transaction.logout.name, True)   
+        sessionFile = open("package/resources/session.txt", "w+")   # Creates the session file.
+        sessionFile.close()
 
     # MARK: Display Menus
 

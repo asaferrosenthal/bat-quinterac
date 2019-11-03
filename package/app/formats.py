@@ -30,7 +30,7 @@ class Formatter:
     @staticmethod
     def formatSession(sessionFileName, transSumFileName):
         sessionFile = open("package/resources/session.txt", "r")
-        transSumFile = open(transSumFileName, "a")
+        transSumFile = open("package/resources/transactionSummaryFile.txt", "a")
 
         # Check that the user was logged in, and its a valid session file
         line = sessionFile.readline().strip()

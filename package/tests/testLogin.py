@@ -332,7 +332,7 @@ def helper(
         'package',
         validAccountsListFile,
         transactionSummaryFile,
-        sessionFile]
+        "package/resources/session.txt"]
 
     # set terminal input
     sys.stdin = io.StringIO(
