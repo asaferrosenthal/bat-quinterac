@@ -19,11 +19,11 @@ class TestWithdrawalR1:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2'
-                'wdr'
-                '1234567'
-                '500'
-                'exit'
+                '2',
+                'wdr',
+                '1234567',
+                '500',
+                'exit',
                 'exit'
             ],
             intput_valid_accounts=[
@@ -36,14 +36,14 @@ class TestWithdrawalR1:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 "Please provide an account number you wish to withdrawal from.\n>",
                 "What is your withdrawal amount?: ",
                 "Enter: 'wdr' to Withdraw\n\
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 "Enter 'login' to begin. Or 'exit' to exit program.",
                 ],
             expected_output_transactions=[
@@ -62,12 +62,12 @@ class TestWithdrawalR1:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '1'
-                'wdr'
-                '1234567'
-                '500'
-                'exit'
-                'exit'
+                '1',
+                'wdr',
+                '1234567',
+                '500',
+                'exit',
+                'exit',
             ],
             intput_valid_accounts=[
                 '1234567',
@@ -79,15 +79,15 @@ class TestWithdrawalR1:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 "Please provide an account number you wish to withdrawal from.\n>",
                 "What is your withdrawal amount?: ",
                 "Enter: 'wdr' to Withdraw\n\
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             #need to fix menu for agent!!
             expected_output_transactions=[
@@ -107,26 +107,26 @@ class TestWithdrawalR2:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2'
-                'wdr'
-                '1234567'
-                '1000'
-                'wdr'
-                '1234567'
-                '1000'
-                'wdr'
-                '1234567'
-                '1000'
-                'wdr'
-                '1234567'
-                '1000'
-                'wdr'
-                '1234567'
-                '1000'
-                'wdr'
-                '1234567'
-                '1'
-                'exit'
+                '2',
+                'wdr',
+                '1234567',
+                '1000',
+                'wdr',
+                '1234567',
+                '1000',
+                'wdr',
+                '1234567',
+                '1000',
+                'wdr',
+                '1234567',
+                '1000',
+                'wdr',
+                '1234567',
+                '1000',
+                'wdr',
+                '1234567',
+                '1',
+                'exit',
                 'exit'
             ],
             intput_valid_accounts=[
@@ -139,7 +139,7 @@ class TestWithdrawalR2:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 "Please provide an account number you wish to withdrawal from.\n>",
                 "What is your withdrawal amount?: ",
                 #error message
@@ -147,8 +147,8 @@ class TestWithdrawalR2:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             expected_output_transactions=[
                 "WDR 1234567 1000 1234567 ***",
@@ -171,12 +171,12 @@ class TestWithdrawalR3:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2'
-                'dep'
-                '1234567'
-                '1001'
-                'exit'
-                'exit'
+                '2',
+                'dep',
+                '1234567',
+                '1001',
+                'exit',
+                'exit',
             ],
             intput_valid_accounts=[
                 '1234567',
@@ -196,8 +196,8 @@ class TestWithdrawalR3:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             expected_output_transactions=[
                 None
@@ -207,10 +207,56 @@ class TestWithdrawalR3:
     
 class TestWithdrawalR4:
     def TestAgentDailyWithdrawalLimit(self, capsys):
-        """Testing R4T1. 
+    """Testing R4T1. 
+    Purpose:
+        Checks if same account has withdrawn more than $999,999.99 per day
+        in Agent mode
+    Arguments:
+        capsys -- object created by pytest to capture stdout and stderr
+    """
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'login',
+            '1',
+            'wdr',
+            '1234567',
+            '1000000',
+            'exit',
+            'exit'
+        ],
+        intput_valid_accounts=[
+            '1234567',
+            '0000000'
+        ],
+        expected_tail_of_terminal_output=[
+            "Enter 'login' to begin. Or 'exit' to exit program.",
+            "Enter: 'wdr' to Withdraw\n\
+            Enter: 'dep' to Deposit\n\
+            Enter: 'xfr' to Transfer\n\
+            Enter: 'exit' to Exit\n\
+            >",
+            #fix agent menu
+            "Please provide an account number you wish to deposit into.\n>",
+            "What is your deposit amount?: ",
+            #fix error message
+            "Enter: 'wdr' to Withdraw\n\
+            Enter: 'dep' to Deposit\n\
+            Enter: 'xfr' to Transfer\n\
+            Enter: 'exit' to Exit\n\
+            >",
+            "Enter 'login' to begin. Or 'exit' to exit program."
+            ]
+        expected_output_transactions=[
+            None
+        ]
+    )
+
+class TestWithdrawalR5:
+    def TestAtmValidWithdrawalAccount(self, capsys):
+        """Testing R2T1. 
         Purpose:
-            Checks if same account has withdrawn more than $999,999.99 per day
-            in Agent mode
+            Checks if the account is valid in atm mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -218,11 +264,53 @@ class TestWithdrawalR4:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '1'
-                'wdr'
-                '1234567'
-                '1000000'
-                'exit'
+                '2',
+                'wdr',
+                '0',
+                'exit',
+                'exit',
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "Enter: 'wdr' to Withdraw\n\
+                Enter: 'dep' to Deposit\n\
+                Enter: 'xfr' to Transfer\n\
+                Enter: 'exit' to Exit\n\
+                >",
+                "Please provide an account number you wish to withdrawal from.\n>",
+                #error message
+                "Enter: 'wdr' to Withdraw\n\
+                Enter: 'dep' to Deposit\n\
+                Enter: 'xfr' to Transfer\n\
+                Enter: 'exit' to Exit\n\
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
+                ],
+            expected_output_transactions=[
+                None
+            ]
+        )
+        
+    def TestAgentValidWithdrawalAccount(self, capsys):
+        """Testing R2T2. 
+        Purpose:
+            Checks if the second account is valid in agent mode
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'login',
+                '1',
+                'xfr',
+                '1234567',
+                '0',
+                'exit',
                 'exit'
             ],
             intput_valid_accounts=[
@@ -235,25 +323,23 @@ class TestWithdrawalR4:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                #fix agent menu
-                "Please provide an account number you wish to deposit into.\n>",
-                "What is your deposit amount?: ",
-                #fix error message
+                >",
+                #fix menu
+                "Please provide an account number you wish to withdrawal from.\n>",
+                #fix ^ message
+                #error message
                 "Enter: 'wdr' to Withdraw\n\
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             expected_output_transactions=[
                 None
             ]
         )
-
-#LEAVING OUT R5 Tests, since they are a part of account validation tests
-
+        
 def helper(
     capsys,
     terminal_input,
