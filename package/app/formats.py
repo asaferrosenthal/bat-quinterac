@@ -6,7 +6,8 @@ class TransactionCode(Enum):
     XFR = "transfer"
     NEW = "createAccount"
     DEL = "deleteAccount"
-    EOS = "eos"
+    EOS = "EOS"
+    
 
 
 class Transaction(Enum):
@@ -28,7 +29,7 @@ class Formatter:
 
     @staticmethod
     def formatSession(sessionFileName, transSumFileName):
-        sessionFile = open(sessionFileName, "r")
+        sessionFile = open("package/resources/session.txt", "r")
         transSumFile = open(transSumFileName, "a")
 
         # Check that the user was logged in, and its a valid session file

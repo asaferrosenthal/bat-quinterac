@@ -27,8 +27,7 @@ class TestLoginR1:
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "> Invalid input. Try again.",
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Enter 'login' to begin. Or 'exit' to exit program.",
                 "> Exiting program"],
             expected_output_transactions=[
                 None
@@ -54,8 +53,7 @@ class TestLoginR1:
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "> Invalid input. Try again.",
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Enter 'login' to begin. Or 'exit' to exit program.",
                 "> Exiting program"],
             expected_output_transactions=[
                 None
@@ -81,8 +79,7 @@ class TestLoginR1:
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "> Invalid input. Try again.",
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Enter 'login' to begin. Or 'exit' to exit program.",
                 "> Exiting program"],
             expected_output_transactions=[
                 None
@@ -108,8 +105,7 @@ class TestLoginR1:
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "> Invalid input. Try again.",
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Enter 'login' to begin. Or 'exit' to exit program.",
                 "> Exiting program"],
             expected_output_transactions=[
                 None
@@ -135,8 +131,7 @@ class TestLoginR1:
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "> Invalid input. Try again.",
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Enter 'login' to begin. Or 'exit' to exit program.",
                 "> Exiting program"],
             expected_output_transactions=[
                 None
@@ -162,9 +157,140 @@ class TestLoginR1:
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "> Invalid input. Try again.",
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Enter 'login' to begin. Or 'exit' to exit program.",
                 "> Exiting program"],
+            expected_output_transactions=[
+                None
+            ]
+        )
+
+
+class TestLoginR2:
+
+    def testAdditionalLoginAttempt(self, capsys):
+        """Testing R1T6. 
+        Purpose:
+            Can't transfer before logging in.
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'login',
+                'login',
+                'logout'
+                
+
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+            "Enter 'login' to begin. Or 'exit' to exit program.", 
+            '> Please choose a mode.', 
+            " '1' for agent", 
+            " '2' for machine.", 
+            " 'logout' to quit.", 
+            '> Already logged in.', 
+            'Please choose a mode.', 
+            " '1' for agent", 
+            " '2' for machine.", 
+            " 'logout' to quit.", 
+            '> Exiting program'],
+            expected_output_transactions=[
+                None
+            ]
+        )
+
+class TestLoginR3:
+
+    def testAtmCreateAccountAfterLogin(self, capsys):
+        """Testing R3T1. 
+        Purpose:
+            Can't transfer before logging in.
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'login',
+                '2',
+                'new',
+                'back', 
+                'logout'
+
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+            "Enter 'login' to begin. Or 'exit' to exit program.", 
+            '> Please choose a mode.', 
+            " '1' for agent", 
+            " '2' for machine.", 
+            " 'logout' to quit.", 
+            "> Type 'back' to go back to mode selection.",
+            "Enter: 'wdr' to Withdraw",
+            "Enter: 'dep' to Deposit",
+            "Enter: 'xfr' to Transfer",
+            "> Type 'back' to go back to mode selection.",
+            "Enter: 'wdr' to Withdraw",
+            "Enter: 'dep' to Deposit",
+            "Enter: 'xfr' to Transfer", 
+            '> Please choose a mode.', 
+            " '1' for agent", 
+            " '2' for machine.", 
+            " 'logout' to quit.",  
+            "> Exiting program"],
+            expected_output_transactions=[
+                None
+            ]
+        )
+    
+    def testAtmDeleteAccountAfterLogin(self, capsys):
+        """Testing R3T2. 
+        Purpose:
+            Can't transfer before logging in.
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'login',
+                '2',
+                'del',
+                'back', 
+                'logout'
+
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+            "Enter 'login' to begin. Or 'exit' to exit program.", 
+            '> Please choose a mode.', 
+            " '1' for agent", 
+            " '2' for machine.", 
+            " 'logout' to quit.", 
+            "> Type 'back' to go back to mode selection.",
+            "Enter: 'wdr' to Withdraw",
+            "Enter: 'dep' to Deposit",
+            "Enter: 'xfr' to Transfer",
+            "> Type 'back' to go back to mode selection.",
+            "Enter: 'wdr' to Withdraw",
+            "Enter: 'dep' to Deposit",
+            "Enter: 'xfr' to Transfer", 
+            '> Please choose a mode.', 
+            " '1' for agent", 
+            " '2' for machine.", 
+            " 'logout' to quit.",  
+            "> Exiting program"],
             expected_output_transactions=[
                 None
             ]
@@ -247,7 +373,7 @@ def helper(
         
         for ind in range(len(content)):
             assert content[ind] == expected_output_transactions[ind]
-
+    
     # clean up
     os.close(temp_fd)
     os.remove(temp_file)
