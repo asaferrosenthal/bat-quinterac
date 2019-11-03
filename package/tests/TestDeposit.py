@@ -175,7 +175,8 @@ class TestDepositR3:
             #fix error message
             ],
         expected_output_transactions=[
-            None
+            'DEP 1234567 200000 1234567 ***'
+            'DEP 1234567 200000 1234567 ***'
         ]
     )
 
