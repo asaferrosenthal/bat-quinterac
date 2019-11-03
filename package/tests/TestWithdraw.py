@@ -307,7 +307,7 @@ class TestWithdrawalR5:
             terminal_input=[
                 'login',
                 '1',
-                'xfr',
+                'wdr',
                 '1234567',
                 '0',
                 'exit',
