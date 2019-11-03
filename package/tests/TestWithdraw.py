@@ -254,7 +254,7 @@ class TestWithdrawalR4:
 
 class TestWithdrawalR5:
     def TestAtmValidWithdrawalAccount(self, capsys):
-        """Testing R2T1. 
+        """Testing R5T1. 
         Purpose:
             Checks if the account is valid in atm mode
         Arguments:
@@ -296,7 +296,7 @@ class TestWithdrawalR5:
         )
         
     def TestAgentValidWithdrawalAccount(self, capsys):
-        """Testing R2T2. 
+        """Testing R5T2. 
         Purpose:
             Checks if the second account is valid in agent mode
         Arguments:
