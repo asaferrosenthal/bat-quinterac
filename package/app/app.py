@@ -26,7 +26,7 @@ class App:
         self.validAccountsListFile = str(validAccountsFileName)
         self.transactionSummaryFile = str(transactionSummaryFileName)
         self.isAgent = False
-
+        self.endProgram = False
         self.setup()
 
     def setup(self):
@@ -39,17 +39,10 @@ class App:
             if choice == 'login':
                 DailyLimits.loadAccounts(self.validAccountsListFile)
                 self.login()
-            if choice == 'exit':
-                print("Exiting program")
                 isValid = True
-            else: 
-                print("Invalid input. Try again.")
-
-       
-
-    def restartProgram(self):
-        """Exit"""
-        self.login()
+            if choice == 'exit':
+                isValid = True
+        print("Exiting program")
 
     """
         Purpose:
@@ -59,7 +52,8 @@ class App:
             The line being written to the session file.
     """
     def sessionWrite(self, lineContent, isEOS=False):
-        file = open(self.currentSession, "a+")
+        
+        file = open("package/resources/session.txt", "a+")
         file.write(lineContent + "\n")
         if isEOS:
             file.write(TransactionCode.EOS.name)
@@ -237,8 +231,10 @@ class App:
                 isValid = True
             elif choice == '1' or choice == '2':
                 self.setupEnvironment(choice == '1')
+            elif choice == 'login':
+                print("Already logged in.")
             else:
-                print("Invalid input. Try again.\n")
+                print("Invalid input. Try again.")
 
         self.logout()
 
@@ -261,7 +257,7 @@ class App:
     """
     def logout(self):
         """Logout"""
-        self.sessionWrite(Transaction.logout.name, True)
+        self.sessionWrite(Transaction.logout.name, False)
         # update the transaction summary file
         # empty the session file
 
@@ -283,14 +279,13 @@ class App:
                 ('wdr', self.withdraw),
                 ('dep', self.deposit),
                 ('xfr', self.transfer),
-                ('exit', self.restartProgram)
             ])
         else:   # Menu options for atm mode.
             menu = OrderedDict([
                 ('wdr', self.withdraw),
                 ('dep', self.deposit),
                 ('xfr', self.transfer),
-                ('exit', self.restartProgram)
+                
             ])
         return menu
 
@@ -303,10 +298,13 @@ class App:
     def displayOptions(self):
         menuOptions = self.getMenuOptions()
         choice = None
-        while choice != 'end':                      # User logs out
+        while choice != 'back':                      # User logs out
+            print("Type 'back' to go back to mode selection.")
             for key, value in menuOptions.items():    # Goes through every key and value in the ordered dictionary menu
                 print(f"Enter: '{key}' to {value.__doc__}")
             choice = input("> ").lower().strip()
 
             if choice in menuOptions:     # If the choice exists in the menu.
                 menuOptions[choice]()     # Call the value at the key, from the ordered dictionary as a function.
+            
+            
