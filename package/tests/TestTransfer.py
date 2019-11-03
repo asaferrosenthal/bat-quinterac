@@ -19,12 +19,12 @@ class TestTransferR1:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2'
-                'xfr'
-                '1234567'
-                '0000000'
-                '500'
-                'exit'
+                '2',
+                'xfr',
+                '1234567',
+                '0000000',
+                '500',
+                'exit',
                 'exit'
             ],
             intput_valid_accounts=[
@@ -37,7 +37,7 @@ class TestTransferR1:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 "Please provide an account number you wish to transfer to.\n>",
                 "Please provide an account number you wish to transfer from.\n>",
                 #fix ^ message
@@ -46,8 +46,8 @@ class TestTransferR1:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             expected_output_transactions=[
                 'XFR 0000000 50000 1234567 ***'
@@ -66,12 +66,12 @@ class TestTransferR1:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '1'
-                'xfr'
-                '1234567'
-                '0000000'
-                '500'
-                'exit'
+                '1',
+                'xfr',
+                '1234567',
+                '0000000',
+                '500',
+                'exit',
                 'exit'
             ],
             intput_valid_accounts=[
@@ -84,7 +84,7 @@ class TestTransferR1:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 "Please provide an account number you wish to transfer to.\n>",
                 "Please provide an account number you wish to transfer from.\n>",
                 #fix ^ message
@@ -93,8 +93,8 @@ class TestTransferR1:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             #need to fix menu for agent!!
             expected_output_transactions=[
@@ -114,10 +114,10 @@ class TestTransferR2:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2'
-                'xfr'
-                '0'
-                'exit'
+                '2',
+                'xfr',
+                '0',
+                'exit',
                 'exit'
             ],
             intput_valid_accounts=[
@@ -130,15 +130,15 @@ class TestTransferR2:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 "Please provide an account number you wish to transfer to.\n>",
                 #error message
                 "Enter: 'wdr' to Withdraw\n\
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             expected_output_transactions=[
                 None
@@ -156,11 +156,11 @@ class TestTransferR2:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2'
-                'xfr'
-                '1234567'
-                '0'
-                'exit'
+                '2',
+                'xfr',
+                '1234567',
+                '0',
+                'exit',
                 'exit'
             ],
             intput_valid_accounts=[
@@ -173,7 +173,7 @@ class TestTransferR2:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 "Please provide an account number you wish to transfer to.\n>",
                 "Please provide an account number you wish to transfer from.\n>",
                 #fix ^ message
@@ -182,8 +182,8 @@ class TestTransferR2:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             expected_output_transactions=[
                 None
@@ -201,10 +201,10 @@ class TestTransferR2:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '1'
-                'xfr'
-                '0'
-                'exit'
+                '1',
+                'xfr',
+                '0',
+                'exit',
                 'exit'
             ],
             intput_valid_accounts=[
@@ -217,7 +217,7 @@ class TestTransferR2:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 #fix agent menu
                 "Please provide an account number you wish to transfer to.\n>",
                 #error message
@@ -225,8 +225,8 @@ class TestTransferR2:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             expected_output_transactions=[
                 None
@@ -244,12 +244,12 @@ class TestTransferR2:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '1'
-                'xfr'
-                '1234567'
-                '0'
-                'exit'
-                'exit'
+                '1',
+                'xfr',
+                '1234567',
+                '0',
+                'exit',
+                'exit',
             ],
             intput_valid_accounts=[
                 '1234567',
@@ -261,7 +261,7 @@ class TestTransferR2:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 #fix agent menu
                 "Please provide an account number you wish to transfer to.\n>",
                 "Please provide an account number you wish to transfer from.\n>",
@@ -271,8 +271,8 @@ class TestTransferR2:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             expected_output_transactions=[
                 None
@@ -291,12 +291,12 @@ class TestTransferR3:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2'
-                'xfr'
-                '1234567'
-                '0000000'
-                '10001'
-                'exit'
+                '2',
+                'xfr',
+                '1234567',
+                '0000000',
+                '10001',
+                'exit',
                 'exit'
             ],
             intput_valid_accounts=[
@@ -309,7 +309,7 @@ class TestTransferR3:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
+                >",
                 "Please provide an account number you wish to transfer to.\n>",
                 "What is your withdrawal amount?: ",
                 #error message
@@ -317,8 +317,8 @@ class TestTransferR3:
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
-                >"
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
                 ],
             expected_output_transactions=[
                 None
@@ -338,12 +338,12 @@ class TestTransferR4:
         capsys=capsys,
         terminal_input=[
             'login',
-            '1'
-            'xfr'
-            '1234567'
-            '0000000'
-            '1000000'
-            'exit'
+            '1',
+            'xfr',
+            '1234567',
+            '0000000',
+            '1000000',
+            'exit',
             'exit'
         ],
         intput_valid_accounts=[
@@ -356,7 +356,7 @@ class TestTransferR4:
             Enter: 'dep' to Deposit\n\
             Enter: 'xfr' to Transfer\n\
             Enter: 'exit' to Exit\n\
-            >"
+            >",
             #finish agent menu
             "Please provide an account number you wish to transfer to.\n>",
             "What is your withdrawal amount?: ",
@@ -365,8 +365,8 @@ class TestTransferR4:
             Enter: 'dep' to Deposit\n\
             Enter: 'xfr' to Transfer\n\
             Enter: 'exit' to Exit\n\
-            >"
-            "Enter 'login' to begin. Or 'exit' to exit program.",
+            >",
+            "Enter 'login' to begin. Or 'exit' to exit program."
         ],
         expected_output_transactions=[
             None
@@ -385,16 +385,16 @@ class TestTransferR5
         capsys=capsys,
         terminal_input=[
             'login',
-            '1'
-            'xfr'
-            '1234567'
-            '0000000'
-            '9000'
-            'xfr'
-            '1234567'
-            '0000000'
-            '1001'
-            'exit'
+            '1',
+            'xfr',
+            '1234567',
+            '0000000',
+            '9000',
+            'xfr',
+            '1234567',
+            '0000000',
+            '1001',
+            'exit',
             'exit'
         ],
         intput_valid_accounts=[
