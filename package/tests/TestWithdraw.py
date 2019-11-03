@@ -207,50 +207,50 @@ class TestWithdrawalR3:
     
 class TestWithdrawalR4:
     def TestAgentDailyWithdrawalLimit(self, capsys):
-    """Testing R4T1. 
-    Purpose:
-        Checks if same account has withdrawn more than $999,999.99 per day
-        in Agent mode
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-    """
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            'login',
-            '1'
-            'wdr'
-            '1234567'
-            '1000000'
-            'exit'
-            'exit'
-        ],
-        intput_valid_accounts=[
-            '1234567',
-            '0000000'
-        ],
-        expected_tail_of_terminal_output=[
-            "Enter 'login' to begin. Or 'exit' to exit program.",
-            "Enter: 'wdr' to Withdraw\n\
-            Enter: 'dep' to Deposit\n\
-            Enter: 'xfr' to Transfer\n\
-            Enter: 'exit' to Exit\n\
-            >"
-            #fix agent menu
-            "Please provide an account number you wish to deposit into.\n>",
-            "What is your deposit amount?: ",
-            #fix error message
-            "Enter: 'wdr' to Withdraw\n\
-            Enter: 'dep' to Deposit\n\
-            Enter: 'xfr' to Transfer\n\
-            Enter: 'exit' to Exit\n\
-            >"
-            "Enter 'login' to begin. Or 'exit' to exit program.",
+        """Testing R4T1. 
+        Purpose:
+            Checks if same account has withdrawn more than $999,999.99 per day
+            in Agent mode
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'login',
+                '1'
+                'wdr'
+                '1234567'
+                '1000000'
+                'exit'
+                'exit'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "Enter: 'wdr' to Withdraw\n\
+                Enter: 'dep' to Deposit\n\
+                Enter: 'xfr' to Transfer\n\
+                Enter: 'exit' to Exit\n\
+                >"
+                #fix agent menu
+                "Please provide an account number you wish to deposit into.\n>",
+                "What is your deposit amount?: ",
+                #fix error message
+                "Enter: 'wdr' to Withdraw\n\
+                Enter: 'dep' to Deposit\n\
+                Enter: 'xfr' to Transfer\n\
+                Enter: 'exit' to Exit\n\
+                >"
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                ],
+            expected_output_transactions=[
+                None
             ]
-        expected_output_transactions=[
-            None
-        ]
-    )
+        )
 
 #LEAVING OUT R5 Tests, since they are a part of account validation tests
 
