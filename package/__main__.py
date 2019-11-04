@@ -14,9 +14,15 @@ if __name__ == '__main__':
             transactionSummaryFile = os.path.join("package/resources", str(sys.argv[2] + extension)) #sys.argv[2]
             a = app.App(validAccountsListFile, transactionSummaryFile)
         '''
-        validAccountsListFile = os.path.join("package/resources", "validAccountsListFile.txt")
-        transactionSummaryFile = os.path.join("package/resources", "transactionSummaryFile.txt")
-        a = app.App(validAccountsListFile, transactionSummaryFile, 'package/resources/session.txt')
+        aFile = "validAccountsListFile.txt"
+        tFile = "transactionSummaryFile.txt"
+
+        if sys.argv[1] and sys.argv[2]:
+            aFile = sys.argv[1]
+            tFile = sys.argv[2]
+
+        validAccountsListFile = os.path.join("package/resources", aFile)
+        transactionSummaryFile = os.path.join("package/resources", tFile)
+        a = app.App(validAccountsListFile, transactionSummaryFile)
     except IndexError:
         print("Front-end must have two arguments")
-

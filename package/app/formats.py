@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class TransactionCode(Enum):
     WDR = "withdraw"
     DEP = "deposit"
@@ -8,7 +9,6 @@ class TransactionCode(Enum):
     DEL = "deleteAccount"
     EOS = "EOS"
     
-
 
 class Transaction(Enum):
     login = "login"
@@ -29,7 +29,7 @@ class Formatter:
 
     @staticmethod
     def formatSession(sessionFileName, transSumFileName):
-        sessionFile = open("package/resources/session.txt", "r")
+        sessionFile = open(sessionFileName, "r")
         transSumFile = open(transSumFileName, "a")
 
         # Check that the user was logged in, and its a valid session file

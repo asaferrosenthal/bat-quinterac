@@ -443,7 +443,10 @@ def helper(
     # create a temporary file in the system to store the valid accounts:
     temp_fd2, temp_file2 = tempfile.mkstemp()
     validAccountsListFile = temp_file2
-    sessionFile = temp_fd2
+
+    temp_fd3, temp_file3 = tempfile.mkstemp()
+    sessionFile = temp_file3
+
     with open(validAccountsListFile, 'w') as wf:
         wf.write('\n'.join(intput_valid_accounts))
 

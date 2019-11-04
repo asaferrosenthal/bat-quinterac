@@ -20,11 +20,10 @@ class SessionHandler:
             return "Must be exactly 7 digits"
         try:
             accountNumber = int(accountNumber)
+            return True
         except ValueError:
             return "Must be digits."
-        return True
 
-        
     @staticmethod
     def validateAccountNameFormat(accountName):
         if str(accountName)[:1] == " ":
@@ -33,7 +32,7 @@ class SessionHandler:
             return "Account name must be between 3 and 30 characters in length."
         accountName = accountName.replace(" ", "")
         if not accountName.isalnum():
-            return "Can only be alphanumber characters"
+            return "Can only be alphanumeric characters"
         return True
 
     @staticmethod
@@ -44,7 +43,6 @@ class SessionHandler:
             return True
         
         return "That account does not exist."
-
 
     @staticmethod
     def validateAmount(amount):
@@ -114,4 +112,3 @@ class SessionHandler:
                     return "The to account provided does not exist."
         else:
             return validAmount
-

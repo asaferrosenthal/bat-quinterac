@@ -292,6 +292,45 @@ class TestWithdrawalR5:
                 '1',
                 'dep',
                 '1234567',
+                '100',
+                'back',
+                'exit'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"],
+            expected_output_transactions=[
+                'DEP 0000000 100 1234567 ***',
+                'EOS 0000000 000 0000000 ***'
+            ]
+        )
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'login',
+                '1',
+                'dep',
+                '1234567',
                 '0',
                 'exit',
                 'exit'
@@ -302,22 +341,23 @@ class TestWithdrawalR5:
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                # fix menu
-                "Please provide an account number you wish to withdrawal from.\n>",
-                # fix ^ message
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
-            ],
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"],
             expected_output_transactions=[
                 None
             ]
@@ -330,7 +370,7 @@ def helper(
         expected_tail_of_terminal_output,
         intput_valid_accounts,
         expected_output_transactions
-    ):
+):
     """Helper function for testing
     Arguments:
         capsys -- object created by pytest to capture stdout and stderr
@@ -350,7 +390,10 @@ def helper(
     # create a temporary file in the system to store the valid accounts:
     temp_fd2, temp_file2 = tempfile.mkstemp()
     validAccountsListFile = temp_file2
-    sessionFile = temp_fd2
+
+    temp_fd3, temp_file3 = tempfile.mkstemp()
+    sessionFile = temp_file3
+
     with open(validAccountsListFile, 'w') as wf:
         wf.write('\n'.join(intput_valid_accounts))
 

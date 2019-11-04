@@ -15,13 +15,15 @@ from package.app.SessionHandler import SessionHandler
 from package.app.DailyLimits import *
 
 import os
+import tempfile
+
 
 class App:
 
-    def __init__(self, validAccountsFileName, transactionSummaryFileName, pathToSessionFile):
-        sessionFile = open(pathToSessionFile, "w+")   # Creates the session file.
-        sessionFile.close()
-        self.currentSession = sessionFile.name      # Saves session file name as a class attribute for later writes
+    def __init__(self, validAccountsFileName, transactionSummaryFileName):
+        file, fileName = tempfile.mkstemp()
+        self.sessionFile = open(fileName, "w")
+        self.sessionFileName = fileName  # Saves session file name as a class attribute for later writes
 
         self.validAccountsListFile = str(validAccountsFileName)
         self.transactionSummaryFile = str(transactionSummaryFileName)
@@ -52,13 +54,11 @@ class App:
             The line being written to the session file.
     """
     def sessionWrite(self, lineContent, isEOS=False):
-        
-        file = open("package/resources/session.txt", "a+")
-        file.write(lineContent + "\n")
+        self.sessionFile.write(lineContent)
         if isEOS:
-            file.write(TransactionCode.EOS.name)
-            file.close()
-            Formatter.formatSession(self.currentSession, self.transactionSummaryFile)
+            self.sessionFile.write(TransactionCode.EOS.name)
+            self.sessionFile.close()
+            Formatter.formatSession(self.sessionFileName, self.transactionSummaryFile)
 
     # MARK: Agent Only Transactions
 
@@ -73,7 +73,6 @@ class App:
         """Create Account"""
         accountNumber = input("Please provide an account number for the new account.\n> ")
 
-
         accountName = input("Please enter a name for the account.\n> ")
 
         accountNumberError = SessionHandler.validateNewAccount(accountNumber, accountName)
@@ -81,9 +80,9 @@ class App:
         if type(accountNumberError) is bool and type(accountNameError) is bool:
             newAccount = Account(accountNumber, accountName, True)
             DailyLimits.addAccount(newAccount)
-            self.sessionWrite(Transaction.createAccount.name, False)
-            self.sessionWrite(accountNumber, False)
-            self.sessionWrite(accountName, False)
+            self.sessionWrite(Transaction.createAccount.name)
+            self.sessionWrite(accountNumber)
+            self.sessionWrite(accountName)
             tempFile = self.validAccountsListFile
             with open(tempFile, "r") as inFile:
                 with open("package/resources/validAccountsListFile1.txt", "w+") as outFile:
@@ -95,7 +94,6 @@ class App:
                     outFile.write("0000000")
             os.rename("package/resources/validAccountsListFile1.txt", "package/resources/validAccountsListFile.txt")
 
-
         else:
             if type(accountNumberError) is not bool:
                 print(accountNumberError + " Please try again.")
@@ -103,7 +101,6 @@ class App:
                 print(accountNameError + " Please try again.")
 
             self.createAccount()
-
 
     """
     Purpose:
@@ -127,9 +124,9 @@ class App:
                             outFile.write(line)
 
             os.rename("package/resources/validAccountsListFile1.txt", "package/resources/validAccountsListFile.txt")
-            self.sessionWrite(Transaction.deleteAccount.name, False)
-            self.sessionWrite(accountNumber, False)
-            self.sessionWrite(accountName, False)
+            self.sessionWrite(Transaction.deleteAccount.name)
+            self.sessionWrite(accountNumber)
+            self.sessionWrite(accountName)
         else:
             if type(accountNumberError) is not bool:
                 print(accountNumberError + " Please try again.")
@@ -153,9 +150,9 @@ class App:
 
         errorMessage = SessionHandler.deposit(accountNumber, depositAmount)
         if type(errorMessage) is bool:
-            self.sessionWrite(Transaction.deposit.name, False)
-            self.sessionWrite(accountNumber, False)
-            self.sessionWrite(depositAmount, False)
+            self.sessionWrite(Transaction.deposit.name)
+            self.sessionWrite(accountNumber)
+            self.sessionWrite(depositAmount)
         else:
             print(errorMessage + " Please try again.")
             self.deposit()
@@ -174,14 +171,12 @@ class App:
         errorMessage = SessionHandler.withdraw(accountNumber, withdrawalAmount)
 
         if type(errorMessage) is bool:
-            self.sessionWrite(Transaction.withdraw.name, False)
-            self.sessionWrite(accountNumber, False)
-            self.sessionWrite(withdrawalAmount, False)
+            self.sessionWrite(Transaction.withdraw.name)
+            self.sessionWrite(accountNumber)
+            self.sessionWrite(withdrawalAmount)
         else:
             print(errorMessage + " Please try again.")
             self.withdraw()
-
-        
 
     """
     Purpose:
@@ -201,15 +196,13 @@ class App:
         errorMessage = SessionHandler.transfer(toAccountNumber, fromAccountNumber, transferAmount)
 
         if type(errorMessage) is bool:
-            self.sessionWrite(Transaction.transfer.name, False)
-            self.sessionWrite(fromAccountNumber, False)
-            self.sessionWrite(toAccountNumber, False)
-            self.sessionWrite(transferAmount, False)
+            self.sessionWrite(Transaction.transfer.name)
+            self.sessionWrite(fromAccountNumber)
+            self.sessionWrite(toAccountNumber)
+            self.sessionWrite(transferAmount)
         else:
             print(errorMessage + " Please try again.")
             self.transfer()
-
-        
 
     # MARK: Admin Functions
 
@@ -239,13 +232,13 @@ class App:
         self.logout()
 
     def setupEnvironment(self, isAgent):
-        self.sessionWrite(Transaction.login.name, False)
+        self.sessionWrite(Transaction.login.name)
         self.isAgent = isAgent
         SessionHandler.isAtm = not isAgent
         if isAgent:
-            self.sessionWrite(SessionMode.agent.name, False)
+            self.sessionWrite(SessionMode.agent.name)
         else:
-            self.sessionWrite(SessionMode.atm.name, False)
+            self.sessionWrite(SessionMode.atm.name)
 
         self.displayOptions()
 
@@ -257,7 +250,7 @@ class App:
     """
     def logout(self):
         """Logout"""
-        self.sessionWrite(Transaction.logout.name, False)
+        self.sessionWrite(Transaction.logout.name, True)
         # update the transaction summary file
         # empty the session file
 
@@ -301,10 +294,8 @@ class App:
         while choice != 'back':                      # User logs out
             print("Type 'back' to go back to mode selection.")
             for key, value in menuOptions.items():    # Goes through every key and value in the ordered dictionary menu
-                print(f"Enter: '{key}' to {value.__doc__}")
+                print("Enter: ", key, " to ", value.__doc__)
             choice = input("> ").lower().strip()
 
             if choice in menuOptions:     # If the choice exists in the menu.
                 menuOptions[choice]()     # Call the value at the key, from the ordered dictionary as a function.
-            
-            

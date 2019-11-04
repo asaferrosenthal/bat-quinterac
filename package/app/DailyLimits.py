@@ -23,15 +23,15 @@ class DailyLimits:
 
     @staticmethod
     def getDepositLimit(isAtm):
-        return 5000 if isAtm else 999999.99
+        return 500000 if isAtm else 99999999
 
     @staticmethod
     def getWithdrawalLimit(isAtm):
-        return 5000 if isAtm else 999999.99
+        return 500000 if isAtm else 99999999
 
     @staticmethod
     def getTransferLimit(isAtm):
-        return 10000 if isAtm else 999999.99
+        return 1000000 if isAtm else 99999999
 
     @staticmethod
     def getAccountFor(accountNumber):
@@ -53,23 +53,22 @@ class Account:
         self.isNewAccount = isNewAccount
 
     def deposit(self, amount, isAtm):
-        if self.totalDeposited + int(amount) <= DailyLimits.getDepositLimit(isAtm) and not self.isNewAccount:
-            self.totalDeposited += int(amount)
+        if self.totalDeposited + int(amount)*100 <= DailyLimits.getDepositLimit(isAtm) and not self.isNewAccount:
+            self.totalDeposited += int(amount)*100
             return True
 
         return False
 
     def withdrawal(self, amount, isAtm):
-        if self.totalWithdrawn + int(amount) <= DailyLimits.getWithdrawalLimit(isAtm) and not self.isNewAccount:
-            self.totalWithdrawn += int(amount)
+        if self.totalWithdrawn + int(amount*100) <= DailyLimits.getWithdrawalLimit(isAtm) and not self.isNewAccount:
+            self.totalWithdrawn += int(amount)*100
             return True
 
         return False
 
     def transfer(self, amount, isAtm):
-        if self.totalTransferred + int(amount) <= DailyLimits.getTransferLimit(isAtm) and not self.isNewAccount:
-            self.totalTransferred += int(amount)
+        if self.totalTransferred + int(amount)*100 <= DailyLimits.getTransferLimit(isAtm) and not self.isNewAccount:
+            self.totalTransferred += int(amount)*100
             return True
 
         return False
-
