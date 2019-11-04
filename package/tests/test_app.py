@@ -1,4 +1,4 @@
 import pytest
 
-def setup():
-    print("fuck")
+def test_thefunction():
+    assert True
