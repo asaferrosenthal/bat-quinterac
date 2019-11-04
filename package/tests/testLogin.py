@@ -5,7 +5,9 @@ import io
 import sys
 import package
 from package.app import app
+
 path = os.path.dirname(os.path.abspath(__file__))
+
 
 class TestLoginR1:
     def testIdleLogout(self, capsys):
@@ -180,7 +182,6 @@ class TestLoginR2:
                 'login',
                 'login',
                 'logout'
-                
 
             ],
             intput_valid_accounts=[
@@ -188,21 +189,22 @@ class TestLoginR2:
                 '0000000'
             ],
             expected_tail_of_terminal_output=[
-            "Enter 'login' to begin. Or 'exit' to exit program.", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.", 
-            '> Already logged in.', 
-            'Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.", 
-            '> Exiting program'],
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                '> Already logged in.',
+                'Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                '> Exiting program'],
             expected_output_transactions=[
                 None
             ]
         )
+
 
 class TestLoginR3:
 
@@ -219,7 +221,7 @@ class TestLoginR3:
                 'login',
                 '2',
                 'new',
-                'back', 
+                'back',
                 'logout'
 
             ],
@@ -228,29 +230,29 @@ class TestLoginR3:
                 '0000000'
             ],
             expected_tail_of_terminal_output=[
-            "Enter 'login' to begin. Or 'exit' to exit program.", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.", 
-            "> Type 'back' to go back to mode selection.",
-            "Enter: 'wdr' to Withdraw",
-            "Enter: 'dep' to Deposit",
-            "Enter: 'xfr' to Transfer",
-            "> Type 'back' to go back to mode selection.",
-            "Enter: 'wdr' to Withdraw",
-            "Enter: 'dep' to Deposit",
-            "Enter: 'xfr' to Transfer", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.",  
-            "> Exiting program"],
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"],
             expected_output_transactions=[
                 None
             ]
         )
-    
+
     def testAtmDeleteAccountAfterLogin(self, capsys):
         """Testing R3T2. 
         Purpose:
@@ -264,7 +266,7 @@ class TestLoginR3:
                 'login',
                 '2',
                 'del',
-                'back', 
+                'back',
                 'logout'
 
             ],
@@ -273,24 +275,24 @@ class TestLoginR3:
                 '0000000'
             ],
             expected_tail_of_terminal_output=[
-            "Enter 'login' to begin. Or 'exit' to exit program.", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.", 
-            "> Type 'back' to go back to mode selection.",
-            "Enter: 'wdr' to Withdraw",
-            "Enter: 'dep' to Deposit",
-            "Enter: 'xfr' to Transfer",
-            "> Type 'back' to go back to mode selection.",
-            "Enter: 'wdr' to Withdraw",
-            "Enter: 'dep' to Deposit",
-            "Enter: 'xfr' to Transfer", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.",  
-            "> Exiting program"],
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"],
             expected_output_transactions=[
                 None
             ]
@@ -347,7 +349,7 @@ def helper(
 
     # split terminal output in lines
     out_lines = out.splitlines()
-    
+
     # print out the testing information for debugging
     # the following print content will only display if a 
     # test case failed:
@@ -357,23 +359,23 @@ def helper(
     print('terminal output (expected tail):', expected_tail_of_terminal_output)
 
     # compare terminal outputs at the end.`
-    for i in range(1, len(expected_tail_of_terminal_output)+1):
+    for i in range(1, len(expected_tail_of_terminal_output) + 1):
         index = i * -1
         assert expected_tail_of_terminal_output[index] == out_lines[index]
-    
+
     # compare transactions:
     with open(transactionSummaryFile, 'r') as of:
         content = of.read().splitlines()
-        
+
         # print out the testing information for debugging
         # the following print content will only display if a 
         # test case failed:
         print('output transactions:', content)
         print('output transactions (expected):', expected_output_transactions)
-        
+
         for ind in range(len(content)):
             assert content[ind] == expected_output_transactions[ind]
-    
+
     # clean up
     os.close(temp_fd)
     os.remove(temp_file)

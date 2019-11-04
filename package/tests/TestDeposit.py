@@ -1,11 +1,14 @@
 import tempfile
+import pytest
 from importlib import reload
 import os
 import io
 import sys
 import package
 from package.app import app
+
 path = os.path.dirname(os.path.abspath(__file__))
+
 
 class TestDepositR1:
     def testAtmValidateDeposit(self, capsys):
@@ -45,7 +48,7 @@ class TestDepositR1:
                 Enter: 'exit' to Exit\n\
                 >",
                 "Enter 'login' to begin. Or 'exit' to exit program."
-                ],
+            ],
             expected_output_transactions=[
                 'DEP 1234567 50000 1234567 ***'
             ]
@@ -88,15 +91,16 @@ class TestDepositR1:
                 Enter: 'exit' to Exit\n\
                 >",
                 "Enter 'login' to begin. Or 'exit' to exit program."
-                ],
-            #need to fix menu for agent!!
+            ],
+            # need to fix menu for agent!!
             expected_output_transactions=[
                 'DEP 1234567 50000 1234567 ***'
             ]
         )
 
+
 class TestDepositR2:
-    def TestAtmValidDepositAmount(self, capsys):
+    def testAtmValidDepositAmount(self, capsys):
         """Testing R2T1. 
         Purpose:
             Checks if the deposit in ATM mode is under $2000
@@ -127,109 +131,113 @@ class TestDepositR2:
                 >",
                 "Please provide an account number you wish to deposit into.\n>",
                 "What is your deposit amount?: ",
-                #error message
+                # error message
                 "Enter: 'wdr' to Withdraw\n\
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
                 >",
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                ],
+            ],
             expected_output_transactions=[
                 None
             ]
         )
 
-class TestDepositR3:
-    def TestAtmDailyDepositLimit(self, capsys):
-    """Testing R3T1. 
-    Purpose:
-        Checks if same account has deposited more than $5000 per day
-        in ATM mode
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-    """
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            'login',
-            '2',
-            'dep',
-            '1234567',
-            '2000',
-            'dep',
-            '1234567',
-            '2000',
-            'dep',
-            '1234567',
-            '1001',
-            'exit',
-            'exit',
-        ],
-        intput_valid_accounts=[
-            '1234567',
-            '0000000'
-        ],
-        expected_tail_of_terminal_output=[
-            #just doing tail here, since it's not worth adding so many transactions
-            #fix error message
-            ],
-        expected_output_transactions=[
-            'DEP 1234567 200000 1234567 ***',
-            'DEP 1234567 200000 1234567 ***'
-        ]
-    )
 
-    
-class TestDepositR4:
-    def TestAgentDailyDepositLimit(self, capsys):
-    """Testing R4T1. 
-    Purpose:
-        Checks if same account has deposited more than $999,999.99 per day
-        in Agent mode
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-    """
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            'login',
-            '1',
-            'dep',
-            '1234567',
-            '1000000',
-            'exit',
-            'exit'
-        ],
-        intput_valid_accounts=[
-            '1234567',
-            '0000000'
-        ],
-        expected_tail_of_terminal_output=[
-            "Enter 'login' to begin. Or 'exit' to exit program.",
-            "Enter: 'wdr' to Withdraw\n\
-            Enter: 'dep' to Deposit\n\
-            Enter: 'xfr' to Transfer\n\
-            Enter: 'exit' to Exit\n\
-            >",
-            #fix agent menu
-            "Please provide an account number you wish to deposit into.\n>",
-            "What is your deposit amount?: ",
-            #fix error message
-            "Enter: 'wdr' to Withdraw\n\
-            Enter: 'dep' to Deposit\n\
-            Enter: 'xfr' to Transfer\n\
-            Enter: 'exit' to Exit\n\
-            >",
-            "Enter 'login' to begin. Or 'exit' to exit program."
+class TestDepositR3:
+    def testAtmDailyDepositLimit(self, capsys):
+
+        """Testing R3T1.
+        Purpose:
+            Checks if same account has deposited more than $5000 per day
+            in ATM mode
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'login',
+                '2',
+                'dep',
+                '1234567',
+                '2000',
+                'dep',
+                '1234567',
+                '2000',
+                'dep',
+                '1234567',
+                '1001',
+                'exit',
+                'exit',
             ],
-        expected_output_transactions=[
-            None
-        ]
-    )
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                # just doing tail here, since it's not worth adding so many transactions
+                # fix error message
+            ],
+            expected_output_transactions=[
+                'DEP 1234567 200000 1234567 ***',
+                'DEP 1234567 200000 1234567 ***'
+            ]
+        )
+
+
+class TestDepositR4:
+    def testAgentDailyDepositLimit(self, capsys):
+
+        """Testing R4T1.
+        Purpose:
+            Checks if same account has deposited more than $999,999.99 per day
+            in Agent mode
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'login',
+                '1',
+                'dep',
+                '1234567',
+                '1000000',
+                'exit',
+                'exit'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "Enter: 'wdr' to Withdraw\n\
+                Enter: 'dep' to Deposit\n\
+                Enter: 'xfr' to Transfer\n\
+                Enter: 'exit' to Exit\n\
+                >",
+                # fix agent menu
+                "Please provide an account number you wish to deposit into.\n>",
+                "What is your deposit amount?: ",
+                # fix error message
+                "Enter: 'wdr' to Withdraw\n\
+                Enter: 'dep' to Deposit\n\
+                Enter: 'xfr' to Transfer\n\
+                Enter: 'exit' to Exit\n\
+                >",
+                "Enter 'login' to begin. Or 'exit' to exit program."
+            ],
+            expected_output_transactions=[
+                None
+            ]
+        )
+
 
 class TestWithdrawalR5:
-    def TestAtmValidDepositAccount(self, capsys):
+    def testAtmValidDepositAccount(self, capsys):
         """Testing R5T1. 
         Purpose:
             Checks if the account is valid in atm mode
@@ -258,20 +266,20 @@ class TestWithdrawalR5:
                 Enter: 'exit' to Exit\n\
                 >",
                 "Please provide an account number you wish to withdrawal from.\n>",
-                #error message
+                # error message
                 "Enter: 'wdr' to Withdraw\n\
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
                 >",
                 "Enter 'login' to begin. Or 'exit' to exit program."
-                ],
+            ],
             expected_output_transactions=[
                 None
             ]
         )
-        
-    def TestAgentValidDepositAccount(self, capsys):
+
+    def testAgentValidDepositAccount(self, capsys):
         """Testing R5T2. 
         Purpose:
             Checks if account is valid in agent mode
@@ -300,29 +308,30 @@ class TestWithdrawalR5:
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
                 >",
-                #fix menu
+                # fix menu
                 "Please provide an account number you wish to withdrawal from.\n>",
-                #fix ^ message
-                #error message
+                # fix ^ message
+                # error message
                 "Enter: 'wdr' to Withdraw\n\
                 Enter: 'dep' to Deposit\n\
                 Enter: 'xfr' to Transfer\n\
                 Enter: 'exit' to Exit\n\
                 >",
                 "Enter 'login' to begin. Or 'exit' to exit program."
-                ],
+            ],
             expected_output_transactions=[
                 None
             ]
         )
 
+
 def helper(
-    capsys,
-    terminal_input,
-    expected_tail_of_terminal_output,
-    intput_valid_accounts,
-    expected_output_transactions
-):
+        capsys,
+        terminal_input,
+        expected_tail_of_terminal_output,
+        intput_valid_accounts,
+        expected_output_transactions
+    ):
     """Helper function for testing
     Arguments:
         capsys -- object created by pytest to capture stdout and stderr
@@ -366,7 +375,7 @@ def helper(
 
     # split terminal output in lines
     out_lines = out.splitlines()
-    
+
     # print out the testing information for debugging
     # the following print content will only display if a 
     # test case failed:
@@ -376,20 +385,20 @@ def helper(
     print('terminal output (expected tail):', expected_tail_of_terminal_output)
 
     # compare terminal outputs at the end.`
-    for i in range(1, len(expected_tail_of_terminal_output)+1):
+    for i in range(1, len(expected_tail_of_terminal_output) + 1):
         index = i * -1
         assert expected_tail_of_terminal_output[index] == out_lines[index]
-    
+
     # compare transactions:
     with open(transactionSummaryFile, 'r') as of:
         content = of.read().splitlines()
-        
+
         # print out the testing information for debugging
         # the following print content will only display if a 
         # test case failed:
         print('output transactions:', content)
         print('output transactions (expected):', expected_output_transactions)
-        
+
         for ind in range(len(content)):
             assert content[ind] == expected_output_transactions[ind]
 
