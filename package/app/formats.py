@@ -35,7 +35,7 @@ class Formatter:
         # Check that the user was logged in, and its a valid session file
         line = sessionFile.readline().strip()
         if line != Transaction.login.name:
-            exit(1)
+            return
 
         # Check for the session mode, agent or ATM
         sessionFile.readline().strip()
@@ -67,7 +67,7 @@ class Formatter:
             transSumFile.write(curLine)
 
         transSumFile.close()
-        exit(0)
+        return
 
     @staticmethod
     def formatLine(transCode, toAcc, amount, fromAcc, accName):

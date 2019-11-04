@@ -7,13 +7,16 @@ import package
 from package.app import app
 path = os.path.dirname(os.path.abspath(__file__))
 
-
-class TestLogoutR1:
-
-    def testValidLogout(self, capsys):
+class TestDeleteAccountR1:
+    """
+    Purpose:
+        Only accepted in Agent mode.
+    """
+    
+    def testValidDeleteAccount(self, capsys):
         """Testing R1T1. 
         Purpose:
-            Can't logout before logging in.
+            Checks if the user is in agent mode when trying to delete account.
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -21,7 +24,71 @@ class TestLogoutR1:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2',
+                '1',
+                'del',
+                '1111111',
+                'ben',
+                'back',
+                'logout'
+            ],
+            intput_valid_accounts=[
+                '1234567',
+                '1111111',
+                '0000000'
+            ],
+            expected_tail_of_terminal_output=[
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to delete.",
+                "> Please enter a name for the account.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"],
+            expected_output_transactions=[
+                None
+            ]
+        )
+
+class TestDeleteAccountR2:
+    """
+    Purpose:
+        No further transactions should be accepted on a deleted account.
+    """
+
+    def testTransactionsOnDeletedAccount(self, capsys):
+        """Testing R2T1. 
+        Purpose:
+            Checks if a transaction was attempted on the deleted account.
+        Arguments:
+            capsys -- object created by pytest to capture stdout and stderr
+        """
+        helper(
+            capsys=capsys,
+            terminal_input=[
+                'login',
+                '1',
+                'dep',
+                '1111111',
+                '123',
+                '1234567',
+                '123',
                 'back',
                 'logout'
             ],
@@ -36,6 +103,18 @@ class TestLogoutR1:
                 " '2' for machine.",
                 " 'logout' to quit.",
                 "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to deposit into.",
+                "> What is your deposit amount?: That account does not exist or no longer exists. Please try again.",
+                "Please provide an account number you wish to deposit into.",
+                "> What is your deposit amount?: deposited 123",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
                 "Enter: 'dep' to Deposit",
                 "Enter: 'xfr' to Transfer",
@@ -49,11 +128,15 @@ class TestLogoutR1:
             ]
         )
 
-class TestLogoutR2:
-    def testTransactionSummaryFileUpdates(self, capsys):
-        """Testing R1T1. 
+class TestDeleteAccountR3:
+    """
+    Purpose:
+        The account number is valid and save the account name in the transaction summary file.
+    """
+    def testValidAccountNumber(self, capsys):
+        """Testing R3T1. 
         Purpose:
-            Can't logout before logging in.
+            Checks if the given account number is valid.
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -61,12 +144,16 @@ class TestLogoutR2:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2',
+                '1',
+                'del',
+                '1111111',
+                'ben',
                 'back',
                 'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
+                '1111111',
                 '0000000'
             ],
             expected_tail_of_terminal_output=[
@@ -76,6 +163,16 @@ class TestLogoutR2:
                 " '2' for machine.",
                 " 'logout' to quit.",
                 "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to delete.",
+                "> Please enter a name for the account.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
                 "Enter: 'dep' to Deposit",
                 "Enter: 'xfr' to Transfer",
@@ -88,6 +185,7 @@ class TestLogoutR2:
                 None
             ]
         )
+
 
 def helper(
         capsys,

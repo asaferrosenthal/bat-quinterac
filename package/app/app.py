@@ -257,7 +257,7 @@ class App:
     """
     def logout(self):
         """Logout"""
-        self.sessionWrite(Transaction.logout.name, True)   
+        self.sessionWrite(Transaction.logout.name, False)   
         sessionFile = open("package/resources/session.txt", "w+")   # Creates the session file.
         sessionFile.close()
 

@@ -8,6 +8,11 @@ from package.app import app
 path = os.path.dirname(os.path.abspath(__file__))
 
 class TestLoginR1:
+    """
+    Purpose:
+        No transactions before login.
+    """
+
     def testIdleLogout(self, capsys):
         """Testing R1T1. 
         Purpose:
@@ -113,7 +118,7 @@ class TestLoginR1:
         )
 
     def testIdleWithdraw(self, capsys):
-        """Testing R1T4. 
+        """Testing R1T5. 
         Purpose:
             Can't withdraw before logging in.
         Arguments:
@@ -166,11 +171,15 @@ class TestLoginR1:
 
 
 class TestLoginR2:
+    """
+    Purpose:
+        No additional login attempts accepted after a successful login, until after a logout.
+    """
 
     def testAdditionalLoginAttempt(self, capsys):
-        """Testing R1T6. 
+        """Testing R2T1. 
         Purpose:
-            Can't transfer before logging in.
+            Check if the user tries to login twice before logging out.
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -180,13 +189,10 @@ class TestLoginR2:
                 'login',
                 'login',
                 'logout'
-                
-
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
-            ],
+                '0000000'],
             expected_tail_of_terminal_output=[
             "Enter 'login' to begin. Or 'exit' to exit program.", 
             '> Please choose a mode.', 
@@ -205,11 +211,14 @@ class TestLoginR2:
         )
 
 class TestLoginR3:
-
+    """
+    Purpose:
+        Only ATM transactions and logout after successful ATM login.
+    """
     def testAtmCreateAccountAfterLogin(self, capsys):
         """Testing R3T1. 
         Purpose:
-            Can't transfer before logging in.
+            Check if any create account transaction is attempted after ATM login.
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -221,7 +230,6 @@ class TestLoginR3:
                 'new',
                 'back', 
                 'logout'
-
             ],
             intput_valid_accounts=[
                 '1234567',
@@ -254,7 +262,7 @@ class TestLoginR3:
     def testAtmDeleteAccountAfterLogin(self, capsys):
         """Testing R3T2. 
         Purpose:
-            Can't transfer before logging in.
+            Check if any delete account transaction is attempted after ATM login.
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -266,7 +274,6 @@ class TestLoginR3:
                 'del',
                 'back', 
                 'logout'
-
             ],
             intput_valid_accounts=[
                 '1234567',

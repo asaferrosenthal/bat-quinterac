@@ -61,6 +61,10 @@ class SessionHandler:
     def deposit(accountNumber, amount):
         account = DailyLimits.getAccountFor(accountNumber)
         validAmount = SessionHandler.validateAmount(amount)
+        if account is None:
+            return "That account does not exist or no longer exists."
+        if account.isNewAccount:
+            return "Can't perform transactions on newly created account."
         if type(validAmount) is bool:
             if account:
                 if account.deposit(amount, SessionHandler.isAtm):
