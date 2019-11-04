@@ -1,5 +1,4 @@
 import tempfile
-import pytest
 from importlib import reload
 import os
 import io
