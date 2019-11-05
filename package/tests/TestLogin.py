@@ -344,7 +344,7 @@ def helper(
         '\n'.join(terminal_input))
 
     # run the program
-    app.App(validAccountsListFile, transactionSummaryFile, sessionFile)
+    app.App(validAccountsListFile, transactionSummaryFile)
 
     # capture terminal output / errors
     # assuming that in this case we don't use stderr
@@ -354,7 +354,7 @@ def helper(
     out_lines = out.splitlines()
 
     # print out the testing information for debugging
-    # the following print content will only display if a 
+    # the following print content will only display if a
     # test case failed:
     print('std.in:', terminal_input)
     print('valid accounts:', intput_valid_accounts)
@@ -371,7 +371,7 @@ def helper(
         content = of.read().splitlines()
 
         # print out the testing information for debugging
-        # the following print content will only display if a 
+        # the following print content will only display if a
         # test case failed:
         print('output transactions:', content)
         print('output transactions (expected):', expected_output_transactions)
@@ -381,4 +381,9 @@ def helper(
 
     # clean up
     os.close(temp_fd)
+    os.close(temp_fd2)
+    os.close(temp_fd3)
+
     os.remove(temp_file)
+    os.remove(temp_file2)
+    os.remove(temp_file3)

@@ -462,7 +462,7 @@ def helper(
         '\n'.join(terminal_input))
 
     # run the program
-    app.App(validAccountsListFile, transactionSummaryFile, sessionFile)
+    app.App(validAccountsListFile, transactionSummaryFile)
 
     # capture terminal output / errors
     # assuming that in this case we don't use stderr
@@ -499,4 +499,9 @@ def helper(
 
     # clean up
     os.close(temp_fd)
+    os.close(temp_fd2)
+    os.close(temp_fd3)
+
     os.remove(temp_file)
+    os.remove(temp_file2)
+    os.remove(temp_file3)

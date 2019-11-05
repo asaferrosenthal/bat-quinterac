@@ -8,9 +8,8 @@ from package.app import app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
-
-class TestWithdrawalR1:
-    def testAtmValidateWithdrawal(self, capsys):
+class TestDepositR1:
+    def testAtmValidateWithdraw(self, capsys):
         """Testing R1T1. 
         Purpose:
             Checks if money was successfully withdrawn in ATM mode
@@ -25,35 +24,42 @@ class TestWithdrawalR1:
                 'wdr',
                 '1234567',
                 '500',
-                'exit',
-                'exit'
+                'back',
+                'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '0012345'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Please provide an account number you wish to withdrawal from.\n>",
-                "What is your withdrawal amount?: ",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: withdrew 500",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
                 'WDR 1234567 50000 1234567 ***'
             ]
         )
 
-    def testAgentValidateWithdrawal(self, capsys):
+    def testAgentValidateDeposit(self, capsys):
         """Testing R1T2. 
         Purpose:
             Checks if money was successfully withdrawn in Agent mode
@@ -68,37 +74,46 @@ class TestWithdrawalR1:
                 'wdr',
                 '1234567',
                 '500',
-                'exit',
-                'exit',
+                'back',
+                'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '0012345'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Please provide an account number you wish to withdrawal from.\n>",
-                "What is your withdrawal amount?: ",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: withdrew 500",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
-            # need to fix menu for agent!!
             expected_output_transactions=[
                 'WDR 1234567 50000 1234567 ***'
             ]
         )
 
-
-class TestWithdrawalR2:
+class TestWithdrawR2:   
     def testAtmDailyWithdrawalLimit(self, capsys):
         """Testing R2T1. 
         Purpose:
@@ -110,64 +125,78 @@ class TestWithdrawalR2:
             capsys=capsys,
             terminal_input=[
                 'login',
+                '1',
+                'wdr',
+                '0123456',
+                '4900',
+                'back',
                 '2',
                 'wdr',
-                '1234567',
-                '1000',
-                'wdr',
-                '1234567',
-                '1000',
-                'wdr',
-                '1234567',
-                '1000',
-                'wdr',
-                '1234567',
-                '1000',
-                'wdr',
-                '1234567',
-                '1000',
-                'wdr',
-                '1234567',
+                '0123456',
+                '200',
+                '0123456',
                 '1',
-                'exit',
-                'exit'
+                'back',
+                'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '0012345'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Please provide an account number you wish to withdrawal from.\n>",
-                "What is your withdrawal amount?: ",
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: withdrew 4900",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: The new withdrawl amount will go over your daily limit.",
+                "Current amount:4900 Please try again.",
+                "Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: withdrew 1",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                "WDR 1234567 1000 1234567 ***",
-                "WDR 1234567 1000 1234567 ***",
-                "WDR 1234567 1000 1234567 ***",
-                "WDR 1234567 1000 1234567 ***",
-                "WDR 1234567 1000 1234567 ***"
+                'WDR 1234567 0 1234567 ***'
             ]
         )
 
-
-class TestWithdrawalR3:
-    def testAtmWithdrawalLimit(self, capsys):
+class TestWithdrawR3:
+    def testAtmValidWithdrawAmount(self, capsys):
         """Testing R3T1. 
         Purpose:
-            Checks if withdrawal amount exceeds $1000
+            Checks if the withdrawal amount in ATM mode exceeds $1000
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -176,45 +205,55 @@ class TestWithdrawalR3:
             terminal_input=[
                 'login',
                 '2',
-                'dep',
-                '1234567',
-                '1001',
-                'exit',
-                'exit',
+                'wdr',
+                '0012345',
+                '100100',
+                '0012345',
+                '0',
+                'back',
+                'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '0012345'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >"
-                "Please provide an account number you wish to withdrawal from.\n>",
-                "What is your withdrawal amount?: ",
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: The new withdrawl amount will go over your daily limit.",
+                "Current amount:0 Please try again.",
+                "Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: withdrew 0",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'WDR 0012345 0 0012345 ***'
             ]
         )
 
 
-class TestWithdrawalR4:
-    def testAgentDailyWithdrawalLimit(self, capsys):
-        """Testing R4T1.
+class TestWithdrawR4:   
+    def testAtmDailyWithdrawLimit(self, capsys):
+        """Testing R4T1. 
         Purpose:
-            Checks if same account has withdrawn more than $999,999.99 per day
-            in Agent mode
+            Checks if same account has withdrawn more that $999,999.99 in Agent mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -224,42 +263,67 @@ class TestWithdrawalR4:
                 'login',
                 '1',
                 'wdr',
-                '1234567',
-                '1000000',
-                'exit',
-                'exit'
+                '0012345',
+                '999998',
+                'wdr',
+                '0012345',
+                '2',
+                '0012345',
+                '1',
+                'back',
+                'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '0012345'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                # fix agent menu
-                "Please provide an account number you wish to deposit into.\n>",
-                "What is your deposit amount?: ",
-                # fix error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: withdrew 999998",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: The new withdrawl amount will go over your daily limit.",
+                "Current amount:999998 Please try again.",
+                "Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: withdrew 1",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'WDR 0012345 999999800 0012345 ***'
+                'WDR 0012345 100 0012345 ***'
             ]
         )
 
-
-class TestWithdrawalR5:
-    def testAtmValidWithdrawalAccount(self, capsys):
-        """Testing R5T1.
+class TestWithdrawR5:   
+    def testAtmValidWithdrawAccount(self, capsys):
+        """Testing R5T1. 
         Purpose:
             Checks if the account is valid in atm mode
         Arguments:
@@ -269,41 +333,57 @@ class TestWithdrawalR5:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '2',
+                '1',
                 'wdr',
                 '0',
-                'exit',
-                'exit',
+                '0',
+                '1234567',
+                '0',
+                'back',
+                'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '0012345'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Please provide an account number you wish to withdrawal from.\n>",
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: No account found with number: 0 Please try again.",
+                "Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: withdrew 0",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'WDR 1234567 0 1234567 ***'
             ]
         )
 
-    def testAgentValidWithdrawalAccount(self, capsys):
-        """Testing R5T2.
+    def testAgentValidWithdrawAccount(self, capsys):
+        """Testing R5T2. 
         Purpose:
-            Checks if the second account is valid in agent mode
+            Checks if the account is valid in agent mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -311,37 +391,46 @@ class TestWithdrawalR5:
             capsys=capsys,
             terminal_input=[
                 'login',
-                '1',
+                '2',
                 'wdr',
+                '0',
+                '0',
                 '1234567',
                 '0',
-                'exit',
-                'exit'
+                'back',
+                'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '0012345'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                # fix menu
-                "Please provide an account number you wish to withdrawal from.\n>",
-                # fix ^ message
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: No account found with number: 0 Please try again.",
+                "Please provide an account number you wish to withdraw from.",
+                "> What is your withdrawal amount?: withdrew 0",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'WDR 1234567 0 1234567 ***'
             ]
         )
 
@@ -391,7 +480,7 @@ def helper(
         '\n'.join(terminal_input))
 
     # run the program
-    app.App(validAccountsListFile, transactionSummaryFile, sessionFile)
+    app.App(validAccountsListFile, transactionSummaryFile)
 
     # capture terminal output / errors
     # assuming that in this case we don't use stderr
@@ -428,4 +517,9 @@ def helper(
 
     # clean up
     os.close(temp_fd)
+    os.close(temp_fd2)
+    os.close(temp_fd3)
+
     os.remove(temp_file)
+    os.remove(temp_file2)
+    os.remove(temp_file3)
