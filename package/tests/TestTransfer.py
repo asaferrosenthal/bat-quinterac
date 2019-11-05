@@ -8,7 +8,6 @@ from package.app import app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
-
 class TestTransferR1:
     def testAtmValidateTransfer(self, capsys):
         """Testing R1T1. 
@@ -24,43 +23,49 @@ class TestTransferR1:
                 '2',
                 'xfr',
                 '1234567',
-                '0000000',
-                '500',
-                'exit',
-                'exit'
+                '0123456',
+                '1',
+                'back',
+                'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '1111111',
+                '2222222'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Please provide an account number you wish to transfer to.\n>",
-                "Please provide an account number you wish to transfer from.\n>",
-                # fix ^ message
-                "What is your transfer amount?: ",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
+                "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                'XFR 0000000 50000 1234567 ***'
+                'XFR 1234567 50000 0123456 ***'
             ]
         )
 
     def testAgentValidateTransfer(self, capsys):
         """Testing R1T2. 
         Purpose:
-            Checks if money was successfully transferred between accounts
-            in Agent mode
+            Checks if money was transferred between accounts in Agent mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -71,45 +76,54 @@ class TestTransferR1:
                 '1',
                 'xfr',
                 '1234567',
-                '0000000',
-                '500',
-                'exit',
-                'exit'
+                '0123456',
+                '1',
+                'back',
+                'logout'
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '1111111',
+                '2222222'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Please provide an account number you wish to transfer to.\n>",
-                "Please provide an account number you wish to transfer from.\n>",
-                # fix ^ message
-                "What is your withdrawal amount?: ",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
+                "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
-            # need to fix menu for agent!!
             expected_output_transactions=[
-                'WDR 0000000 50000 1234567 ***'
+                'XFR 1234567 50000 0123456 ***'
             ]
         )
-
 
 class TestTransferR2:
     def testAtmValidFirstAccountTransfer(self, capsys):
         """Testing R2T1. 
         Purpose:
-            Checks if the first (to) account is valid
+            Checks if first (to) account is valid in atm mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -120,38 +134,55 @@ class TestTransferR2:
                 '2',
                 'xfr',
                 '0',
-                'exit',
-                'exit'
+                '0123456',
+                '0',
+                '1234567',
+                '0123456',
+                '1',
+                'back',
+                'logout'  
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '1111111',
+                '2222222'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Please provide an account number you wish to transfer to.\n>",
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
+                "> What is your transfer amount?: The to account provided does not exist. Please try again.",
+                "Please provide the account number you wish to transfer to.", 
+                "> Please provide the account number you wish to transfer from.",    
+                "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'XFR 1234567 1 0123456 ***'
             ]
         )
 
     def testAtmValidSecondAccountTransfer(self, capsys):
         """Testing R2T2. 
         Purpose:
-            Checks if the second account is valid
+            Checks if second (from) account is valid in atm mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -163,40 +194,54 @@ class TestTransferR2:
                 'xfr',
                 '1234567',
                 '0',
-                'exit',
-                'exit'
+                '0',
+                '1234567',
+                '0123456',
+                '1',
+                'back',
+                'logout'  
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '1111111',
+                '2222222'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Please provide an account number you wish to transfer to.\n>",
-                "Please provide an account number you wish to transfer from.\n>",
-                # fix ^ message
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
+                "> What is your transfer amount?: The from account provided does not exist. Please try again.",
+                "Please provide the account number you wish to transfer to.", 
+                "> Please provide the account number you wish to transfer from.",    
+                "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'XFR 0123456 1 1234567 ***'
             ]
         )
-
+    
     def testAgentValidFirstAccountTransfer(self, capsys):
         """Testing R2T3. 
         Purpose:
-            Checks if the first (to) account is valid
+            Checks if first (to) account is valid in agent mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -207,39 +252,59 @@ class TestTransferR2:
                 '1',
                 'xfr',
                 '0',
-                'exit',
-                'exit'
+                '0123456',
+                '0',
+                '1234567',
+                '0123456',
+                '1',
+                'back',
+                'logout'  
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '1111111',
+                '2222222'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                # fix agent menu
-                "Please provide an account number you wish to transfer to.\n>",
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
+                "> What is your transfer amount?: The to account provided does not exist. Please try again.",
+                "Please provide the account number you wish to transfer to.", 
+                "> Please provide the account number you wish to transfer from.",    
+                "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'XFR 1234567 1 0123456 ***'
             ]
         )
 
-    def testAtmValidSecondAccountTransfer(self, capsys):
+    def testAgentValidSecondAccountTransfer(self, capsys):
         """Testing R2T4. 
         Purpose:
-            Checks if the second account is valid
+            Checks if second (from) account is valid in agent mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -251,43 +316,59 @@ class TestTransferR2:
                 'xfr',
                 '1234567',
                 '0',
-                'exit',
-                'exit',
+                '0',
+                '1234567',
+                '0123456',
+                '1',
+                'back',
+                'logout'  
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '1111111',
+                '2222222'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                # fix agent menu
-                "Please provide an account number you wish to transfer to.\n>",
-                "Please provide an account number you wish to transfer from.\n>",
-                # fix ^ message
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
+                "> What is your transfer amount?: The from account provided does not exist. Please try again.",
+                "Please provide the account number you wish to transfer to.", 
+                "> Please provide the account number you wish to transfer from.",    
+                "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'XFR 0123456 1 1234567 ***'
             ]
         )
-
 
 class TestTransferR3:
     def testAtmTransferLimit(self, capsys):
         """Testing R3T1. 
         Purpose:
-            Checks if transfer amount exceeds $10000 in atm mode
+            Checks if transfer amount exceeds $10,000 in atm mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -297,44 +378,58 @@ class TestTransferR3:
                 'login',
                 '2',
                 'xfr',
-                '1234567',
-                '0000000',
+                '1111111',
+                '2222222',
                 '10001',
-                'exit',
-                'exit'
+                '1111111',
+                '2222222',
+                '1',
+                'back',
+                'logout'  
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '1111111',
+                '2222222'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Please provide an account number you wish to transfer to.\n>",
-                "What is your withdrawal amount?: ",
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
+                "> What is your transfer amount?: The new transfer amount will go over your daily limit.",
+                "Current amount:0 Please try again.",
+                "Please provide the account number you wish to transfer to.", 
+                "> Please provide the account number you wish to transfer from.",    
+                "> What is your transfer amount?: Transferred: 1, from: 2222222, to: 1111111",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'XFR 2222222 1 1111111 ***'
             ]
-        )
-
+        )  
 
 class TestTransferR4:
-    def testAtmDailyTransferLimit(self, capsys):
-        """Testing R4T1.
+    def testAgentTransferLimit(self, capsys):
+        """Testing R4T1. 
         Purpose:
-            Checks if transfer amount exceeds $999999.99 in Agent Mode
+            Checks if transfer amount exceeds $999,999 in atm mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -344,78 +439,117 @@ class TestTransferR4:
                 'login',
                 '1',
                 'xfr',
-                '1234567',
-                '0000000',
+                '1111111',
+                '2222222',
                 '1000000',
-                'exit',
-                'exit'
+                '1111111',
+                '2222222',
+                '1',
+                'back',
+                'logout'  
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '1111111',
+                '2222222'
             ],
             expected_tail_of_terminal_output=[
                 "Enter 'login' to begin. Or 'exit' to exit program.",
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                # finish agent menu
-                "Please provide an account number you wish to transfer to.\n>",
-                "What is your withdrawal amount?: ",
-                # error message
-                "Enter: 'wdr' to Withdraw\n\
-                Enter: 'dep' to Deposit\n\
-                Enter: 'xfr' to Transfer\n\
-                Enter: 'exit' to Exit\n\
-                >",
-                "Enter 'login' to begin. Or 'exit' to exit program."
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
+                "> What is your transfer amount?: The new transfer amount will go over your daily limit.",
+                "Current amount:1 Please try again.",
+                "Please provide the account number you wish to transfer to.", 
+                "> Please provide the account number you wish to transfer from.",    
+                "> What is your transfer amount?: Transferred: 1, from: 2222222, to: 1111111",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'new' to Create Account",
+                "Enter: 'del' to Delete Account",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                None
+                'XFR 2222222 1 1111111 ***'
             ]
         )
 
-
 class TestTransferR5:
-    def testAgentTransferLimit(self, capsys):
+    def testAtmDailyTransferLimit(self, capsys):
         """Testing R5T1. 
         Purpose:
-            Checks if daily transfer amount exceeds $10000 in atm mode
+            Checks if daily total transfer amount exceeds $10,000 in atm mode
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
-
         helper(
             capsys=capsys,
             terminal_input=[
                 'login',
+                '2',
+                'xfr',
+                '1111111',
+                '2222222',
+                '10001',
+                '1111111',
+                '2222222',
                 '1',
-                'xfr',
-                '1234567',
-                '0000000',
-                '9000',
-                'xfr',
-                '1234567',
-                '0000000',
-                '1001',
-                'exit',
-                'exit'
+                'back',
+                'logout'  
             ],
             intput_valid_accounts=[
                 '1234567',
-                '0000000'
+                '0123456',
+                '1111111',
+                '2222222'
             ],
             expected_tail_of_terminal_output=[
-                # just doing tail here, since it's not worth adding so many transactions
-                # fix error message
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
+                "> What is your transfer amount?: The new transfer amount will go over your daily limit.",
+                "Current amount:2 Please try again.",
+                "Please provide the account number you wish to transfer to.", 
+                "> Please provide the account number you wish to transfer from.",    
+                "> What is your transfer amount?: Transferred: 1, from: 2222222, to: 1111111",
+                "Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"
             ],
             expected_output_transactions=[
-                "XFR 0000000 900000 1234567 ***"
+                'XFR 2222222 1 1111111 ***'
             ]
-        )
-
+        ) 
 
 def helper(
         capsys,
