@@ -1,5 +1,5 @@
 """
-app.py runs all of the transactions, login, logout, create and delete account, withdrawal, deposit and transfer.
+quinterac.py runs all of the transactions, login, logout, create and delete account, withdrawal, deposit and transfer.
 When the file is run, a session.txt file is created. After every transaction the session file is updated.
 After the user logs out, the session file is passed on to (tamirs file), and its converted into the transaction
 summary file.
@@ -7,24 +7,30 @@ summary file.
 Please note that constraints to check for valid account numbers as well as formatting for both numbers, and amounts
 is assumed to be true. This we be implemented when we create test code for our function. This just demonstrates the
 functionality of the front-end.
-""" 
+"""
 
 from collections import OrderedDict
-from package.app.formats import *
-from package.app.SessionHandler import SessionHandler
-from package.app.DailyLimits import *
+from quinterac.formats import *
+from quinterac.SessionHandler import SessionHandler
+from quinterac.Account import *
 
 import os
+import tempfile
+
 
 class App:
 
-    def __init__(self, validAccountsFileName, transactionSummaryFileName, pathToSessionFile):
-        sessionFile = open(pathToSessionFile, "w+")   # Creates the session file.
-        sessionFile.close()
-        self.currentSession = sessionFile.name      # Saves session file name as a class attribute for later writes
+    def __init__(self, validAccountsFileName, transactionSummaryFileName):
+        filed, fileName = tempfile.mkstemp()
+        self.sessionFileD = filed
+        self.sessionFile = open(fileName, "w")
+        self.sessionFileName = fileName  # Saves session file name as a class attribute for later writes
 
-        self.validAccountsListFile = str(validAccountsFileName)
-        self.transactionSummaryFile = str(transactionSummaryFileName)
+        self.aListFileName = validAccountsFileName
+        self.transSumFileName = transactionSummaryFileName
+        self.validAccountsListFile = open(self.aListFileName, 'a')
+        self.transactionSummaryFile = open(self.transSumFileName, 'a')
+
         self.isAgent = False
         self.endProgram = False
         self.setup()
@@ -37,7 +43,7 @@ class App:
         while not isValid:
             choice = input("Enter 'login' to begin. Or 'exit' to exit program.\n> ").lower().strip()
             if choice == 'login':
-                DailyLimits.loadAccounts(self.validAccountsListFile)
+                DailyLimits.loadAccounts(self.aListFileName)
                 self.login()
                 isValid = True
             if choice == 'exit':
@@ -51,14 +57,15 @@ class App:
             Class instance.
             The line being written to the session file.
     """
+
     def sessionWrite(self, lineContent, isEOS=False):
-        
-        file = open("package/resources/session.txt", "a+")
-        file.write(lineContent + "\n")
+        self.sessionFile.write(lineContent)
+        self.sessionFile.write("\n")
         if isEOS:
-            file.write(TransactionCode.EOS.name)
-            file.close()
-            Formatter.formatSession(self.currentSession, self.transactionSummaryFile)
+            self.sessionFile.write(TransactionCode.EOS.name)
+            self.sessionFile.write("\n")
+            self.sessionFile.close()
+            Formatter.formatSession(self.sessionFileD, self.sessionFileName, self.transSumFileName)
 
     # MARK: Agent Only Transactions
 
@@ -69,10 +76,10 @@ class App:
         Args:
             Class instance.
         """
+
     def createAccount(self):
         """Create Account"""
         accountNumber = input("Please provide an account number for the new account.\n> ")
-
 
         accountName = input("Please enter a name for the account.\n> ")
 
@@ -81,21 +88,21 @@ class App:
         if type(accountNumberError) is bool and type(accountNameError) is bool:
             newAccount = Account(accountNumber, accountName, True)
             DailyLimits.addAccount(newAccount)
-            self.sessionWrite(Transaction.createAccount.name, False)
-            self.sessionWrite(accountNumber, False)
-            self.sessionWrite(accountName, False)
-            tempFile = self.validAccountsListFile
-            with open(tempFile, "r") as inFile:
-                with open("package/resources/validAccountsListFile1.txt", "w+") as outFile:
+            self.sessionWrite(Transaction.createAccount.name)
+            self.sessionWrite(accountNumber)
+            self.sessionWrite(accountName)
+
+            with open(self.aListFileName, "r") as inFile:
+                with open("validAccountsListFile1.txt", "w+") as outFile:
                     for line in inFile:
                         if line.strip("\n") != "0000000":
                             outFile.write(line)
 
-                    outFile.write(accountNumber+"\n")
+                    outFile.write(accountNumber + "\n")
                     outFile.write("0000000")
-            os.rename("package/resources/validAccountsListFile1.txt", "package/resources/validAccountsListFile.txt")
+            os.rename("validAccountsListFile1.txt", self.aListFileName)
 
-
+            print("Created new account:", newAccount.accountNumber, "–", newAccount.accountName)
         else:
             if type(accountNumberError) is not bool:
                 print(accountNumberError + " Please try again.")
@@ -104,7 +111,6 @@ class App:
 
             self.createAccount()
 
-
     """
     Purpose:
         Delete account feature. Prompts user for a number and name for the account they wish to delete.
@@ -112,24 +118,26 @@ class App:
     Args:
         Class instance.
     """
+
     def deleteAccount(self):
         """Delete Account"""
         accountNumber = input("Please provide an account number you wish to delete.\n> ")
         accountName = input("Please enter a name for the account.\n> ")
         accountNumberError = SessionHandler.validateOldAccount(accountNumber)
         accountNameError = SessionHandler.validateAccountNameFormat(accountName)
+
         if type(accountNumberError) is bool and type(accountNameError) is bool:
-            tempFile = self.validAccountsListFile
-            with open(tempFile, "r") as inFile:
-                with open("package/resources/validAccountsListFile1.txt", "w+") as outFile:
+            with open(self.aListFileName, "r") as inFile:
+                with open("validAccountsListFile1.txt", "w+") as outFile:
                     for line in inFile:
                         if line.strip("\n") != accountNumber:
                             outFile.write(line)
 
-            os.rename("package/resources/validAccountsListFile1.txt", "package/resources/validAccountsListFile.txt")
-            self.sessionWrite(Transaction.deleteAccount.name, False)
-            self.sessionWrite(accountNumber, False)
-            self.sessionWrite(accountName, False)
+            os.rename("validAccountsListFile1.txt", self.aListFileName)
+
+            self.sessionWrite(Transaction.deleteAccount.name)
+            self.sessionWrite(accountNumber)
+            self.sessionWrite(accountName)
         else:
             if type(accountNumberError) is not bool:
                 print(accountNumberError + " Please try again.")
@@ -146,6 +154,7 @@ class App:
     Args:
         Class instance.
     """
+
     def deposit(self):
         """Deposit"""
         accountNumber = input("Please provide an account number you wish to deposit into.\n> ")
@@ -153,12 +162,13 @@ class App:
 
         errorMessage = SessionHandler.deposit(accountNumber, depositAmount)
         if type(errorMessage) is bool:
-            self.sessionWrite(Transaction.deposit.name, False)
-            self.sessionWrite(accountNumber, False)
-            self.sessionWrite(depositAmount, False)
+            self.sessionWrite(Transaction.deposit.name)
+            self.sessionWrite(accountNumber)
+            self.sessionWrite(depositAmount)
         else:
             print(errorMessage + " Please try again.")
             self.deposit()
+
     """
     Purpose:
         Withdrawal feature. Prompts user for an account number to withdraw from and the amount they wish to withdraw.
@@ -166,22 +176,21 @@ class App:
     Args:
         Class instance.
     """
+
     def withdraw(self):
         """Withdraw"""
-        
+
         accountNumber = input("Please provide an account number you wish to withdraw from.\n> ")
         withdrawalAmount = input("What is your withdrawal amount?: ")
         errorMessage = SessionHandler.withdraw(accountNumber, withdrawalAmount)
 
         if type(errorMessage) is bool:
-            self.sessionWrite(Transaction.withdraw.name, False)
-            self.sessionWrite(accountNumber, False)
-            self.sessionWrite(withdrawalAmount, False)
+            self.sessionWrite(Transaction.withdraw.name)
+            self.sessionWrite(accountNumber)
+            self.sessionWrite(withdrawalAmount)
         else:
             print(errorMessage + " Please try again.")
             self.withdraw()
-
-        
 
     """
     Purpose:
@@ -191,6 +200,7 @@ class App:
     Args:
         Class instance.
     """
+
     def transfer(self):
         """Transfer"""
 
@@ -201,15 +211,13 @@ class App:
         errorMessage = SessionHandler.transfer(toAccountNumber, fromAccountNumber, transferAmount)
 
         if type(errorMessage) is bool:
-            self.sessionWrite(Transaction.transfer.name, False)
-            self.sessionWrite(fromAccountNumber, False)
-            self.sessionWrite(toAccountNumber, False)
-            self.sessionWrite(transferAmount, False)
+            self.sessionWrite(Transaction.transfer.name)
+            self.sessionWrite(fromAccountNumber)
+            self.sessionWrite(toAccountNumber)
+            self.sessionWrite(transferAmount)
         else:
             print(errorMessage + " Please try again.")
             self.transfer()
-
-        
 
     # MARK: Admin Functions
 
@@ -222,8 +230,10 @@ class App:
     Returns:
         Display menu according to chosen mode.
     """
+
     def login(self):
         isValid = False
+        self.sessionWrite(Transaction.login.name)
 
         while not isValid:
             choice = input("Please choose a mode.\n '1' for agent\n '2' for machine.\n 'logout' to quit.\n> ").lower().strip()
@@ -239,13 +249,12 @@ class App:
         self.logout()
 
     def setupEnvironment(self, isAgent):
-        self.sessionWrite(Transaction.login.name, False)
         self.isAgent = isAgent
         SessionHandler.isAtm = not isAgent
         if isAgent:
-            self.sessionWrite(SessionMode.agent.name, False)
+            self.sessionWrite(SessionMode.agent.name)
         else:
-            self.sessionWrite(SessionMode.atm.name, False)
+            self.sessionWrite(SessionMode.atm.name)
 
         self.displayOptions()
 
@@ -255,9 +264,10 @@ class App:
     Args:
         Class instance.
     """
+
     def logout(self):
         """Logout"""
-        self.sessionWrite(Transaction.logout.name, False)
+        self.sessionWrite(Transaction.logout.name, True)
         # update the transaction summary file
         # empty the session file
 
@@ -271,6 +281,7 @@ class App:
     Returns:
         Menu as an ordered dictionary.
     """
+
     def getMenuOptions(self):
         if self.isAgent:  # Menu options for agent mode.
             menu = OrderedDict([
@@ -280,12 +291,12 @@ class App:
                 ('dep', self.deposit),
                 ('xfr', self.transfer),
             ])
-        else:   # Menu options for atm mode.
+        else:  # Menu options for atm mode.
             menu = OrderedDict([
                 ('wdr', self.withdraw),
                 ('dep', self.deposit),
                 ('xfr', self.transfer),
-                
+
             ])
         return menu
 
@@ -295,16 +306,15 @@ class App:
     Args:
         Class instance.
     """
+
     def displayOptions(self):
         menuOptions = self.getMenuOptions()
         choice = None
-        while choice != 'back':                      # User logs out
+        while choice != 'back':  # User logs out
             print("Type 'back' to go back to mode selection.")
-            for key, value in menuOptions.items():    # Goes through every key and value in the ordered dictionary menu
-                print(f"Enter: '{key}' to {value.__doc__}")
+            for key, value in menuOptions.items():  # Goes through every key and value in the ordered dictionary menu
+                print("Enter: '" + key + "' to", value.__doc__)
             choice = input("> ").lower().strip()
 
-            if choice in menuOptions:     # If the choice exists in the menu.
-                menuOptions[choice]()     # Call the value at the key, from the ordered dictionary as a function.
-            
-            
+            if choice in menuOptions:  # If the choice exists in the menu.
+                menuOptions[choice]()  # Call the value at the key, from the ordered dictionary as a function.

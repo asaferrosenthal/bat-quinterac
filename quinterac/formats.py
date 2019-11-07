@@ -1,5 +1,8 @@
 from enum import Enum
 
+import os
+
+
 class TransactionCode(Enum):
     WDR = "withdraw"
     DEP = "deposit"
@@ -8,7 +11,6 @@ class TransactionCode(Enum):
     DEL = "deleteAccount"
     EOS = "EOS"
     
-
 
 class Transaction(Enum):
     login = "login"
@@ -28,47 +30,65 @@ class SessionMode(Enum):
 class Formatter:
 
     @staticmethod
-    def formatSession(sessionFileName, transSumFileName):
-        sessionFile = open("package/resources/session.txt", "r")
+    def formatSession(sessionFileD, sessionFileName, transSumFileName):
+        sessionFile = open(sessionFileName, "r")
         transSumFile = open(transSumFileName, "a")
 
+        # Read temporary file content
+        lines = sessionFile.read().splitlines()
         # Check that the user was logged in, and its a valid session file
-        line = sessionFile.readline().strip()
+        line = getLine(lines)
         if line != Transaction.login.name:
-            exit(1)
+            return
 
         # Check for the session mode, agent or ATM
-        sessionFile.readline().strip()
+        # sessionFile.readline().strip()
 
-        for line in sessionFile:
-            line = line.strip()
+        # Check for the session mode, agent or ATM
+        if getLine(lines) == Transaction.logout.name:
+            lines.insert(0, Transaction.logout.name)
+
+        while len(lines) != 0:
+            # for line in lines:
+            line = getLine(lines).strip()
 
             curLine = ""
             if line == Transaction.logout.name:
-                line = sessionFile.readline()
+                line = getLine(lines).strip()
                 if line == TransactionCode.EOS.name:
                     curLine = Formatter.formatLine(TransactionCode.EOS.name, "0000000", "000", "0000000", "***")
             else:
                 transCode = TransactionCode(line)
                 if transCode == TransactionCode.WDR or transCode == TransactionCode.DEP:
-                    accountNum = sessionFile.readline().strip()
-                    amount = sessionFile.readline().strip()
+                    accountNum = getLine(lines).strip()
+                    amount = getLine(lines).strip()
                     curLine = Formatter.formatLine(transCode.name, "0000000", amount, accountNum, "***")
                 elif transCode == TransactionCode.NEW or transCode == TransactionCode.DEL:
-                    accountNum = sessionFile.readline().strip()
-                    accountName = sessionFile.readline().strip()
+                    accountNum = getLine(lines).strip()
+                    accountName = getLine(lines).strip()
                     curLine = Formatter.formatLine(transCode.name, "0000000", "000", accountNum, accountName)
                 elif transCode == TransactionCode.XFR:
-                    fromAccountNUm = sessionFile.readline().strip()
-                    toAccountNum = sessionFile.readline().strip()
-                    amount = sessionFile.readline().strip()
+                    fromAccountNUm = getLine(lines).strip()
+                    toAccountNum = getLine(lines).strip()
+                    amount = getLine(lines).strip()
                     curLine = Formatter.formatLine(transCode.name, toAccountNum, amount, fromAccountNUm, "***")
 
             transSumFile.write(curLine)
 
         transSumFile.close()
-        exit(0)
+        sessionFile.close()
+        os.close(sessionFileD)
+        os.remove(sessionFileName)
 
     @staticmethod
     def formatLine(transCode, toAcc, amount, fromAcc, accName):
         return "{} {} {} {} {}\n".format(transCode, toAcc, amount, fromAcc, accName)
+
+
+def getLine(lines=None):
+    if lines is None:
+        return []
+
+    line = lines[0]
+    lines.pop(0)
+    return line

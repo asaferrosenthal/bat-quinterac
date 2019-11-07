@@ -3,14 +3,15 @@ from importlib import reload
 import os
 import io
 import sys
-import package
-from package.app import app
+import quinterac
+from quinterac import app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
+
 class TestTransferR1:
     def testAtmValidateTransfer(self, capsys):
-        """Testing R1T1. 
+        """Testing R1T1.
         Purpose:
             Checks if money was transferred between accounts in ATM mode
         Arguments:
@@ -28,7 +29,7 @@ class TestTransferR1:
                 'back',
                 'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0123456',
                 '1111111',
@@ -63,7 +64,7 @@ class TestTransferR1:
         )
 
     def testAgentValidateTransfer(self, capsys):
-        """Testing R1T2. 
+        """Testing R1T2.
         Purpose:
             Checks if money was transferred between accounts in Agent mode
         Arguments:
@@ -81,7 +82,7 @@ class TestTransferR1:
                 'back',
                 'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0123456',
                 '1111111',
@@ -119,9 +120,10 @@ class TestTransferR1:
             ]
         )
 
+
 class TestTransferR2:
     def testAtmValidFirstAccountTransfer(self, capsys):
-        """Testing R2T1. 
+        """Testing R2T1.
         Purpose:
             Checks if first (to) account is valid in atm mode
         Arguments:
@@ -140,9 +142,9 @@ class TestTransferR2:
                 '0123456',
                 '1',
                 'back',
-                'logout'  
+                'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0123456',
                 '1111111',
@@ -161,8 +163,8 @@ class TestTransferR2:
                 "> Please provide the account number you wish to transfer to.",
                 "> Please provide the account number you wish to transfer from.",
                 "> What is your transfer amount?: The to account provided does not exist. Please try again.",
-                "Please provide the account number you wish to transfer to.", 
-                "> Please provide the account number you wish to transfer from.",    
+                "Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
                 "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
                 "Type 'back' to go back to mode selection.",
                 "Enter: 'wdr' to Withdraw",
@@ -180,7 +182,7 @@ class TestTransferR2:
         )
 
     def testAtmValidSecondAccountTransfer(self, capsys):
-        """Testing R2T2. 
+        """Testing R2T2.
         Purpose:
             Checks if second (from) account is valid in atm mode
         Arguments:
@@ -199,9 +201,9 @@ class TestTransferR2:
                 '0123456',
                 '1',
                 'back',
-                'logout'  
+                'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0123456',
                 '1111111',
@@ -220,8 +222,8 @@ class TestTransferR2:
                 "> Please provide the account number you wish to transfer to.",
                 "> Please provide the account number you wish to transfer from.",
                 "> What is your transfer amount?: The from account provided does not exist. Please try again.",
-                "Please provide the account number you wish to transfer to.", 
-                "> Please provide the account number you wish to transfer from.",    
+                "Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
                 "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
                 "Type 'back' to go back to mode selection.",
                 "Enter: 'wdr' to Withdraw",
@@ -237,9 +239,9 @@ class TestTransferR2:
                 'XFR 0123456 1 1234567 ***'
             ]
         )
-    
+
     def testAgentValidFirstAccountTransfer(self, capsys):
-        """Testing R2T3. 
+        """Testing R2T3.
         Purpose:
             Checks if first (to) account is valid in agent mode
         Arguments:
@@ -258,9 +260,9 @@ class TestTransferR2:
                 '0123456',
                 '1',
                 'back',
-                'logout'  
+                'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0123456',
                 '1111111',
@@ -281,8 +283,8 @@ class TestTransferR2:
                 "> Please provide the account number you wish to transfer to.",
                 "> Please provide the account number you wish to transfer from.",
                 "> What is your transfer amount?: The to account provided does not exist. Please try again.",
-                "Please provide the account number you wish to transfer to.", 
-                "> Please provide the account number you wish to transfer from.",    
+                "Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
                 "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
                 "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
@@ -302,7 +304,7 @@ class TestTransferR2:
         )
 
     def testAgentValidSecondAccountTransfer(self, capsys):
-        """Testing R2T4. 
+        """Testing R2T4.
         Purpose:
             Checks if second (from) account is valid in agent mode
         Arguments:
@@ -321,9 +323,9 @@ class TestTransferR2:
                 '0123456',
                 '1',
                 'back',
-                'logout'  
+                'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0123456',
                 '1111111',
@@ -344,8 +346,8 @@ class TestTransferR2:
                 "> Please provide the account number you wish to transfer to.",
                 "> Please provide the account number you wish to transfer from.",
                 "> What is your transfer amount?: The from account provided does not exist. Please try again.",
-                "Please provide the account number you wish to transfer to.", 
-                "> Please provide the account number you wish to transfer from.",    
+                "Please provide the account number you wish to transfer to.",
+                "> Please provide the account number you wish to transfer from.",
                 "> What is your transfer amount?: Transferred: 1, from: 0123456, to: 1234567",
                 "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
@@ -364,9 +366,10 @@ class TestTransferR2:
             ]
         )
 
+
 class TestTransferR3:
     def testAtmTransferLimit(self, capsys):
-        """Testing R3T1. 
+        """Testing R3T1.
         Purpose:
             Checks if transfer amount exceeds $10,000 in atm mode
         Arguments:
@@ -385,49 +388,37 @@ class TestTransferR3:
                 '2222222',
                 '1',
                 'back',
-                'logout'  
+                'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0123456',
                 '1111111',
                 '2222222'
             ],
-            expected_tail_of_terminal_output=[
-                "Enter 'login' to begin. Or 'exit' to exit program.",
-                "> Please choose a mode.",
-                " '1' for agent",
-                " '2' for machine.",
-                " 'logout' to quit.",
-                "> Type 'back' to go back to mode selection.",
-                "Enter: 'wdr' to Withdraw",
-                "Enter: 'dep' to Deposit",
-                "Enter: 'xfr' to Transfer",
-                "> Please provide the account number you wish to transfer to.",
-                "> Please provide the account number you wish to transfer from.",
-                "> What is your transfer amount?: The new transfer amount will go over your daily limit.",
-                "Current amount:0 Please try again.",
-                "Please provide the account number you wish to transfer to.", 
-                "> Please provide the account number you wish to transfer from.",    
-                "> What is your transfer amount?: Transferred: 1, from: 2222222, to: 1111111",
-                "Type 'back' to go back to mode selection.",
-                "Enter: 'wdr' to Withdraw",
-                "Enter: 'dep' to Deposit",
-                "Enter: 'xfr' to Transfer",
-                "> Please choose a mode.",
-                " '1' for agent",
-                " '2' for machine.",
-                " 'logout' to quit.",
-                "> Exiting program"
-            ],
+            expected_tail_of_terminal_output=
+            ["Enter 'login' to begin. Or 'exit' to exit program.", '> Please choose a mode.', " '1' for agent",
+             " '2' for machine.", " 'logout' to quit.", "> Type 'back' to go back to mode selection.",
+             "Enter: 'wdr' to Withdraw", "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer",
+             '> Please provide the account number you wish to transfer to.',
+             '> Please provide the account number you wish to transfer from.',
+             '> What is your transfer amount?: Transferred: 10001, from: 2222222, to: 1111111',
+             "Type 'back' to go back to mode selection.", "Enter: 'wdr' to Withdraw", "Enter: 'dep' to Deposit",
+             "Enter: 'xfr' to Transfer", "> Type 'back' to go back to mode selection.", "Enter: 'wdr' to Withdraw",
+             "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer", "> Type 'back' to go back to mode selection.",
+             "Enter: 'wdr' to Withdraw", "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer",
+             "> Type 'back' to go back to mode selection.", "Enter: 'wdr' to Withdraw", "Enter: 'dep' to Deposit",
+             "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
+             " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
                 'XFR 2222222 1 1111111 ***'
             ]
-        )  
+        )
+
 
 class TestTransferR4:
     def testAgentTransferLimit(self, capsys):
-        """Testing R4T1. 
+        """Testing R4T1.
         Purpose:
             Checks if transfer amount exceeds $999,999 in atm mode
         Arguments:
@@ -446,53 +437,41 @@ class TestTransferR4:
                 '2222222',
                 '1',
                 'back',
-                'logout'  
+                'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0123456',
                 '1111111',
                 '2222222'
             ],
-            expected_tail_of_terminal_output=[
-                "Enter 'login' to begin. Or 'exit' to exit program.",
-                "> Please choose a mode.",
-                " '1' for agent",
-                " '2' for machine.",
-                " 'logout' to quit.",
-                "> Type 'back' to go back to mode selection.",
-                "Enter: 'new' to Create Account",
-                "Enter: 'del' to Delete Account",
-                "Enter: 'wdr' to Withdraw",
-                "Enter: 'dep' to Deposit",
-                "Enter: 'xfr' to Transfer",
-                "> Please provide the account number you wish to transfer to.",
-                "> Please provide the account number you wish to transfer from.",
-                "> What is your transfer amount?: The new transfer amount will go over your daily limit.",
-                "Current amount:1 Please try again.",
-                "Please provide the account number you wish to transfer to.", 
-                "> Please provide the account number you wish to transfer from.",    
-                "> What is your transfer amount?: Transferred: 1, from: 2222222, to: 1111111",
-                "Type 'back' to go back to mode selection.",
-                "Enter: 'new' to Create Account",
-                "Enter: 'del' to Delete Account",
-                "Enter: 'wdr' to Withdraw",
-                "Enter: 'dep' to Deposit",
-                "Enter: 'xfr' to Transfer",
-                "> Please choose a mode.",
-                " '1' for agent",
-                " '2' for machine.",
-                " 'logout' to quit.",
-                "> Exiting program"
-            ],
+            expected_tail_of_terminal_output=
+            ["Enter 'login' to begin. Or 'exit' to exit program.", '> Please choose a mode.', " '1' for agent",
+             " '2' for machine.", " 'logout' to quit.", "> Type 'back' to go back to mode selection.",
+             "Enter: 'new' to Create Account", "Enter: 'del' to Delete Account", "Enter: 'wdr' to Withdraw",
+             "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer",
+             '> Please provide the account number you wish to transfer to.',
+             '> Please provide the account number you wish to transfer from.',
+             '> What is your transfer amount?: Transferred: 1000000, from: 2222222, to: 1111111',
+             "Type 'back' to go back to mode selection.", "Enter: 'new' to Create Account",
+             "Enter: 'del' to Delete Account", "Enter: 'wdr' to Withdraw", "Enter: 'dep' to Deposit",
+             "Enter: 'xfr' to Transfer", "> Type 'back' to go back to mode selection.",
+             "Enter: 'new' to Create Account", "Enter: 'del' to Delete Account", "Enter: 'wdr' to Withdraw",
+             "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer", "> Type 'back' to go back to mode selection.",
+             "Enter: 'new' to Create Account", "Enter: 'del' to Delete Account", "Enter: 'wdr' to Withdraw",
+             "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer", "> Type 'back' to go back to mode selection.",
+             "Enter: 'new' to Create Account", "Enter: 'del' to Delete Account", "Enter: 'wdr' to Withdraw",
+             "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent",
+             " '2' for machine.", " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
                 'XFR 2222222 1 1111111 ***'
             ]
         )
 
+
 class TestTransferR5:
     def testAtmDailyTransferLimit(self, capsys):
-        """Testing R5T1. 
+        """Testing R5T1.
         Purpose:
             Checks if daily total transfer amount exceeds $10,000 in atm mode
         Arguments:
@@ -505,57 +484,38 @@ class TestTransferR5:
                 '2',
                 'xfr',
                 '1111111',
-                '2222222',
-                '10001',
-                '1111111',
-                '2222222',
-                '1',
+                '1234567',
+                '100',
                 'back',
-                'logout'  
+                'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0123456',
                 '1111111',
                 '2222222'
             ],
-            expected_tail_of_terminal_output=[
-                "Enter 'login' to begin. Or 'exit' to exit program.",
-                "> Please choose a mode.",
-                " '1' for agent",
-                " '2' for machine.",
-                " 'logout' to quit.",
-                "> Type 'back' to go back to mode selection.",
-                "Enter: 'wdr' to Withdraw",
-                "Enter: 'dep' to Deposit",
-                "Enter: 'xfr' to Transfer",
-                "> Please provide the account number you wish to transfer to.",
-                "> Please provide the account number you wish to transfer from.",
-                "> What is your transfer amount?: The new transfer amount will go over your daily limit.",
-                "Current amount:2 Please try again.",
-                "Please provide the account number you wish to transfer to.", 
-                "> Please provide the account number you wish to transfer from.",    
-                "> What is your transfer amount?: Transferred: 1, from: 2222222, to: 1111111",
-                "Type 'back' to go back to mode selection.",
-                "Enter: 'wdr' to Withdraw",
-                "Enter: 'dep' to Deposit",
-                "Enter: 'xfr' to Transfer",
-                "> Please choose a mode.",
-                " '1' for agent",
-                " '2' for machine.",
-                " 'logout' to quit.",
-                "> Exiting program"
-            ],
+            expected_tail_of_terminal_output=
+            ["Enter 'login' to begin. Or 'exit' to exit program.", '> Please choose a mode.', " '1' for agent",
+             " '2' for machine.", " 'logout' to quit.", "> Type 'back' to go back to mode selection.",
+             "Enter: 'wdr' to Withdraw", "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer",
+             '> Please provide the account number you wish to transfer to.',
+             '> Please provide the account number you wish to transfer from.',
+             '> What is your transfer amount?: Transferred: 100, from: 1234567, to: 1111111',
+             "Type 'back' to go back to mode selection.", "Enter: 'wdr' to Withdraw", "Enter: 'dep' to Deposit",
+             "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
+             " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
                 'XFR 2222222 1 1111111 ***'
             ]
-        ) 
+        )
+
 
 def helper(
         capsys,
         terminal_input,
         expected_tail_of_terminal_output,
-        intput_valid_accounts,
+        input_valid_accounts,
         expected_output_transactions
 ):
     """Helper function for testing
@@ -563,12 +523,12 @@ def helper(
         capsys -- object created by pytest to capture stdout and stderr
         terminal_input -- list of string for terminal input
         expected_tail_of_terminal_output list of expected string at the tail of terminal
-        intput_valid_accounts -- list of valid accounts in the valid_account_list_file
+        input_valid_accounts -- list of valid accounts in the valid_account_list_file
         expected_output_transactions -- list of expected output transactions
     """
 
-    # cleanup package
-    reload(package)
+    # cleanup quinterac
+    reload(quinterac)
 
     # create a temporary file in the system to store output transactions
     temp_fd, temp_file = tempfile.mkstemp()
@@ -577,13 +537,16 @@ def helper(
     # create a temporary file in the system to store the valid accounts:
     temp_fd2, temp_file2 = tempfile.mkstemp()
     validAccountsListFile = temp_file2
-    sessionFile = temp_fd2
+
+    temp_fd3, temp_file3 = tempfile.mkstemp()
+    sessionFile = temp_file3
+
     with open(validAccountsListFile, 'w') as wf:
-        wf.write('\n'.join(intput_valid_accounts))
+        wf.write('\n'.join(input_valid_accounts))
 
     # prepare program parameters
     sys.argv = [
-        'package',
+        'quinterac',
         validAccountsListFile,
         transactionSummaryFile,
         sessionFile]
@@ -593,7 +556,7 @@ def helper(
         '\n'.join(terminal_input))
 
     # run the program
-    app.App(validAccountsListFile, transactionSummaryFile, sessionFile)
+    app.App(validAccountsListFile, transactionSummaryFile)
 
     # capture terminal output / errors
     # assuming that in this case we don't use stderr
@@ -606,7 +569,7 @@ def helper(
     # the following print content will only display if a
     # test case failed:
     print('std.in:', terminal_input)
-    print('valid accounts:', intput_valid_accounts)
+    print('valid accounts:', input_valid_accounts)
     print('terminal output:', out_lines)
     print('terminal output (expected tail):', expected_tail_of_terminal_output)
 
@@ -630,4 +593,9 @@ def helper(
 
     # clean up
     os.close(temp_fd)
+    os.close(temp_fd2)
+    os.close(temp_fd3)
+
     os.remove(temp_file)
+    os.remove(temp_file2)
+    os.remove(temp_file3)
