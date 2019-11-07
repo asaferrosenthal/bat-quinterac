@@ -1,8 +1,16 @@
-# Quinterac BAT Enterprises
-CISC 327 Group Project
+<H1 align="center">
+Quinterac BAT Enterprises 🦇
+</H1>
+<H4 align="center">
+CISC 327 Group Project</br>
+</H4>
 
-[![](https://github.com/tamirarnesty/bat-quinterac/workflows/Python%20Application%20CI/badge.svg)](https://github.com/tamirarnesty/bat-quinterac/actions)
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg?style=flat-square&color=brightgreen)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+<p align="center">
+<a href="https://github.com/tamirarnesty/bat-quinterac/actions"><img alt="CI Status" src="https://github.com/tamirarnesty/bat-quinterac/workflows/Python%20Application%20CI/badge.svg"></a> 
+<a href="https://github.com/tamirarnesty/bat-quinterac/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/cocoapods/l/Loaf.svg?style=flat"></a> 
+<a href=""><img alt="Platform" src="https://img.shields.io/badge/platform-Terminal-green.svg"/></a> 
+<a href=""><img alt="Python" src="https://img.shields.io/badge/language-Python-orange.svg"/></a>
+</p>
 
 ## Authors
 * Tamir Arnesty
