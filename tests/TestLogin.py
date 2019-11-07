@@ -3,18 +3,15 @@ from importlib import reload
 import os
 import io
 import sys
-import package
-from package.app import app
+import quinterac
+from quinterac import app
+
 path = os.path.dirname(os.path.abspath(__file__))
 
-class TestLoginR1:
-    """
-    Purpose:
-        No transactions before login.
-    """
 
+class TestLoginR1:
     def testIdleLogout(self, capsys):
-        """Testing R1T1. 
+        """Testing R1T1.
         Purpose:
             Can't logout before logging in.
         Arguments:
@@ -26,7 +23,7 @@ class TestLoginR1:
                 'logout',
                 'exit'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
@@ -40,7 +37,7 @@ class TestLoginR1:
         )
 
     def testIdleCreateAccount(self, capsys):
-        """Testing R1T2. 
+        """Testing R1T2.
         Purpose:
             Can't create account before logging in.
         Arguments:
@@ -52,7 +49,7 @@ class TestLoginR1:
                 'new',
                 'exit'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
@@ -66,7 +63,7 @@ class TestLoginR1:
         )
 
     def testIdleDeleteAccount(self, capsys):
-        """Testing R1T3. 
+        """Testing R1T3.
         Purpose:
             Can't delete account before logging in.
         Arguments:
@@ -78,7 +75,7 @@ class TestLoginR1:
                 'del',
                 'exit'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
@@ -92,7 +89,7 @@ class TestLoginR1:
         )
 
     def testIdleDeposit(self, capsys):
-        """Testing R1T4. 
+        """Testing R1T4.
         Purpose:
             Can't deposit before logging in.
         Arguments:
@@ -104,7 +101,7 @@ class TestLoginR1:
                 'dep',
                 'exit'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
@@ -118,7 +115,7 @@ class TestLoginR1:
         )
 
     def testIdleWithdraw(self, capsys):
-        """Testing R1T5. 
+        """Testing R1T4.
         Purpose:
             Can't withdraw before logging in.
         Arguments:
@@ -130,7 +127,7 @@ class TestLoginR1:
                 'wdr',
                 'exit'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
@@ -144,7 +141,7 @@ class TestLoginR1:
         )
 
     def testIdleTransfer(self, capsys):
-        """Testing R1T6. 
+        """Testing R1T6.
         Purpose:
             Can't transfer before logging in.
         Arguments:
@@ -156,7 +153,7 @@ class TestLoginR1:
                 'xfr',
                 'exit'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
@@ -171,15 +168,11 @@ class TestLoginR1:
 
 
 class TestLoginR2:
-    """
-    Purpose:
-        No additional login attempts accepted after a successful login, until after a logout.
-    """
 
     def testAdditionalLoginAttempt(self, capsys):
-        """Testing R2T1. 
+        """Testing R1T6.
         Purpose:
-            Check if the user tries to login twice before logging out.
+            Can't transfer before logging in.
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -189,36 +182,36 @@ class TestLoginR2:
                 'login',
                 'login',
                 'logout'
+
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
-                '0000000'],
+                '0000000'
+            ],
             expected_tail_of_terminal_output=[
-            "Enter 'login' to begin. Or 'exit' to exit program.", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.", 
-            '> Already logged in.', 
-            'Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.", 
-            '> Exiting program'],
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                '> Already logged in.',
+                'Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                '> Exiting program'],
             expected_output_transactions=[
                 None
             ]
         )
 
+
 class TestLoginR3:
-    """
-    Purpose:
-        Only ATM transactions and logout after successful ATM login.
-    """
+
     def testAtmCreateAccountAfterLogin(self, capsys):
         """Testing R3T1. 
         Purpose:
-            Check if any create account transaction is attempted after ATM login.
+            Can't transfer before logging in.
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -228,41 +221,42 @@ class TestLoginR3:
                 'login',
                 '2',
                 'new',
-                'back', 
+                'back',
                 'logout'
+
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
             expected_tail_of_terminal_output=[
-            "Enter 'login' to begin. Or 'exit' to exit program.", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.", 
-            "> Type 'back' to go back to mode selection.",
-            "Enter: 'wdr' to Withdraw",
-            "Enter: 'dep' to Deposit",
-            "Enter: 'xfr' to Transfer",
-            "> Type 'back' to go back to mode selection.",
-            "Enter: 'wdr' to Withdraw",
-            "Enter: 'dep' to Deposit",
-            "Enter: 'xfr' to Transfer", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.",  
-            "> Exiting program"],
+                "Enter 'login' to begin. Or 'exit' to exit program.",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                '> Please choose a mode.',
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"],
             expected_output_transactions=[
                 None
             ]
         )
-    
+
     def testAtmDeleteAccountAfterLogin(self, capsys):
         """Testing R3T2. 
         Purpose:
-            Check if any delete account transaction is attempted after ATM login.
+            Can't transfer before logging in.
         Arguments:
             capsys -- object created by pytest to capture stdout and stderr
         """
@@ -272,32 +266,32 @@ class TestLoginR3:
                 'login',
                 '2',
                 'del',
-                'back', 
+                'back',
                 'logout'
+
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
             expected_tail_of_terminal_output=[
-            "Enter 'login' to begin. Or 'exit' to exit program.", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.", 
-            "> Type 'back' to go back to mode selection.",
-            "Enter: 'wdr' to Withdraw",
-            "Enter: 'dep' to Deposit",
-            "Enter: 'xfr' to Transfer",
-            "> Type 'back' to go back to mode selection.",
-            "Enter: 'wdr' to Withdraw",
-            "Enter: 'dep' to Deposit",
-            "Enter: 'xfr' to Transfer", 
-            '> Please choose a mode.', 
-            " '1' for agent", 
-            " '2' for machine.", 
-            " 'logout' to quit.",  
-            "> Exiting program"],
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Type 'back' to go back to mode selection.",
+                "Enter: 'wdr' to Withdraw",
+                "Enter: 'dep' to Deposit",
+                "Enter: 'xfr' to Transfer",
+                "> Please choose a mode.",
+                " '1' for agent",
+                " '2' for machine.",
+                " 'logout' to quit.",
+                "> Exiting program"],
             expected_output_transactions=[
                 None
             ]
@@ -308,7 +302,7 @@ def helper(
         capsys,
         terminal_input,
         expected_tail_of_terminal_output,
-        intput_valid_accounts,
+        input_valid_accounts,
         expected_output_transactions
 ):
     """Helper function for testing
@@ -316,12 +310,12 @@ def helper(
         capsys -- object created by pytest to capture stdout and stderr
         terminal_input -- list of string for terminal input
         expected_tail_of_terminal_output list of expected string at the tail of terminal
-        intput_valid_accounts -- list of valid accounts in the valid_account_list_file
+        input_valid_accounts -- list of valid accounts in the valid_account_list_file
         expected_output_transactions -- list of expected output transactions
     """
 
     # cleanup package
-    reload(package)
+    reload(quinterac)
 
     # create a temporary file in the system to store output transactions
     temp_fd, temp_file = tempfile.mkstemp()
@@ -330,23 +324,26 @@ def helper(
     # create a temporary file in the system to store the valid accounts:
     temp_fd2, temp_file2 = tempfile.mkstemp()
     validAccountsListFile = temp_file2
-    sessionFile = temp_fd2
+
+    temp_fd3, temp_file3 = tempfile.mkstemp()
+    sessionFile = temp_file3
+
     with open(validAccountsListFile, 'w') as wf:
-        wf.write('\n'.join(intput_valid_accounts))
+        wf.write('\n'.join(input_valid_accounts))
 
     # prepare program parameters
     sys.argv = [
-        'package',
+        'quinterac',
         validAccountsListFile,
         transactionSummaryFile,
-        "package/resources/session.txt"]
+        sessionFile]
 
     # set terminal input
     sys.stdin = io.StringIO(
         '\n'.join(terminal_input))
 
     # run the program
-    app.App(validAccountsListFile, transactionSummaryFile, sessionFile)
+    app.App(validAccountsListFile, transactionSummaryFile)
 
     # capture terminal output / errors
     # assuming that in this case we don't use stderr
@@ -354,33 +351,38 @@ def helper(
 
     # split terminal output in lines
     out_lines = out.splitlines()
-    
+
     # print out the testing information for debugging
-    # the following print content will only display if a 
+    # the following print content will only display if a
     # test case failed:
     print('std.in:', terminal_input)
-    print('valid accounts:', intput_valid_accounts)
+    print('valid accounts:', input_valid_accounts)
     print('terminal output:', out_lines)
     print('terminal output (expected tail):', expected_tail_of_terminal_output)
 
     # compare terminal outputs at the end.`
-    for i in range(1, len(expected_tail_of_terminal_output)+1):
+    for i in range(1, len(expected_tail_of_terminal_output) + 1):
         index = i * -1
         assert expected_tail_of_terminal_output[index] == out_lines[index]
-    
+
     # compare transactions:
     with open(transactionSummaryFile, 'r') as of:
         content = of.read().splitlines()
-        
+
         # print out the testing information for debugging
-        # the following print content will only display if a 
+        # the following print content will only display if a
         # test case failed:
         print('output transactions:', content)
         print('output transactions (expected):', expected_output_transactions)
-        
+
         for ind in range(len(content)):
             assert content[ind] == expected_output_transactions[ind]
-    
+
     # clean up
     os.close(temp_fd)
+    os.close(temp_fd2)
+    os.close(temp_fd3)
+
     os.remove(temp_file)
+    os.remove(temp_file2)
+    os.remove(temp_file3)

@@ -3,14 +3,16 @@ from importlib import reload
 import os
 import io
 import sys
-import package
-from package.app import app
+import quinterac
+from quinterac import app
+
 path = os.path.dirname(os.path.abspath(__file__))
+
 
 class TestCreateAccountR1:
     """
     Purpose:
-        Only accepted in Agent mode.    
+        Only accepted in Agent mode.
     """
     def testValidCreateAccountTransaction(self, capsys):
         """
@@ -19,6 +21,7 @@ class TestCreateAccountR1:
         """
         assert True
 
+
 class TestCreateAccountR2:
     """
     Purpose:
@@ -26,7 +29,7 @@ class TestCreateAccountR2:
     """
 
     def testValidAccountDigit(self, capsys):
-        """Testing R2T1. 
+        """Testing R2T1.
         Purpose:
             Check if the account number are digits and has a length of 7
         Arguments:
@@ -43,7 +46,7 @@ class TestCreateAccountR2:
                 'back',
                 'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
@@ -61,7 +64,8 @@ class TestCreateAccountR2:
                 "Enter: 'xfr' to Transfer",
                 "> Please provide an account number for the new account.",
                 "> Please enter a name for the account.",
-                "> Type 'back' to go back to mode selection.",
+                '> Created new account: 1122334 – ben',
+                "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
@@ -78,7 +82,7 @@ class TestCreateAccountR2:
         )
 
     def testValidAccountStartingDigit(self, capsys):
-        """Testing R2T2. 
+        """Testing R2T2.
         Purpose:
             Check if the account number starts with a zero.
         Arguments:
@@ -97,7 +101,7 @@ class TestCreateAccountR2:
                 'back',
                 'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567',
                 '0000000'
             ],
@@ -118,7 +122,8 @@ class TestCreateAccountR2:
                 "> Cant start with zero Please try again.",
                 "Please provide an account number for the new account.",
                 "> Please enter a name for the account.",
-                "> Type 'back' to go back to mode selection.",
+                '> Created new account: 7654328 – ben',
+                "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
@@ -141,7 +146,7 @@ class TestCreateAccountR3:
         New account number must be different from all other account numbers.
     """
     def testValidAccountNumber(self, capsys):
-        """Testing R3T1. 
+        """Testing R3T1.
         Purpose:
             Checks if account number already exits.
         Arguments:
@@ -160,7 +165,7 @@ class TestCreateAccountR3:
                 'back',
                 'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567\n',
                 '0000000'
             ],
@@ -181,7 +186,8 @@ class TestCreateAccountR3:
                 "> That account number already exits. Please Choose a different one. Please try again.",
                 "Please provide an account number for the new account.",
                 "> Please enter a name for the account.",
-                "> Type 'back' to go back to mode selection.",
+                '> Created new account: 7624328 – ben',
+                "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
@@ -205,7 +211,7 @@ class TestCreateAccountR4:
     """
 
     def testAccountNameLength(self, capsys):
-        """Testing R4T1. 
+        """Testing R4T1.
         Purpose:
             Checks if the account name is between 3 and 30 characters.
         Arguments:
@@ -224,7 +230,7 @@ class TestCreateAccountR4:
                 'back',
                 'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567\n',
                 '0000000'
             ],
@@ -245,7 +251,8 @@ class TestCreateAccountR4:
                 "> Account name must be between 3 and 30 characters in length. Please try again.",
                 "Please provide an account number for the new account.",
                 "> Please enter a name for the account.",
-                "> Type 'back' to go back to mode selection.",
+                '> Created new account: 1034567 – ben',
+                "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
@@ -262,7 +269,7 @@ class TestCreateAccountR4:
         )
 
     def testAlphanumericCharacters(self, capsys):
-        """Testing R4T2. 
+        """Testing R4T2.
         Purpose:
             Checks if the account name only consists of alphanumeric characters (except a space).
         Arguments:
@@ -281,7 +288,7 @@ class TestCreateAccountR4:
                 'back',
                 'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567\n',
                 '0000000'
             ],
@@ -299,10 +306,11 @@ class TestCreateAccountR4:
                 "Enter: 'xfr' to Transfer",
                 "> Please provide an account number for the new account.",
                 "> Please enter a name for the account.",
-                "> Can only be alphanumber characters Please try again.",
+                "> Can only be alphanumeric characters Please try again.",
                 "Please provide an account number for the new account.",
                 "> Please enter a name for the account.",
-                "> Type 'back' to go back to mode selection.",
+                '> Created new account: 1004567 – ben',
+                "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
@@ -319,7 +327,7 @@ class TestCreateAccountR4:
         )
 
     def testValidSpaceCharacter(self, capsys):
-        """Testing R4T3. 
+        """Testing R4T3.
         Purpose:
             Checks if a space character is not at the end or beginning of an account name.
         Arguments:
@@ -338,7 +346,7 @@ class TestCreateAccountR4:
                 'back',
                 'logout'
             ],
-            intput_valid_accounts=[
+            input_valid_accounts=[
                 '1234567\n',
                 '0000000'
             ],
@@ -359,7 +367,8 @@ class TestCreateAccountR4:
                 "> Name cant start with space Please try again.",
                 "Please provide an account number for the new account.",
                 "> Please enter a name for the account.",
-                "> Type 'back' to go back to mode selection.",
+                '> Created new account: 1024567 – ben',
+                "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
@@ -375,13 +384,14 @@ class TestCreateAccountR4:
             ]
         )
 
-class TestCreateAccountR5:  
+
+class TestCreateAccountR5:
     """
     Purpose:
         No Transactions on new account accepted.
     """
     def testTransactionsOnNewAccount(self, capsys):
-        """Testing R5T1. 
+        """Testing R5T1.
         Purpose:
             Checks if a transaction was attempted on the new account.
         Arguments:
@@ -403,8 +413,8 @@ class TestCreateAccountR5:
                 'back',
                 'logout'
             ],
-            intput_valid_accounts=[
-                '1234567\n',
+            input_valid_accounts=[
+                '1234567',
                 '0000000'
             ],
             expected_tail_of_terminal_output=[
@@ -421,16 +431,17 @@ class TestCreateAccountR5:
                 "Enter: 'xfr' to Transfer",
                 "> Please provide an account number for the new account.",
                 "> Please enter a name for the account.",
-                "> Type 'back' to go back to mode selection.",
+                "> Created new account: 7777777 – ben",
+                "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
                 "Enter: 'dep' to Deposit",
                 "Enter: 'xfr' to Transfer",
                 "> Please provide an account number you wish to deposit into.",
-                "> What is your deposit amount?: Can't perform transactions on newly created account. Please try again.",
+                "> What is your deposit amount?: Cannot perform a transaction on a new account in the same session. Current amount: 0. Please try again.",
                 "Please provide an account number you wish to deposit into.",
-                "> What is your deposit amount?: deposited 10",
+                "> What is your deposit amount?: Deposited $10 into account number: 1234567",
                 "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
@@ -447,11 +458,12 @@ class TestCreateAccountR5:
             ]
         )
 
+
 def helper(
         capsys,
         terminal_input,
         expected_tail_of_terminal_output,
-        intput_valid_accounts,
+        input_valid_accounts,
         expected_output_transactions
 ):
     """Helper function for testing
@@ -459,12 +471,12 @@ def helper(
         capsys -- object created by pytest to capture stdout and stderr
         terminal_input -- list of string for terminal input
         expected_tail_of_terminal_output list of expected string at the tail of terminal
-        intput_valid_accounts -- list of valid accounts in the valid_account_list_file
+        input_valid_accounts -- list of valid accounts in the valid_account_list_file
         expected_output_transactions -- list of expected output transactions
     """
 
     # cleanup package
-    reload(package)
+    reload(quinterac)
 
     # create a temporary file in the system to store output transactions
     temp_fd, temp_file = tempfile.mkstemp()
@@ -473,13 +485,16 @@ def helper(
     # create a temporary file in the system to store the valid accounts:
     temp_fd2, temp_file2 = tempfile.mkstemp()
     validAccountsListFile = temp_file2
-    sessionFile = temp_fd2
+
+    temp_fd3, temp_file3 = tempfile.mkstemp()
+    sessionFile = temp_file3
+
     with open(validAccountsListFile, 'w') as wf:
-        wf.write('\n'.join(intput_valid_accounts))
+        wf.write('\n'.join(input_valid_accounts))
 
     # prepare program parameters
     sys.argv = [
-        'package',
+        'quinterac',
         validAccountsListFile,
         transactionSummaryFile,
         sessionFile]
@@ -489,7 +504,7 @@ def helper(
         '\n'.join(terminal_input))
 
     # run the program
-    app.App(validAccountsListFile, transactionSummaryFile, sessionFile)
+    app.App(validAccountsListFile, transactionSummaryFile)
 
     # capture terminal output / errors
     # assuming that in this case we don't use stderr
@@ -497,33 +512,38 @@ def helper(
 
     # split terminal output in lines
     out_lines = out.splitlines()
-    
+
     # print out the testing information for debugging
-    # the following print content will only display if a 
+    # the following print content will only display if a
     # test case failed:
     print('std.in:', terminal_input)
-    print('valid accounts:', intput_valid_accounts)
+    print('valid accounts:', input_valid_accounts)
     print('terminal output:', out_lines)
     print('terminal output (expected tail):', expected_tail_of_terminal_output)
 
     # compare terminal outputs at the end.`
-    for i in range(1, len(expected_tail_of_terminal_output)+1):
+    for i in range(1, len(expected_tail_of_terminal_output) + 1):
         index = i * -1
         assert expected_tail_of_terminal_output[index] == out_lines[index]
-    
+
     # compare transactions:
     with open(transactionSummaryFile, 'r') as of:
         content = of.read().splitlines()
-        
+
         # print out the testing information for debugging
-        # the following print content will only display if a 
+        # the following print content will only display if a
         # test case failed:
         print('output transactions:', content)
         print('output transactions (expected):', expected_output_transactions)
-        
+
         for ind in range(len(content)):
             assert content[ind] == expected_output_transactions[ind]
-    
+
     # clean up
     os.close(temp_fd)
+    os.close(temp_fd2)
+    os.close(temp_fd3)
+
     os.remove(temp_file)
+    os.remove(temp_file2)
+    os.remove(temp_file3)

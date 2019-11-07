@@ -1,4 +1,5 @@
-from package.app.DailyLimits import *
+from quinterac.Account import *
+from quinterac.Errors import *
 
 
 class SessionHandler:
@@ -20,11 +21,10 @@ class SessionHandler:
             return "Must be exactly 7 digits"
         try:
             accountNumber = int(accountNumber)
+            return True
         except ValueError:
             return "Must be digits."
-        return True
 
-        
     @staticmethod
     def validateAccountNameFormat(accountName):
         if str(accountName)[:1] == " ":
@@ -33,7 +33,7 @@ class SessionHandler:
             return "Account name must be between 3 and 30 characters in length."
         accountName = accountName.replace(" ", "")
         if not accountName.isalnum():
-            return "Can only be alphanumber characters"
+            return "Can only be alphanumeric characters"
         return True
 
     @staticmethod
@@ -45,7 +45,6 @@ class SessionHandler:
         
         return "That account does not exist."
 
-
     @staticmethod
     def validateAmount(amount):
         if "." in amount:
@@ -56,22 +55,20 @@ class SessionHandler:
         except ValueError:
             return "Amount must be an integer."
 
-
     @staticmethod
     def deposit(accountNumber, amount):
         account = DailyLimits.getAccountFor(accountNumber)
         validAmount = SessionHandler.validateAmount(amount)
-        if account is None:
-            return "That account does not exist or no longer exists."
-        if account.isNewAccount:
-            return "Can't perform transactions on newly created account."
         if type(validAmount) is bool:
             if account:
-                if account.deposit(amount, SessionHandler.isAtm):
-                    print("deposited", amount)
-                    return validAmount
+                result = account.deposit(amount, SessionHandler.isAtm)
+                if type(result) is bool:
+                    if result:
+                        print("Deposited ${} into account number: {}".format(amount, accountNumber))
+                        return validAmount
                 else:
-                    return "The new deposit amount will go over your daily limit.\nCurrent amount:" + str(account.totalDeposited)
+                    result = Error(result)
+                    return result.value + " Current amount: " + str(account.totalDeposited) + "."
             else:
                 return "No account found with number: " + str(accountNumber)
         else:
@@ -83,11 +80,14 @@ class SessionHandler:
         validAmount = SessionHandler.validateAmount(amount)
         if type(validAmount) is bool:
             if account:
-                if account.withdrawal(amount, SessionHandler.isAtm):
-                    print("withdrew", amount)
-                    return validAmount
+                result = account.withdraw(amount, SessionHandler.isAtm)
+                if type(result) is bool:
+                    if result:
+                        print("Withdrew", amount, "from", accountNumber)
+                        return validAmount
                 else:
-                    return "The new withdrawl amount will go over your daily limit.\nCurrent amount:" + str(account.totalWithdrawn)
+                    result = Error(result)
+                    return result.value + " Current amount: " + str(account.totalWithdrawn) + "."
             else:
                 return "No account found with number: " + str(accountNumber)
         else:
@@ -103,12 +103,14 @@ class SessionHandler:
                 if toAccountNumber == fromAccountNumber:
                     return "To account number and from account number cannot be the same."
 
-                if fromAccount.transfer(amount, SessionHandler.isAtm):
-                    print("Transferred: " + str(amount) + ", from: " + str(fromAccountNumber)+ ", to: " + str(toAccountNumber))
-                    return validAmount
+                result = fromAccount.transfer(amount, SessionHandler.isAtm)
+                if type(result) is bool:
+                    if result:
+                        print("Transferred: " + str(amount) + ", from: " + str(fromAccountNumber)+ ", to: " + str(toAccountNumber))
+                        return validAmount
                 else:
-                    return "The new transfer amount will go over your daily limit.\nCurrent amount:" + str(fromAccount.totalTransferred)
-
+                    result = Error(result)
+                    return result.value + " Current amount: " + str(fromAccount.totalTransferred) + "."
             else:
                 if not toAccount and not fromAccount:
                     return "Both of your account numbers provided do not exist."
@@ -118,4 +120,3 @@ class SessionHandler:
                     return "The to account provided does not exist."
         else:
             return validAmount
-
