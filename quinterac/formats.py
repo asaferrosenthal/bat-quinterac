@@ -38,7 +38,7 @@ class Formatter:
         lines = sessionFile.read().splitlines()
         # Check that the user was logged in, and its a valid session file
         line = getLine(lines)
-        if line != Transaction.login.name:
+        if line == Transaction.login.name:
             return
 
         # Check for the session mode, agent or ATM

@@ -125,14 +125,15 @@ class App:
         accountName = input("Please enter a name for the account.\n> ")
         accountNumberError = SessionHandler.validateOldAccount(accountNumber)
         accountNameError = SessionHandler.validateAccountNameFormat(accountName)
-
         if type(accountNumberError) is bool and type(accountNameError) is bool:
             with open(self.aListFileName, "r") as inFile:
                 with open("validAccountsListFile1.txt", "w+") as outFile:
                     for line in inFile:
-                        if line.strip("\n") != accountNumber:
+                        if line.strip("\n") != "0000000":
                             outFile.write(line)
 
+                    outFile.write(accountNumber + "\n")
+                    outFile.write("0000000")
             os.rename("validAccountsListFile1.txt", self.aListFileName)
 
             self.sessionWrite(Transaction.deleteAccount.name)
