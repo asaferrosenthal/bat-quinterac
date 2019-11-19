@@ -3,9 +3,10 @@ from quinterac.Errors import *
 
 class Account:
 
-    def __init__(self, accountNumber, accountName, isNewAccount=None):
+    def __init__(self, accountNumber, accountName, isNewAccount=None, balance=0):
         self.accountNumber = accountNumber
         self.accountName = accountName
+        self.balance = 0
         self.totalDeposited = 0
         self.totalWithdrawn = 0
         self.totalTransferred = 0
@@ -17,6 +18,7 @@ class Account:
 
         if self.totalDeposited + int(amount) <= DailyLimits.getDepositLimit(isAtm):
             self.totalDeposited += int(amount)
+            self.updateBalance(int(amount))
             return True
 
         return Error.overDepositLimit
@@ -27,6 +29,7 @@ class Account:
 
         if self.totalWithdrawn + int(amount) <= DailyLimits.getWithdrawalLimit(isAtm):
             self.totalWithdrawn += int(amount)
+            self.updateBalance(-int(amount))
             return True
 
         return Error.overWithdrawalLimit
@@ -37,10 +40,13 @@ class Account:
 
         if self.totalTransferred + int(amount) <= DailyLimits.getTransferLimit(isAtm):
             self.totalTransferred += int(amount)
+            self.updateBalance(-int(amount))
             return True
 
         return Error.overTransferLimit
 
+    def updateBalance(self, newValue):
+        self.balance += newValue
 
 class DailyLimits:
     accounts = []

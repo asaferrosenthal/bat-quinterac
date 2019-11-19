@@ -1,4 +1,5 @@
 from enum import Enum
+from quinterac.backend import *
 
 import os
 
@@ -79,6 +80,9 @@ class Formatter:
         sessionFile.close()
         os.close(sessionFileD)
         os.remove(sessionFileName)
+
+        backend = Backend()
+        backend.update(transSumFile)
 
     @staticmethod
     def formatLine(transCode, toAcc, amount, fromAcc, accName):
