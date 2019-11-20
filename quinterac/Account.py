@@ -6,7 +6,7 @@ class Account:
     def __init__(self, accountNumber, accountName, isNewAccount=None, balance=0):
         self.accountNumber = accountNumber
         self.accountName = accountName
-        self.balance = 0
+        self.balance = int(balance)
         self.totalDeposited = 0
         self.totalWithdrawn = 0
         self.totalTransferred = 0
@@ -46,7 +46,17 @@ class Account:
         return Error.overTransferLimit
 
     def updateBalance(self, newValue):
-        self.balance += newValue
+        if int(self.balance) + int(newValue) < 0:
+            return Error.negativeBalance
+
+        self.balance += int(newValue)
+        return None
+
+    def __lt__(self, other):
+        return self.accountNumber < other.accountNumber
+
+    def __gt__(self, other):
+        return self.accountNumber > other.accountNumber
 
 class DailyLimits:
     accounts = []

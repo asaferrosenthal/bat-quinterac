@@ -1,5 +1,5 @@
 import os
-from quinterac import app
+from quinterac import FrontEnd
 
 curPath = os.path.dirname(__file__)
 
@@ -14,6 +14,6 @@ if __name__ == '__main__':
 
         validAccountsListFile = os.path.join(curPath, aFile)
         transactionSummaryFile = os.path.join(curPath, tFile)
-        a = app.App(validAccountsListFile, transactionSummaryFile)
+        a = FrontEnd.FrontEnd(validAccountsListFile, transactionSummaryFile)
     except IndexError:
         print("Front-end must have two arguments")

@@ -1,6 +1,4 @@
 from enum import Enum
-from quinterac.backend import *
-
 import os
 
 
@@ -33,24 +31,20 @@ class Formatter:
     @staticmethod
     def formatSession(sessionFileD, sessionFileName, transSumFileName):
         sessionFile = open(sessionFileName, "r")
-        transSumFile = open(transSumFileName, "a")
+        transSumFile = open(transSumFileName, "w+")
 
         # Read temporary file content
         lines = sessionFile.read().splitlines()
         # Check that the user was logged in, and its a valid session file
         line = getLine(lines)
-        if line == Transaction.login.name:
+        if line != Transaction.login.name:
             return
-
-        # Check for the session mode, agent or ATM
-        # sessionFile.readline().strip()
 
         # Check for the session mode, agent or ATM
         if getLine(lines) == Transaction.logout.name:
             lines.insert(0, Transaction.logout.name)
 
         while len(lines) != 0:
-            # for line in lines:
             line = getLine(lines).strip()
 
             curLine = ""
@@ -80,9 +74,35 @@ class Formatter:
         sessionFile.close()
         os.close(sessionFileD)
         os.remove(sessionFileName)
+        Formatter.mergeTransaction(transSumFileName)
 
-        backend = Backend()
-        backend.update(transSumFile)
+    @staticmethod
+    def mergeTransaction(transSumFileName):
+        EOSLine = "EOS 0000000 000 0000000 ***"
+
+        # Clean merged file for all EOS lines
+        mergedTransFile = open("mergedTransactionSummaryFile.txt", "r+")
+        lines = mergedTransFile.read().splitlines()
+        if EOSLine in lines:
+            lines.remove(EOSLine)
+
+        # Close before reopening to append
+        mergedTransFile.close()
+
+        # Open merged transaction summary file for appending
+        mergedTransFile = open("mergedTransactionSummaryFile.txt", "w+")
+        # Open transaction summary file for reading
+        transSumFile = open(transSumFileName, "r")
+
+        newLines = lines + transSumFile.read().splitlines()
+        # Write new transactions to merged transaction file
+        for line in newLines:
+            if line != EOSLine:
+                mergedTransFile.write(line + "\n")
+
+        mergedTransFile.write(EOSLine + "\n")
+        mergedTransFile.close()
+        transSumFile.close()
 
     @staticmethod
     def formatLine(transCode, toAcc, amount, fromAcc, accName):
