@@ -46,7 +46,7 @@ class Account:
         return Error.overTransferLimit
 
     def updateBalance(self, newValue):
-        if int(self.balance) + int(newValue) < 0:
+        if (int(self.balance) + int(newValue)) < 0:
             return Error.negativeBalance
 
         self.balance += int(newValue)

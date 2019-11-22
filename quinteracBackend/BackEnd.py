@@ -1,18 +1,23 @@
 import logging
+import os
 
 from quinterac.Account import *
 from quinterac.Formatter import TransactionCode
 
+pathToDir = os.path.dirname(os.path.abspath(__file__))
+pathToFront = pathToDir.replace("quinteracBackend", "quinterac")
 
 class BackEnd:
 
     # take transaction summary file from frontend session and update Master Accounts list
-    def __init__(self):
-        self.masterFileName = "masterAccountsFile.txt"
+    def __init__(self, masterAccountsFileName, mergedTransactionFileName):
+        self.masterFileName = os.path.join(pathToDir, masterAccountsFileName)
         self.masterAccountsFile = open(self.masterFileName, 'r')
         # Current list of accounts from master account file
         self.accounts = self.loadAccounts()
-        self.mergedTransactionFile = open("../quinterac/mergedTransactionSummaryFile.txt", "r+")
+
+        self.mergedTransactionFileName = os.path.join(pathToFront, mergedTransactionFileName)
+        self.mergedTransactionFile = open(self.mergedTransactionFileName, "r+")
         self.update(self.mergedTransactionFile)
 
     def update(self, transactionSummaryFile):
@@ -25,14 +30,14 @@ class BackEnd:
             elif transCode == TransactionCode.NEW.name:
                 self.createAccount(trans[3], trans[4])
             elif transCode == TransactionCode.DEP.name:
-                self.updateAccount(trans[3], int(trans[2]))
+                self.depositAccount(trans[3], int(trans[2]))
             elif transCode == TransactionCode.WDR.name:
-                self.updateAccount(trans[3], -int(trans[2]))
+                self.withdrawAccount(trans[3], int(trans[2]))
             elif transCode == TransactionCode.XFR.name:
                 # withdraw from account
-                self.updateAccount(trans[3], -int(trans[2]))
+                self.withdrawAccount(trans[3], int(trans[2]))
                 # deposit into other account
-                self.updateAccount(trans[1], int(trans[2]))
+                self.depositAccount(trans[1], int(trans[2]))
             elif transCode == TransactionCode.EOS.name:
                 print("Done reading")
             else:
@@ -52,22 +57,32 @@ class BackEnd:
         self.generateNewAccountsFile()
 
     def generateNewAccountsFile(self):
-        accountsFile = open("../quinterac/validAccountsListFile.txt", "w")
+        validAccountsListFileName = os.path.join(pathToFront, "validAccountsListFile.txt")
+        accountsFile = open(validAccountsListFileName, "w")
         for account in self.accounts:
             accountsFile.write(account.accountNumber + "\n")
 
         accountsFile.write("0000000\n")
         accountsFile.close()
 
-        open("../quinterac/mergedTransactionSummaryFile.txt", "w").close()
+        open(self.mergedTransactionFileName, "w").close()
 
-    def updateAccount(self, number, amount):
+    def depositAccount(self, number, amount):
         if len(self.accounts) == 0:
             logging.error(Error.noAccounts.value)
 
         for account in self.accounts:
             if account.accountNumber == number:
-                if account.updateBalance(amount) == Error.negativeBalance:
+                account.updateBalance(amount)
+                break
+
+    def withdrawAccount(self, number, amount):
+        if len(self.accounts) == 0:
+            logging.error(Error.noAccounts.value)
+
+        for account in self.accounts:
+            if account.accountNumber == number:
+                if account.updateBalance(-amount) == Error.negativeBalance:
                     logging.error(Error.negativeBalance.value + "- for account: " + account.accountNumber)
                 break
 
@@ -77,7 +92,7 @@ class BackEnd:
             if account.accountNumber == number:
                 accountExists = True
                 logging.error(Error.accountExists.value + "- for account: " + account.accountNumber)
-                return
+                break
 
         if not accountExists:
             self.accounts.append(Account(number, name, True))

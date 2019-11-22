@@ -1,6 +1,7 @@
 from enum import Enum
 import os
 
+pathToDir = os.path.dirname(os.path.abspath(__file__))
 
 class TransactionCode(Enum):
     WDR = "withdraw"
@@ -81,8 +82,10 @@ class Formatter:
         EOSLine = "EOS 0000000 000 0000000 ***"
 
         # Clean merged file for all EOS lines
-        mergedTransFile = open("mergedTransactionSummaryFile.txt", "r+")
+        mergedTransactionSummaryFile = os.path.join(pathToDir, "mergedTransactionSummaryFile.txt")
+        mergedTransFile = open(mergedTransactionSummaryFile, "r+")
         lines = mergedTransFile.read().splitlines()
+        print(lines)
         if EOSLine in lines:
             lines.remove(EOSLine)
 
@@ -90,7 +93,7 @@ class Formatter:
         mergedTransFile.close()
 
         # Open merged transaction summary file for appending
-        mergedTransFile = open("mergedTransactionSummaryFile.txt", "w+")
+        mergedTransFile = open(mergedTransactionSummaryFile, "w+")
         # Open transaction summary file for reading
         transSumFile = open(transSumFileName, "r")
 
