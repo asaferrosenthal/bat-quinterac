@@ -85,7 +85,6 @@ class Formatter:
         mergedTransactionSummaryFile = os.path.join(pathToDir, "mergedTransactionSummaryFile.txt")
         mergedTransFile = open(mergedTransactionSummaryFile, "r+")
         lines = mergedTransFile.read().splitlines()
-        print(lines)
         if EOSLine in lines:
             lines.remove(EOSLine)
 
