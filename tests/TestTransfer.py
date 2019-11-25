@@ -59,7 +59,8 @@ class TestTransferR1:
                 "> Exiting program"
             ],
             expected_output_transactions=[
-                'XFR 1234567 50000 0123456 ***'
+                'XFR 1234567 1 0123456 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -116,7 +117,8 @@ class TestTransferR1:
                 "> Exiting program"
             ],
             expected_output_transactions=[
-                'XFR 1234567 50000 0123456 ***'
+                'XFR 1234567 1 0123456 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -177,7 +179,8 @@ class TestTransferR2:
                 "> Exiting program"
             ],
             expected_output_transactions=[
-                'XFR 1234567 1 0123456 ***'
+                'XFR 1234567 1 0123456 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -236,7 +239,8 @@ class TestTransferR2:
                 "> Exiting program"
             ],
             expected_output_transactions=[
-                'XFR 0123456 1 1234567 ***'
+                'XFR 1234567 1 0123456 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -299,7 +303,8 @@ class TestTransferR2:
                 "> Exiting program"
             ],
             expected_output_transactions=[
-                'XFR 1234567 1 0123456 ***'
+                'XFR 1234567 1 0123456 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -362,7 +367,8 @@ class TestTransferR2:
                 "> Exiting program"
             ],
             expected_output_transactions=[
-                'XFR 0123456 1 1234567 ***'
+                'XFR 1234567 1 0123456 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -411,7 +417,8 @@ class TestTransferR3:
              "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
              " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                'XFR 2222222 1 1111111 ***'
+                'XFR 1111111 10001 2222222 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -464,7 +471,8 @@ class TestTransferR4:
              "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent",
              " '2' for machine.", " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                'XFR 2222222 1 1111111 ***'
+                'XFR 1111111 1000000 2222222 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -506,7 +514,8 @@ class TestTransferR5:
              "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
              " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                'XFR 2222222 1 1111111 ***'
+                'XFR 1111111 100 1234567 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 

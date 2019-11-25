@@ -77,7 +77,8 @@ class TestCreateAccountR2:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "NEW 0000000 000 1122334 ben",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -135,7 +136,8 @@ class TestCreateAccountR2:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "NEW 0000000 000 7654328 ben",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -199,7 +201,8 @@ class TestCreateAccountR3:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "NEW 0000000 000 7624328 ben",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -264,7 +267,8 @@ class TestCreateAccountR4:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "NEW 0000000 000 1034567 ben",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -322,7 +326,8 @@ class TestCreateAccountR4:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "NEW 0000000 000 1004567 ben",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -380,7 +385,8 @@ class TestCreateAccountR4:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "NEW 0000000 000 1024567 ben",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -454,7 +460,9 @@ class TestCreateAccountR5:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "NEW 0000000 000 7777777 ben",
+                "DEP 0000000 10 1234567 ***",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 

@@ -42,7 +42,8 @@ class TestDepositR1:
                 "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
                 " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                'DEP 1234567 50000 1234567 ***'
+                'DEP 0000000 500 1234567 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -81,7 +82,8 @@ class TestDepositR1:
                 " 'logout' to quit.", '> Exiting program']
             ,
             expected_output_transactions=[
-                'DEP 1234567 50000 1234567 ***'
+                'DEP 0000000 500 1234567 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -119,7 +121,8 @@ class TestDepositR2:
              "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
              " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                None
+                'DEP 0000000 2001 1234567 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -176,8 +179,10 @@ class TestDepositR3:
              '> Please choose a mode.', " '1' for agent", " '2' for machine.", " 'logout' to quit.",
              '> Exiting program'],
             expected_output_transactions=[
-                'DEP 1234567 200000 1234567 ***',
-                'DEP 1234567 200000 1234567 ***'
+                'DEP 0000000 2000 1234567 ***',
+                'DEP 0000000 2000 1234567 ***',
+                'DEP 0000000 1001 1234567 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -225,7 +230,8 @@ class TestDepositR4:
              "Enter: 'dep' to Deposit", "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent",
              " '2' for machine.", " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                None
+                "DEP 0000000 1000000 1234567 ***",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -263,7 +269,8 @@ class TestDepositR5:
              "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
              " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                None
+                "DEP 0000000 10 1111111 ***",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -301,7 +308,8 @@ class TestDepositR5:
                 "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
                 " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                None
+                "DEP 0000000 0 1234567 ***",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 

@@ -201,7 +201,7 @@ class TestLoginR2:
                 " 'logout' to quit.",
                 '> Exiting program'],
             expected_output_transactions=[
-                None
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -249,7 +249,7 @@ class TestLoginR3:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -293,7 +293,7 @@ class TestLoginR3:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 

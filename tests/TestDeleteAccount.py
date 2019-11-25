@@ -52,7 +52,8 @@ class TestDeleteAccountR1:
                 "Enter: 'xfr' to Transfer",
                 "> Please provide an account number you wish to delete.",
                 "> Please enter a name for the account.",
-                "> Type 'back' to go back to mode selection.",
+                "> Deleted account: 1111111 – ben",
+                "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
@@ -64,7 +65,8 @@ class TestDeleteAccountR1:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "DEL 0000000 000 1111111 ben", 
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -127,7 +129,8 @@ class TestDeleteAccountR2:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "DEP 0000000 123 1234567 ***", 
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -175,7 +178,8 @@ class TestDeleteAccountR3:
                 "Enter: 'xfr' to Transfer",
                 "> Please provide an account number you wish to delete.",
                 "> Please enter a name for the account.",
-                "> Type 'back' to go back to mode selection.",
+                "> Deleted account: 1111111 – ben",
+                "Type 'back' to go back to mode selection.",
                 "Enter: 'new' to Create Account",
                 "Enter: 'del' to Delete Account",
                 "Enter: 'wdr' to Withdraw",
@@ -187,7 +191,8 @@ class TestDeleteAccountR3:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "DEL 0000000 000 1111111 ben", 
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 

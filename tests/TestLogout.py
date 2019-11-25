@@ -49,7 +49,7 @@ class TestLogoutR1:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                None
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -106,7 +106,8 @@ class TestLogoutR2:
                 " 'logout' to quit.",
                 "> Exiting program"],
             expected_output_transactions=[
-                "DEP 0000000 123 1234567 ***"
+                "DEP 0000000 123 1234567 ***",
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 

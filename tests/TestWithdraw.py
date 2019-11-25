@@ -43,7 +43,8 @@ class TestWithdrawR1:
              "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
              " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                'WDR 1234567 50000 1234567 ***'
+                'WDR 0000000 500 1234567 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -82,7 +83,8 @@ class TestWithdrawR1:
              "Enter: 'xfr' to Transfer", '> Please choose a mode.', " '1' for agent", " '2' for machine.",
              " 'logout' to quit.", '> Exiting program'],
             expected_output_transactions=[
-                'WDR 1234567 50000 1234567 ***'
+                'WDR 0000000 500 1234567 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
@@ -139,7 +141,8 @@ class TestWithdrawR2:
              '> Please choose a mode.', " '1' for agent", " '2' for machine.", " 'logout' to quit.",
              '> Exiting program'],
             expected_output_transactions=[
-                'WDR 1234567 0 1234567 ***'
+                'WDR 0000000 0 0123456 ***',
+                "EOS 0000000 000 0000000 ***"
             ]
         )
 
