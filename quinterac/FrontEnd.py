@@ -10,7 +10,7 @@ functionality of the front-end.
 """
 
 from collections import OrderedDict
-from quinterac.formats import *
+from quinterac.Formatter import *
 from quinterac.SessionHandler import SessionHandler
 from quinterac.Account import *
 
@@ -18,7 +18,7 @@ import os
 import tempfile
 
 
-class App:
+class FrontEnd:
 
     def __init__(self, validAccountsFileName, transactionSummaryFileName):
         filed, fileName = tempfile.mkstemp()
@@ -92,15 +92,15 @@ class App:
             self.sessionWrite(accountNumber)
             self.sessionWrite(accountName)
 
-            with open(self.aListFileName, "r") as inFile:
-                with open("validAccountsListFile1.txt", "w+") as outFile:
-                    for line in inFile:
-                        if line.strip("\n") != "0000000":
-                            outFile.write(line)
-
-                    outFile.write(accountNumber + "\n")
-                    outFile.write("0000000")
-            os.rename("validAccountsListFile1.txt", self.aListFileName)
+            # with open(self.aListFileName, "r") as inFile:
+            #     with open("validAccountsListFile1.txt", "w+") as outFile:
+            #         for line in inFile:
+            #             if line.strip("\n") != "0000000":
+            #                 outFile.write(line)
+            #
+            #         outFile.write(accountNumber + "\n")
+            #         outFile.write("0000000")
+            # os.rename("validAccountsListFile1.txt", self.aListFileName)
 
             print("Created new account:", newAccount.accountNumber, "–", newAccount.accountName)
         else:
@@ -126,16 +126,17 @@ class App:
         accountNumberError = SessionHandler.validateOldAccount(accountNumber)
         accountNameError = SessionHandler.validateAccountNameFormat(accountName)
         if type(accountNumberError) is bool and type(accountNameError) is bool:
-            with open(self.aListFileName, "r") as inFile:
-                with open("validAccountsListFile1.txt", "w+") as outFile:
-                    for line in inFile:
-                        if line.strip("\n") != "0000000":
-                            outFile.write(line)
+            # with open(self.aListFileName, "r") as inFile:
+            #     with open("validAccountsListFile1.txt", "w+") as outFile:
+            #         for line in inFile:
+            #             if line.strip("\n") != "0000000":
+            #                 outFile.write(line)
+            #
+            #         outFile.write(accountNumber + "\n")
+            #         outFile.write("0000000")
+            # os.rename("validAccountsListFile1.txt", self.aListFileName)
 
-                    outFile.write(accountNumber + "\n")
-                    outFile.write("0000000")
-            os.rename("validAccountsListFile1.txt", self.aListFileName)
-
+            print("Deleted account:", accountNumber, "–", accountName)
             self.sessionWrite(Transaction.deleteAccount.name)
             self.sessionWrite(accountNumber)
             self.sessionWrite(accountName)

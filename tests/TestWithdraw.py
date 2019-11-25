@@ -4,7 +4,7 @@ import os
 import io
 import sys
 import quinterac
-from quinterac import app
+from quinterac import FrontEnd
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -390,7 +390,7 @@ def helper(
         '\n'.join(terminal_input))
 
     # run the program
-    app.App(validAccountsListFile, transactionSummaryFile)
+    FrontEnd.FrontEnd(validAccountsListFile, transactionSummaryFile)
 
     # capture terminal output / errors
     # assuming that in this case we don't use stderr
