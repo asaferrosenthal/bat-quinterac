@@ -8,7 +8,7 @@ from quinterac import FrontEnd
 
 path = os.path.dirname(os.path.abspath(__file__))
 
-
+'''
 class TestWithdrawR1:
     def testAtmValidateWithdraw(self, capsys):
         """Testing R1T1. 
@@ -88,7 +88,7 @@ class TestWithdrawR1:
             ]
         )
 
-'''
+
 class TestWithdrawR2:
     def testAtmDailyWithdrawalLimit(self, capsys):
         """Testing R2T1.

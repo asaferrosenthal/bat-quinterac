@@ -52,7 +52,7 @@ class TestLogoutR1:
                 "EOS 0000000 000 0000000 ***"
             ]
         )
-
+'''
 class TestLogoutR2:
     """
     Purpose:
@@ -110,7 +110,7 @@ class TestLogoutR2:
                 "EOS 0000000 000 0000000 ***"
             ]
         )
-
+'''
 
 def helper(
         capsys,

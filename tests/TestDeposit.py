@@ -8,7 +8,7 @@ from quinterac import FrontEnd
 
 path = os.path.dirname(os.path.abspath(__file__))
 
-
+'''
 class TestDepositR1:
     def testAtmValidateDeposit(self, capsys):
         """Testing R1T1.
@@ -312,7 +312,7 @@ class TestDepositR5:
                 "EOS 0000000 000 0000000 ***"
             ]
         )
-
+'''
 
 def helper(
         capsys,

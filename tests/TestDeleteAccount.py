@@ -70,7 +70,7 @@ class TestDeleteAccountR1:
             ]
         )
 
-
+'''
 class TestDeleteAccountR2:
     """
     Purpose:
@@ -133,7 +133,7 @@ class TestDeleteAccountR2:
                 "EOS 0000000 000 0000000 ***"
             ]
         )
-
+'''
 
 class TestDeleteAccountR3:
     """
