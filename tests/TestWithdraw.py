@@ -88,7 +88,7 @@ class TestWithdrawR1:
             ]
         )
 
-
+'''
 class TestWithdrawR2:
     def testAtmDailyWithdrawalLimit(self, capsys):
         """Testing R2T1.
@@ -346,7 +346,7 @@ class TestWithdrawR5:
                 'WDR 1234567 0 1234567 ***'
             ]
         )
-
+'''
 
 def helper(
         capsys,
