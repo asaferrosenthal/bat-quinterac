@@ -8,6 +8,25 @@ from quinterac import FrontEnd
 
 path = os.path.dirname(os.path.abspath(__file__))
 
+class Daily:
+
+    def __init__(self, terminal_input1, terminal_input2, terminal_input3, input_valid_accounts):
+        """
+        x = 1
+        while x <=3:
+            if x == 1:
+                helper(terminal_input1, input_valid_accounts)
+            if x == 2:
+                helper(terminal_input2, input_valid_accounts)
+            if x == 3:
+                helper(terminal_input3, input_valid_accounts)
+            x = x +1
+        """
+        helper(terminal_input1, input_valid_accounts)
+        helper(terminal_input2, input_valid_accounts)
+        helper(terminal_input3, input_valid_accounts)
+        
+
 
 def helper(terminal_input, input_valid_accounts):
 
@@ -49,22 +68,3 @@ def helper(terminal_input, input_valid_accounts):
     os.remove(temp_file)
     os.remove(temp_file2)
     os.remove(temp_file3)
-
-
-def main():
-    terminal_input=[
-                'login',
-                '2',
-                'dep',
-                '7777776',
-                '1000',
-                'back',
-                'logout'
-            ]
-    valid_accounts = open('quinterac/validAccountsListFile.txt', 'r')
-    input_valid_accounts = valid_accounts.readlines()
-    helper(terminal_input, input_valid_accounts)
-
-main()
-
-    

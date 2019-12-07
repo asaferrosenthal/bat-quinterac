@@ -162,7 +162,8 @@ class FrontEnd:
         accountNumber = input("Please provide an account number you wish to deposit into.\n> ")
         depositAmount = input("What is your deposit amount?: ")
 
-        errorMessage = SessionHandler.deposit(accountNumber, depositAmount)
+        #errorMessage = SessionHandler.deposit(accountNumber, depositAmount)
+        errorMessage = True
         if type(errorMessage) is bool:
             self.sessionWrite(Transaction.deposit.name)
             self.sessionWrite(accountNumber)
@@ -184,8 +185,8 @@ class FrontEnd:
 
         accountNumber = input("Please provide an account number you wish to withdraw from.\n> ")
         withdrawalAmount = input("What is your withdrawal amount?: ")
-        errorMessage = SessionHandler.withdraw(accountNumber, withdrawalAmount)
-
+        #errorMessage = SessionHandler.withdraw(accountNumber, withdrawalAmount)
+        errorMessage = True
         if type(errorMessage) is bool:
             self.sessionWrite(Transaction.withdraw.name)
             self.sessionWrite(accountNumber)
@@ -210,8 +211,8 @@ class FrontEnd:
         fromAccountNumber = input("Please provide the account number you wish to transfer from.\n> ")
         transferAmount = input("What is your transfer amount?: ")
 
-        errorMessage = SessionHandler.transfer(toAccountNumber, fromAccountNumber, transferAmount)
-
+        #errorMessage = SessionHandler.transfer(toAccountNumber, fromAccountNumber, transferAmount)
+        errorMessage = True
         if type(errorMessage) is bool:
             self.sessionWrite(Transaction.transfer.name)
             self.sessionWrite(fromAccountNumber)
