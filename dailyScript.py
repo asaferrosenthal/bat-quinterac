@@ -11,17 +11,6 @@ path = os.path.dirname(os.path.abspath(__file__))
 class Daily:
 
     def __init__(self, terminal_input1, terminal_input2, terminal_input3, input_valid_accounts):
-        """
-        x = 1
-        while x <=3:
-            if x == 1:
-                helper(terminal_input1, input_valid_accounts)
-            if x == 2:
-                helper(terminal_input2, input_valid_accounts)
-            if x == 3:
-                helper(terminal_input3, input_valid_accounts)
-            x = x +1
-        """
         helper(terminal_input1, input_valid_accounts)
         helper(terminal_input2, input_valid_accounts)
         helper(terminal_input3, input_valid_accounts)
